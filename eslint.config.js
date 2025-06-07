@@ -9,7 +9,7 @@ import css from '@eslint/css';
 import globals from 'globals';
 import { defineConfig } from 'eslint/config';
 
-const scriptFiles = ['**/*.{js,ts,jsx,tsx}']
+const scriptFiles = ['**/*.{js,ts,jsx,tsx}'];
 const generalIgnores = ['.astro/**', '**/node_modules/**', '**/dist/**'];
 
 const commonConfigs = [
@@ -43,7 +43,7 @@ const jsConfig = [
 ];
 
 const tsConfig = [
-  ...ts.configs.recommended.map((config) => ({
+  ...ts.configs.recommended.map(config => ({
     ...config,
     ignores: generalIgnores,
   })),
