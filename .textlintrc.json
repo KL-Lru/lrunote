@@ -1,5 +1,5 @@
 {
-  
+
   "plugins": {
     "mdx": true
   },
@@ -7,7 +7,6 @@
     "comments": true
   },
   "rules": {
-    "incremental-headers": true,
     "period-in-list-item": true,
     "@textlint-ja/no-synonyms": true,
 

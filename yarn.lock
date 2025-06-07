@@ -7276,11 +7276,6 @@ textlint-rule-helper@^2.0.0, textlint-rule-helper@^2.1.1, textlint-rule-helper@^
     structured-source "^4.0.0"
     unist-util-visit "^2.0.3"
 
-textlint-rule-incremental-headers@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/textlint-rule-incremental-headers/-/textlint-rule-incremental-headers-0.2.0.tgz#ab056713b60acdb8ebf2a2726425e67b01ad9b2c"
-  integrity sha512-3KW8ZWEAYLNv4MicAPmhisqnvLbCVT6fyJQVV3Thv1Ki5e34E1qfwSliZIqBpwH9YE/5h2zpnNhZmexXNA+CSg==
-
 textlint-rule-ja-nakaguro-or-halfwidth-space-between-katakana@^2.4.3:
   version "2.4.3"
   resolved "https://registry.yarnpkg.com/textlint-rule-ja-nakaguro-or-halfwidth-space-between-katakana/-/textlint-rule-ja-nakaguro-or-halfwidth-space-between-katakana-2.4.3.tgz#ad2ad0fd9ce7dd3dd5ec71fed9958f0f4f29070d"
