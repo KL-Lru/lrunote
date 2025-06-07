@@ -3,9 +3,12 @@ import { defineConfig } from 'astro/config';
 import icon from 'astro-icon';
 import starlight from '@astrojs/starlight';
 
+import react from '@astrojs/react';
+
 // https://astro.build/config
 export default defineConfig({
   integrations: [
+    react(),
     icon(),
     starlight({
       title: 'My Docs',
@@ -26,9 +29,9 @@ export default defineConfig({
         },
         {
           label: 'Reference',
-          autogenerate: { directory: 'reference' },
+          autogenerate: { directory: 'reference' }
         },
       ],
-    }),
+    })
   ],
 });
