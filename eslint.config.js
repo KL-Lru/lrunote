@@ -9,36 +9,98 @@ import css from '@eslint/css';
 import globals from 'globals';
 import { defineConfig } from 'eslint/config';
 
-export default defineConfig([
+const scriptFiles = ['**/*.{js,ts,jsx,tsx}']
+const generalIgnores = ['.astro/**', '**/node_modules/**', '**/dist/**'];
+
+const commonConfigs = [
   {
-    files: ['**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    name: 'globals/browser',
+    files: scriptFiles,
     languageOptions: { globals: globals.browser },
   },
-  stylistic.configs.customize({
-    indent: 2,
-    quotes: 'single',
-    semi: true,
-    commaDangle: 'only-multiline',
-    severity: 'warn',
-  }),
   {
-    files: ['**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    ...stylistic.configs.customize({
+      indent: 2,
+      quotes: 'single',
+      semi: true,
+      commaDangle: 'only-multiline',
+    }),
+    name: 'stylistic/custom',
+    // fix missing file patterns
+    files: scriptFiles,
+    ignores: generalIgnores,
+  },
+];
+
+const jsConfig = [
+  {
+    name: 'js',
+    files: scriptFiles,
+    ignores: generalIgnores,
     plugins: { js },
     extends: ['js/recommended'],
-  },
-  ts.configs.recommended,
-  astro.configs.recommended,
-  react.configs.flat.recommended,
+  }
+];
+
+const tsConfig = [
+  ...ts.configs.recommended.map((config) => ({
+    ...config,
+    ignores: generalIgnores,
+  })),
+];
+
+const markConfig = [
   {
-    files: ['**/*.mdx?'],
+    name: 'markdown',
+    files: ['**/*.md', '**/*.mdx'],
     plugins: { markdown },
     language: 'markdown/gfm',
+    languageOptions: { frontmatter: 'yaml' },
     extends: ['markdown/recommended'],
   },
+];
+
+const cssConfig = [
   {
+    name: 'css',
     files: ['**/*.css'],
     plugins: { css },
     language: 'css/css',
     extends: ['css/recommended'],
+  }
+];
+
+const astroConfig = [
+  ...(astro.configs.recommended).map((config) => {
+    // fix missing file patterns
+    if (config.name === 'astro/recommended') {
+      config.files = ['**/*.astro'];
+    }
+
+    return config;
+  }),
+];
+
+const reactConfig = [
+  {
+    name: 'react',
+    // fix missing file patterns
+    files: scriptFiles,
+    extends: [react.configs.flat.recommended],
+    // disable rules that conflict over React 18
+    rules: {
+      'react/jsx-uses-react': 'off',
+      'react/react-in-jsx-scope': 'off',
+    }
   },
+];
+
+export default defineConfig([
+  ...commonConfigs,
+  ...jsConfig,
+  ...tsConfig,
+  ...markConfig,
+  ...cssConfig,
+  ...astroConfig,
+  ...reactConfig,
 ]);
