@@ -23,6 +23,8 @@ const commonConfigs = [
       indent: 2,
       quotes: 'single',
       semi: true,
+      arrowParens: 'always',
+      braceStyle: '1tbs',
       commaDangle: 'only-multiline',
     }),
     name: 'stylistic/custom',
@@ -43,7 +45,7 @@ const jsConfig = [
 ];
 
 const tsConfig = [
-  ...ts.configs.recommended.map(config => ({
+  ...ts.configs.recommended.map((config) => ({
     ...config,
     ignores: generalIgnores,
   })),
