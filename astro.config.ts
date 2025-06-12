@@ -12,6 +12,9 @@ export default defineConfig({
     icon(),
     starlight({
       title: 'Lru Note',
+      components: {
+        Header: './src/components/overrides/Headers.astro',
+      },
       social: [
         {
           icon: 'github',
