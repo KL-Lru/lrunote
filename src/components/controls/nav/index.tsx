@@ -53,29 +53,31 @@ function NavigationItem({ item }: { item: NavItem }) {
         tabIndex={0}
         role="menuitem"
       >
-        {item.link ? (
-          <a href={item.link}>{item.label}</a>
-        ) : (
-          <span>{item.label}</span>
-        )}
-        {item.items && (
-          <motion.div
-            {...props}
-            initial="close"
-            animate={show ? 'open' : 'close'}
-            exit="close"
-          >
-            <div className={styles.navDropMenuContainer}>
-              <ul className={styles.navDropMenu}>
-                {item.items.map((subItem) => (
-                  <li key={subItem.label} className={styles.navDropMenuItem}>
-                    <a href={subItem.link}>{subItem.label}</a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </motion.div>
-        )}
+        {
+          item.link
+            ? <a href={item.link}>{item.label}</a>
+            : <span>{item.label}</span>
+        }
+        {
+          item.items && (
+            <motion.div
+              {...props}
+              initial="close"
+              animate={show ? 'open' : 'close'}
+              exit="close"
+            >
+              <div className={styles.navDropMenuContainer}>
+                <ul className={styles.navDropMenu}>
+                  {item.items.map((subItem) => (
+                    <li key={subItem.label} className={styles.navDropMenuItem}>
+                      <a href={subItem.link}>{subItem.label}</a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
+          )
+        }
       </li>
     </AnimatePresence>
   );
