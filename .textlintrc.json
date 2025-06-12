@@ -1,5 +1,4 @@
 {
-
   "plugins": {
     "mdx": true
   },
@@ -21,8 +20,14 @@
       "ja-space-between-half-and-full-width": {
         "space": "always"
       },
-      "ja-space-around-code": true,
-      "ja-space-around-link": true
+      "ja-space-around-code": {
+        "before": true,
+        "after": true
+      },
+      "ja-space-around-link": {
+        "before": true,
+        "after": true
+      }
     }
   }
 }
