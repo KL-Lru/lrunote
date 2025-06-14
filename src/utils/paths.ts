@@ -9,8 +9,6 @@ export const findConfig = (
   const contentDir = path.dirname(contentPath);
   const navConfigPath = `${contentDir}/${configFile}`;
 
-  console.log(`Looking for config file at: ${navConfigPath}`);
-
   if (contentDir === '/' || contentDir === '.' || contentDir === '') {
     return failure(null);
   }
