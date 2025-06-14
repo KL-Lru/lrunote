@@ -7,6 +7,13 @@ import react from '@astrojs/react';
 
 // https://astro.build/config
 export default defineConfig({
+  vite: {
+    resolve: {
+      alias: {
+        '@': '/src',
+      },
+    },
+  },
   integrations: [
     react(),
     icon(),
@@ -14,6 +21,7 @@ export default defineConfig({
       title: 'Lru Note',
       components: {
         Header: './src/components/overrides/Headers.astro',
+        Sidebar: './src/components/overrides/Sidebar.astro',
       },
       social: [
         {
@@ -22,7 +30,6 @@ export default defineConfig({
           href: 'https://github.com/kl-lru/lrunote',
         },
       ],
-      sidebar: [],
     }),
   ],
 });
