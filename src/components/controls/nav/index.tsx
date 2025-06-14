@@ -1,5 +1,5 @@
 import clsx from 'clsx';
-import type { NavConfig, NavItem } from '../../../utils/toml';
+import type { NavConfig, NavItem } from '@/utils/navbar';
 import styles from './index.module.css';
 import { useState } from 'react';
 import {

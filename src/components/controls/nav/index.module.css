@@ -48,6 +48,14 @@ ul.navList {
     background-color: var(--sl-color-gray-5);
   }
 
+  &.isCurrent {
+    background-color: var(--sl-color-gray-5);
+  }
+
+  &:active {
+    background-color: var(--sl-color-gray-4);
+  }
+
   span {
     display: inline-flex;
     align-items: center;

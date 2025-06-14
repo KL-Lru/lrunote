@@ -5,10 +5,10 @@ import SiteTitle from '@astrojs/starlight/components/SiteTitle.astro';
 import ThemeSelect from '@astrojs/starlight/components/ThemeSelect.astro';
 import SocialIcons from '@astrojs/starlight/components/SocialIcons.astro';
 
-import { findConfig } from '../../utils/paths';
-import { isNavConfig } from '../../utils/toml';
-import { loadToml } from '../../utils/toml';
-import { Navigation } from '../controls/nav';
+import { findConfig } from '@/utils/paths';
+import { isNavConfig } from '@/utils/navbar';
+import { loadToml } from '@/utils/toml';
+import { Navigation } from '@/components/controls/nav';
 
 function getNavConfig() {
   const currentContent = Astro.locals.starlightRoute.entry.filePath;
@@ -17,7 +17,6 @@ function getNavConfig() {
   if (navConfig.isOk()) {
     const toml = loadToml(navConfig.value);
     if (toml.isOk() && isNavConfig(toml.value)) {
-      // If the config is valid, return the nav config.
       return toml.value;
     }
   }
