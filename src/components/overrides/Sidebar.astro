@@ -1,0 +1,41 @@
+---
+import MobileMenuFooter from '@astrojs/starlight/components/MobileMenuFooter.astro';
+import SidebarPersister from '@astrojs/starlight/components/SidebarPersister.astro';
+import SidebarSublist from '@astrojs/starlight/components/SidebarSublist.astro';
+
+import { findConfig } from '@/utils/paths';
+import { loadToml } from '@/utils/toml';
+import { configToEntries, isSidebarConfig } from '@/utils/sidebar';
+
+function getSidebarConfig() {
+  const currentContent = Astro.locals.starlightRoute.entry.filePath;
+  const sidebarConfig = findConfig(currentContent, 'sidebar.config.toml');
+
+  if (sidebarConfig.isOk()) {
+    const toml = loadToml(sidebarConfig.value);
+    if (toml.isOk() && isSidebarConfig(toml.value)) {
+      return toml.value;
+    }
+  }
+
+  return null;
+}
+const config = getSidebarConfig();
+---
+
+<SidebarPersister>
+  {
+    config && (
+      <SidebarSublist
+        sublist={configToEntries(
+          config,
+          Astro.locals.starlightRoute.entry.slug,
+        )}
+      />
+    )
+  }
+</SidebarPersister>
+
+<div class="md:sl-hidden">
+  <MobileMenuFooter />
+</div>
