@@ -1,0 +1,9 @@
+name = "lrunote"
+compatibility_date = "2025-07-10"
+
+[assets]
+directory = "./dist"
+
+[[routes]]
+pattern = "lrunote.dev"
+custom_domain = true
