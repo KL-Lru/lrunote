@@ -23,6 +23,9 @@ export default defineConfig({
         Header: './src/components/overrides/Headers.astro',
         Sidebar: './src/components/overrides/Sidebar.astro',
       },
+      customCss: [
+        './src/styles/custom.css',
+      ],
       social: [
         {
           icon: 'github',

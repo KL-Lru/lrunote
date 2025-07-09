@@ -1,0 +1,13 @@
+/* Custom styles for LinkCard hover animations */
+.sl-link-card {
+  transition: background-color 200ms ease, border-color 200ms ease;
+}
+
+.sl-link-card .icon {
+  transition: color 200ms ease;
+}
+
+/* Custom styles for text link hover animations */
+a {
+  transition: color 200ms ease;
+}
