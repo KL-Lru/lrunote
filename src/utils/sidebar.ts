@@ -51,7 +51,7 @@ export function configToEntries(config: SidebarConfig, currentContent: string): 
 }
 
 function itemToLink(item: SidebarLinkItem, currentContent: string): SidebarLink {
-  const isCurrentLink = item.link !== undefined && item.link !== '/' && item.link === currentContent;
+  const isCurrentLink = item.link !== undefined && item.link !== '/' && (item.link.startsWith('/') ? item.link.slice(1) === currentContent : item.link === currentContent);
 
   return {
     type: 'link',

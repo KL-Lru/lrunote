@@ -1,3 +1,15 @@
+@media (min-width: 50rem) {
+  :root {
+    --sl-content-width: calc(100vw - 2 * var(--sl-sidebar-pad-x));
+  }
+}
+
+@media (min-width: 72rem) {
+  :root {
+    --sl-content-width: calc(min(100vw - 0.5 * var(--sl-sidebar-pad-x) - 2 * var(--sl-sidebar-width), 1200px));
+  }
+}
+
 /* Custom styles for LinkCard hover animations */
 .sl-link-card {
   transition: background-color 200ms ease, border-color 200ms ease;

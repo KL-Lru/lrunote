@@ -42,10 +42,11 @@ ul.navList {
   align-items: center;
   justify-content: center;
 
-  transition: background-color 0.2s ease;
+  transition: all 0.2s ease;
 
   &:hover {
-    background-color: var(--sl-color-gray-5);
+    color: var(--sl-color-text-invert);
+    background-color: var(--sl-color-text-accent);
   }
 
   &.isCurrent {
