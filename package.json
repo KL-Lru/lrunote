@@ -17,6 +17,7 @@
   "dependencies": {
     "@astrojs/react": "^4.3.0",
     "@astrojs/starlight": "^0.34.3",
+    "@catppuccin/starlight": "^1.0.1",
     "@iconify-json/mdi": "^1.2.3",
     "@types/react": "^19.1.6",
     "@types/react-dom": "^19.1.6",

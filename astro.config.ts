@@ -3,6 +3,8 @@ import { defineConfig } from 'astro/config';
 import icon from 'astro-icon';
 import starlight from '@astrojs/starlight';
 
+import catppuccin from '@catppuccin/starlight';
+
 import react from '@astrojs/react';
 
 // https://astro.build/config
@@ -33,7 +35,13 @@ export default defineConfig({
           href: 'https://github.com/kl-lru/lrunote',
         },
       ],
-      sidebar: []
+      sidebar: [],
+      plugins: [
+        catppuccin({
+          light: { flavor: 'latte', accent: 'sapphire' },
+          dark: { flavor: 'mocha', accent: 'sapphire' }
+        }),
+      ]
     }),
   ],
 });
