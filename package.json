@@ -12,7 +12,8 @@
     "preview": "astro preview",
     "astro": "astro",
     "lint": "eslint .",
-    "textlint": "textlint ."
+    "textlint": "textlint .",
+    "postinstall": "playwright install chromium"
   },
   "dependencies": {
     "@astrojs/react": "^4.3.0",
@@ -25,8 +26,10 @@
     "astro-icon": "^1.1.5",
     "clsx": "^2.1.1",
     "motion": "^12.16.0",
+    "playwright": "^1.54.2",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
+    "rehype-mermaid": "^3.0.0",
     "smol-toml": "^1.3.4"
   },
   "devDependencies": {

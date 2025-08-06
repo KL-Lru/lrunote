@@ -6,6 +6,7 @@ import starlight from '@astrojs/starlight';
 import catppuccin from '@catppuccin/starlight';
 
 import react from '@astrojs/react';
+import rehypeMermaid from 'rehype-mermaid';
 
 // https://astro.build/config
 export default defineConfig({
@@ -44,4 +45,15 @@ export default defineConfig({
       ]
     }),
   ],
+  markdown: {
+    rehypePlugins: [
+      [
+        rehypeMermaid, {
+          strategy: 'img-svg',
+          colorScheme: 'forest',
+          dark: true,
+        },
+      ]
+    ],
+  },
 });
