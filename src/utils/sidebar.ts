@@ -31,7 +31,7 @@ interface SidebarLinkItem {
 }
 interface SidebarGroupItem {
   label: string;
-  items: Array<SidebarLinkItem>;
+  items: Array<SidebarItem>;
 }
 export type SidebarItem = SidebarLinkItem | SidebarGroupItem;
 
@@ -67,7 +67,13 @@ function itemToGroup(item: SidebarGroupItem, currentContent: string): SidebarGro
   return {
     type: 'group',
     label: item.label,
-    entries: item.items.map((subItem) => itemToLink(subItem, currentContent)),
+    entries: item.items.map((subItem) => {
+      if (isSidebarGroupItem(subItem)) {
+        return itemToGroup(subItem, currentContent);
+      } else {
+        return itemToLink(subItem, currentContent);
+      }
+    }),
     collapsed: false,
     badge: undefined,
   };
