@@ -1,0 +1,10 @@
+[[navigation]]
+label = "ソート"
+
+[[navigation.items]]
+label = "クイックソート"
+link = "algorithms/sort/quicksort"
+
+[[navigation.items]]
+label = "bar"
+link = "bar"

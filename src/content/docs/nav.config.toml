@@ -1,0 +1,7 @@
+[[navigation]]
+label = "セキュリティ"
+link = "/security"
+
+[[navigation]]
+label = "データベース"
+link = "/database"

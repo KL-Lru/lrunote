@@ -1,0 +1,64 @@
+[[navigation]]
+label = "Home"
+link = "/"
+
+[[navigation]]
+label = "Security"
+link = "/security"
+
+[[navigation]]
+label = "認可"
+
+[[navigation.items]]
+label = "OAuth 2.0"
+link = "/security/authz/oauth2_0"
+
+[[navigation.items.items]]
+label = "目次"
+link = "/security/authz/oauth2_0"
+
+[[navigation.items.items]]
+label = "基本概念"
+link = "/security/authz/oauth2_0/summary"
+
+[[navigation.items.items]]
+label = "認可フロー"
+
+[[navigation.items.items.items]]
+label = "認可コードフロー"
+link = "/security/authz/oauth2_0/authorization_code_flow"
+
+[[navigation.items.items.items]]
+label = "インプリシットフロー"
+link = "/security/authz/oauth2_0/implicit_flow"
+
+[[navigation.items.items.items]]
+label = "リソースオーナー・パスワードクレデンシャルズフロー"
+link = "/security/authz/oauth2_0/resource_owner_password_credentials_flow"
+
+[[navigation.items.items.items]]
+label = "クライアントクレデンシャルズフロー"
+link = "/security/authz/oauth2_0/client_credentials_flow"
+
+[[navigation.items.items.items]]
+label = "リフレッシュトークンフロー"
+link = "/security/authz/oauth2_0/refresh_token_flow"
+
+[[navigation.items.items.items]]
+label = "デバイスフロー"
+link = "/security/authz/oauth2_0/device_flow"
+
+[[navigation.items.items]]
+label = "セキュリティプラクティス"
+
+[[navigation.items.items.items]]
+label = "stateパラメータ"
+link = "/security/authz/oauth2_0/state_parameter"
+
+[[navigation.items.items.items]]
+label = "nonceパラメータ"
+link = "/security/authz/oauth2_0/nonce_parameter"
+
+[[navigation.items.items.items]]
+label = "PKCE"
+link = "/security/authz/oauth2_0/pkce"

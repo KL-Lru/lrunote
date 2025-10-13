@@ -2,7 +2,14 @@
 title: 'Home'
 template: splash
 ---
-import { LinkCard } from '@astrojs/starlight/components';
+
+import { LinkCard, CardGrid } from '@astrojs/starlight/components';
 
 <LinkCard title="このサイトについて" href="/about" />
 
+## Topic
+
+<CardGrid>
+  <LinkCard href="/security" title="セキュリティ" />
+  <LinkCard href="/database" title="データベース" />
+</CardGrid>

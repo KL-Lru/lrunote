@@ -9,8 +9,7 @@ interface SidebarLink {
   href: string;
   isCurrent: boolean;
   badge: Badge | undefined;
-  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-  attrs: {};
+  attrs: object;
 }
 interface SidebarGroup {
   type: 'group';
@@ -37,9 +36,13 @@ export type SidebarItem = SidebarLinkItem | SidebarGroupItem;
 
 // config file to entries
 export function configToEntries(config: SidebarConfig, currentContent: string): SidebarEntry[] {
+  return itemsToEntries(config.navigation, currentContent);
+}
+
+function itemsToEntries(items: Array<SidebarItem>, currentContent: string): SidebarEntry[] {
   const entries: SidebarEntry[] = [];
 
-  for (const item of config.navigation) {
+  for (const item of items) {
     if (isSidebarGroupItem(item)) {
       entries.push(itemToGroup(item, currentContent));
     } else if (isSidebarLinkItem(item)) {
@@ -67,13 +70,7 @@ function itemToGroup(item: SidebarGroupItem, currentContent: string): SidebarGro
   return {
     type: 'group',
     label: item.label,
-    entries: item.items.map((subItem) => {
-      if (isSidebarGroupItem(subItem)) {
-        return itemToGroup(subItem, currentContent);
-      } else {
-        return itemToLink(subItem, currentContent);
-      }
-    }),
+    entries: itemsToEntries(item.items, currentContent),
     collapsed: false,
     badge: undefined,
   };
@@ -121,7 +118,7 @@ function isSidebarGroupItem(item: unknown): item is SidebarGroupItem {
     return false;
   }
   for (const subItem of groupItem.items) {
-    if (!isSidebarLinkItem(subItem)) {
+    if (!isSidebarItem(subItem)) {
       return false;
     }
   }

@@ -1,0 +1,14 @@
+[[navigation]]
+label = "Home"
+link = "/"
+
+[[navigation]]
+label = "Security"
+link = "/security"
+
+[[navigation]]
+label = "認可"
+
+[[navigation.items]]
+label = "OAuth 2.0"
+link = "/security/authz/oauth2_0"
