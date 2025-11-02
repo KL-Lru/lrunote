@@ -4,11 +4,11 @@ import { getCollection } from 'astro:content';
 import Main from '@/components/layouts/Main.astro';
 
 export const getStaticPaths = (async () => {
-  const allContents = await getCollection('contents');
+  const allArticles = await getCollection('articles');
 
-  return allContents.map((content) => ({
-    params: { slug: content.data.permalink },
-    props: { entry: content },
+  return allArticles.map((article) => ({
+    params: { slug: article.data.permalink },
+    props: { entry: article },
   }));
 }) satisfies GetStaticPaths;
 

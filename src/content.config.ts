@@ -38,8 +38,8 @@ function extractTagPaths(
 // Generate set of valid tag paths
 const validTags = new Set(extractTagPaths(tagSchema));
 
-// Define contents collection
-const contentsCollection = defineCollection({
+// Define articles collection
+const articlesCollection = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string().min(1, 'Title is required'),
@@ -57,5 +57,5 @@ const contentsCollection = defineCollection({
 });
 
 export const collections = {
-  contents: contentsCollection,
+  articles: articlesCollection,
 };
