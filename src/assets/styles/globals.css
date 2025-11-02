@@ -15,21 +15,21 @@ html {
 
 html.light {
   --text-color: var(--ctp-latte-text);
-  --reverse-text-color: var(--ctp-latte-mantle);
+  --invert-text-color: var(--ctp-latte-mantle);
   --background-color: var(--ctp-latte-base);
-  --background-deep-color: var(--ctp-latte-mantle);
-  --reverse-background-color: var(--ctp-latte-text);
-  --border-color: var(--ctp-latte-overlay1);
+  --invert-background-color: var(--ctp-latte-text);
+  --control-background-color: var(--ctp-latte-mantle);
+  --border-color: var(--ctp-latte-overlay0);
   --accent-color: var(--ctp-latte-sky);
   --link-color: var(--ctp-latte-sapphire);
 }
 
 html.dark {
   --text-color: var(--ctp-mocha-text);
-  --reverse-text-color: var(--ctp-mocha-mantle);
+  --invert-text-color: var(--ctp-mocha-mantle);
   --background-color: var(--ctp-mocha-base);
-  --background-deep-color: var(--ctp-mocha-mantle);
-  --reverse-background-color: var(--ctp-mocha-text);
+  --invert-background-color: var(--ctp-mocha-text);
+  --control-background-color: var(--ctp-mocha-mantle);
   --border-color: var(--ctp-mocha-overlay0);
   --accent-color: var(--ctp-mocha-sky);
   --link-color: var(--ctp-mocha-sapphire);

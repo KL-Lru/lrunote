@@ -1,6 +1,6 @@
 .header {
   color: var(--text-color);
-  background-color: var(--background-deep-color);
+  background-color: var(--control-background-color);
 
   padding: 1rem;
   padding-left: 2rem;
