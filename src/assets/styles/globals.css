@@ -1,0 +1,76 @@
+@import "@catppuccin/palette/css/catppuccin.css";
+@import '@fontsource/biz-udpgothic/400.css';
+@import '@fontsource/biz-udpgothic/700.css';
+@import '@fontsource/inconsolata/400.css';
+@import '@fontsource/inconsolata/700.css';
+
+:where(html) {
+  --font-sans: 'BIZ UDPGothic', sans-serif;
+  --font-mono: 'Inconsolata', monospace;
+}
+
+html {
+  scrollbar-gutter: stable;
+}
+
+html.light {
+  --text-color: var(--ctp-latte-text);
+  --reverse-text-color: var(--ctp-latte-mantle);
+  --background-color: var(--ctp-latte-base);
+  --background-deep-color: var(--ctp-latte-mantle);
+  --reverse-background-color: var(--ctp-latte-text);
+  --border-color: var(--ctp-latte-overlay1);
+  --accent-color: var(--ctp-latte-sky);
+  --link-color: var(--ctp-latte-sapphire);
+}
+
+html.dark {
+  --text-color: var(--ctp-mocha-text);
+  --reverse-text-color: var(--ctp-mocha-mantle);
+  --background-color: var(--ctp-mocha-base);
+  --background-deep-color: var(--ctp-mocha-mantle);
+  --reverse-background-color: var(--ctp-mocha-text);
+  --border-color: var(--ctp-mocha-overlay0);
+  --accent-color: var(--ctp-mocha-sky);
+  --link-color: var(--ctp-mocha-sapphire);
+}
+
+html.switch * {
+  /* theme transition */
+  transition:
+    color 0.2s ease-in-out,
+    background-color 0.2s ease-in-out,
+    border-color 0.2s ease-in-out !important;
+}
+
+.no-transition * {
+  transition: none !important;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+
+  box-sizing: border-box;
+
+  color: var(--text-color);
+  background-color: var(--background-color);
+
+  line-height: 1.5;
+  font-family: var(--font-sans);
+  font-weight: 400;
+}
+
+code {
+  font-family: var(--font-mono);
+}
+
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: var(--link-color);
+}

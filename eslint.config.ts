@@ -2,7 +2,6 @@ import js from '@eslint/js';
 import ts from 'typescript-eslint';
 import stylistic from '@stylistic/eslint-plugin';
 import astro from 'eslint-plugin-astro';
-import react from 'eslint-plugin-react';
 import markdown from '@eslint/markdown';
 import css from '@eslint/css';
 
@@ -23,7 +22,7 @@ const commonConfigs = [
       indent: 2,
       quotes: 'single',
       semi: true,
-      arrowParens: 'always',
+      arrowParens: true,
       braceStyle: '1tbs',
       commaDangle: 'only-multiline',
     }),
@@ -83,20 +82,6 @@ const astroConfig = [
   }),
 ];
 
-const reactConfig = [
-  {
-    name: 'react',
-    // fix missing file patterns
-    files: scriptFiles,
-    extends: [react.configs.flat.recommended],
-    // disable rules that conflict over React 18
-    rules: {
-      'react/jsx-uses-react': 'off',
-      'react/react-in-jsx-scope': 'off',
-    }
-  },
-];
-
 export default defineConfig([
   ...commonConfigs,
   ...jsConfig,
@@ -104,5 +89,4 @@ export default defineConfig([
   ...markConfig,
   ...cssConfig,
   ...astroConfig,
-  ...reactConfig,
 ]);

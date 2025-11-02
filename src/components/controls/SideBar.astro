@@ -1,0 +1,69 @@
+---
+import { Icon } from 'astro-icon/components';
+import { sidebarCollapsed } from '@/stores/sidebar';
+import styles from './SideBar.module.css';
+---
+
+<aside
+  id="sidebar"
+  class:list={[
+    styles.sidebar,
+    'no-transition',
+    {
+      open: sidebarCollapsed.get() === 'true',
+      close: sidebarCollapsed.get() === 'false',
+    },
+  ]}
+>
+  <button id="sidebar-collapse" class={styles.collapse}>
+    <Icon name="mdi:chevron-double-left" />
+  </button>
+  <button id="sidebar-expand" class={styles.expand}>
+    <Icon name="mdi:chevron-double-right" />
+  </button>
+  <nav>
+    <ul class={styles.navList}>
+      <li class={styles.navItem}><a href="/">Home</a></li>
+      <li class={styles.navItem}><a href="/about">About</a></li>
+      <li class={styles.navItem}><a href="/contact">Contact</a></li>
+    </ul>
+  </nav>
+</aside>
+
+<script>
+  import { sidebarCollapsed } from '@/stores/sidebar';
+
+  const collapseButton = document.getElementById('sidebar-collapse');
+  collapseButton?.addEventListener('click', () => {
+    sidebarCollapsed.set('false');
+  });
+
+  const expandButton = document.getElementById('sidebar-expand');
+  expandButton?.addEventListener('click', () => {
+    sidebarCollapsed.set('true');
+  });
+</script>
+
+<script>
+  import { sidebarCollapsed } from '@/stores/sidebar';
+
+  sidebarCollapsed.subscribe((value) => {
+    const sidebarElement = document.getElementById('sidebar');
+    if (sidebarElement) {
+      if (value === 'true') {
+        sidebarElement.classList.remove('close');
+        sidebarElement.classList.add('open');
+      } else {
+        sidebarElement.classList.remove('open');
+        sidebarElement.classList.add('close');
+      }
+    }
+
+    requestAnimationFrame(() => {
+      const sidebarElement = document.getElementById('sidebar');
+      if (sidebarElement) {
+        sidebarElement.classList.remove('no-transition');
+      }
+    });
+  });
+</script>

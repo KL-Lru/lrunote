@@ -1,59 +1,29 @@
 // @ts-check
-import { defineConfig } from 'astro/config';
-import icon from 'astro-icon';
-import starlight from '@astrojs/starlight';
-
-import catppuccin from '@catppuccin/starlight';
-
-import react from '@astrojs/react';
-import rehypeMermaid from 'rehype-mermaid';
+import { defineConfig } from "astro/config";
+import icon from "astro-icon";
+import mdx from "@astrojs/mdx";
+import rehypeMermaid from "rehype-mermaid";
 
 // https://astro.build/config
 export default defineConfig({
   vite: {
     resolve: {
       alias: {
-        '@': '/src',
+        "@": "/src",
       },
     },
   },
-  integrations: [
-    react(),
-    icon(),
-    starlight({
-      title: 'Lru Note',
-      components: {
-        Header: './src/components/overrides/Headers.astro',
-        Sidebar: './src/components/overrides/Sidebar.astro',
-      },
-      customCss: [
-        './src/styles/custom.css',
-      ],
-      social: [
-        {
-          icon: 'github',
-          label: 'GitHub',
-          href: 'https://github.com/kl-lru/lrunote',
-        },
-      ],
-      sidebar: [],
-      plugins: [
-        catppuccin({
-          light: { flavor: 'latte', accent: 'sapphire' },
-          dark: { flavor: 'mocha', accent: 'sapphire' }
-        }),
-      ]
-    }),
-  ],
+  integrations: [icon(), mdx()],
   markdown: {
     rehypePlugins: [
       [
-        rehypeMermaid, {
-          strategy: 'img-svg',
-          colorScheme: 'forest',
+        rehypeMermaid,
+        {
+          strategy: "img-svg",
+          colorScheme: "forest",
           dark: true,
         },
-      ]
+      ],
     ],
   },
 });

@@ -1,0 +1,38 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import styles from './ThemeToggle.module.css';
+---
+
+<button id="theme-toggle" class={styles.toggleButton}>
+  <div class={styles.iconLight}>
+    <Icon name="mdi:weather-sunny" />
+  </div>
+  <div class={styles.iconDark}>
+    <Icon name="mdi:moon-and-stars" />
+  </div>
+</button>
+
+<script>
+  // @see ThemeHandler
+  declare function getTheme(): 'light' | 'dark';
+  declare function setTheme(theme: 'light' | 'dark'): void;
+
+  const toggleElement = document.querySelector('#theme-toggle');
+
+  if (toggleElement) {
+    toggleElement.addEventListener('click', () => {
+      document.documentElement.classList.add('switch');
+
+      if (getTheme() === 'dark') {
+        setTheme('light');
+      } else {
+        setTheme('dark');
+      }
+
+      requestAnimationFrame(() => {
+        document.documentElement.classList.remove('switch');
+      });
+    });
+  }
+</script>

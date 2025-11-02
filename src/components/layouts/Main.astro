@@ -1,0 +1,36 @@
+---
+import TopBar from '@/components/controls/TopBar.astro';
+import SideBar from '@/components/controls/SideBar.astro';
+import Content from '@/components/controls/Content.astro';
+
+import ThemeHandler from '@/components/controls/ThemeHandler.astro';
+import styles from '@/components/layouts/Main.module.css';
+import '@/assets/styles/globals.css';
+
+const { title } = Astro.props.frontmatter || Astro.props;
+---
+
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{title}</title>
+    <ThemeHandler />
+  </head>
+  <body>
+    <main class={styles.container}>
+      <div class={styles.topBarContainer}>
+        <TopBar />
+      </div>
+      <div class={styles.sideBarContainer}>
+        <SideBar />
+      </div>
+      <div class={styles.mainContent}>
+        <Content>
+          <slot />
+        </Content>
+      </div>
+    </main>
+  </body>
+</html>
