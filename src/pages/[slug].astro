@@ -13,8 +13,8 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const { entry } = Astro.props;
-const { Content } = await entry.render();
 const { title } = entry.data;
+const { Content } = await entry.render();
 ---
 
 <Main title={title}>
