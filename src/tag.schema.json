@@ -1,3 +1,23 @@
 {
-  "top": []
+  "top": [],
+  "frontend": [
+    {
+      "react": [
+        {
+          "components": []
+        },
+        {
+          "hooks": []
+        }
+      ]
+    },
+    {
+      "vue": []
+    }
+  ],
+  "backend": [
+    {
+      "nodejs": []
+    }
+  ]
 }

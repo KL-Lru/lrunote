@@ -1,0 +1,292 @@
+---
+import { getCollection } from 'astro:content';
+import { generateAllTagsInfo } from '@/utils/tags';
+import styles from './DynamicSidebar.module.css';
+
+interface Props {
+  currentTag: string;
+}
+
+const { currentTag } = Astro.props;
+
+// Get all articles
+const allArticles = await getCollection('articles');
+
+// Generate all tags information
+const allTagsInfo = await generateAllTagsInfo(allArticles);
+
+// Get current tag info
+const currentTagInfo = allTagsInfo[currentTag];
+const tagArticles = currentTagInfo?.articles || [];
+const childTags = currentTagInfo?.childTags || [];
+const parentTag = currentTagInfo?.parentTag || null;
+---
+
+<aside
+  id="dynamic-sidebar"
+  data-current-tag={currentTag}
+  class={styles.sidebar}
+>
+  <script
+    type="application/json"
+    id="all-tags-data"
+    set:html={JSON.stringify(allTagsInfo)}
+  />
+  <script
+    type="application/json"
+    id="css-module-classes"
+    set:html={JSON.stringify(styles)}
+  />
+
+  {
+    parentTag && (
+      <div class:list={[styles.parentTagNav, 'js-parent-tag-nav']}>
+        <button
+          type="button"
+          class:list={[styles.parentTagButton, 'js-parent-tag-button']}
+          data-parent-tag={parentTag}
+        >
+          ← {parentTag}
+        </button>
+      </div>
+    )
+  }
+
+  <div
+    class:list={[styles.sidebarContent, 'js-sidebar-content']}
+    data-tag={currentTag}
+  >
+    <h2 class:list={[styles.sidebarTagTitle, 'js-sidebar-tag-title']}>
+      Tag: {currentTag}
+    </h2>
+
+    {
+      childTags.length > 0 && (
+        <section class:list={[styles.childTags, 'js-child-tags']}>
+          <h3>Child Tags</h3>
+          <ul class:list={[styles.childTagsList, 'js-child-tags-list']}>
+            {childTags.map((childTag) => (
+              <li>
+                <a href={`/${childTag}`}>{childTag.split('/').pop()}</a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      tagArticles.length > 0 && (
+        <section class:list={[styles.tagArticles, 'js-tag-articles']}>
+          <h3>Articles</h3>
+          <ul class:list={[styles.tagArticlesList, 'js-tag-articles-list']}>
+            {tagArticles.map((article) => (
+              <li>
+                <a href={`/${article.permalink}`}>{article.title}</a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )
+    }
+
+    {
+      childTags.length === 0 && tagArticles.length === 0 && (
+        <p>No content found for this tag.</p>
+      )
+    }
+  </div>
+</aside>
+
+<script>
+  interface TagInfo {
+    tag: string;
+    parentTag: string | null;
+    childTags: string[];
+    articles: Array<{ permalink: string; title: string }>;
+  }
+
+  function initDynamicSidebar() {
+    const sidebar = document.getElementById('dynamic-sidebar');
+    if (!sidebar) return;
+
+    // Load all tags data from embedded JSON
+    const dataScript = document.getElementById('all-tags-data');
+    if (!dataScript) return;
+
+    const allTagsInfo: Record<string, TagInfo> = JSON.parse(
+      dataScript.textContent || '{}',
+    );
+
+    // Load CSS Module classes
+    const cssClassesScript = document.getElementById('css-module-classes');
+    if (!cssClassesScript) return;
+
+    const cssClasses: Record<string, string> = JSON.parse(
+      cssClassesScript.textContent || '{}',
+    );
+
+    // Function to update sidebar content
+    function updateSidebarContent(tag: string) {
+      const tagInfo = allTagsInfo[tag];
+      if (!tagInfo) return;
+
+      // Update data attribute
+      sidebar.setAttribute('data-current-tag', tag);
+
+      // Update parent tag button
+      const parentNavDiv = sidebar.querySelector('.js-parent-tag-nav');
+      if (tagInfo.parentTag) {
+        if (!parentNavDiv) {
+          // Create parent nav if it doesn't exist
+          const newParentNav = document.createElement('div');
+          newParentNav.className = `${cssClasses.parentTagNav} js-parent-tag-nav`;
+          newParentNav.innerHTML = `
+            <button type="button" class="${cssClasses.parentTagButton} js-parent-tag-button" data-parent-tag="${tagInfo.parentTag}">
+              ← ${tagInfo.parentTag}
+            </button>
+          `;
+          sidebar.insertBefore(
+            newParentNav,
+            sidebar.querySelector('.js-sidebar-content'),
+          );
+        } else {
+          // Update existing parent nav
+          const button = parentNavDiv.querySelector('.js-parent-tag-button');
+          if (button) {
+            button.setAttribute('data-parent-tag', tagInfo.parentTag);
+            button.textContent = `← ${tagInfo.parentTag}`;
+          }
+        }
+      } else {
+        // Remove parent nav if no parent
+        if (parentNavDiv) {
+          parentNavDiv.remove();
+        }
+      }
+
+      // Update sidebar content
+      const content = sidebar.querySelector('.js-sidebar-content');
+      if (!content) return;
+
+      content.setAttribute('data-tag', tag);
+
+      // Update title
+      const titleElement = content.querySelector('.js-sidebar-tag-title');
+      if (titleElement) {
+        titleElement.textContent = `Tag: ${tag}`;
+      }
+
+      // Update child tags
+      const childTagsSection = content.querySelector('.js-child-tags');
+      if (tagInfo.childTags.length > 0) {
+        if (!childTagsSection) {
+          // Create child tags section
+          const articlesSection = content.querySelector('.js-tag-articles');
+          const newSection = document.createElement('section');
+          newSection.className = `${cssClasses.childTags} js-child-tags`;
+          newSection.innerHTML = `
+            <h3>Child Tags</h3>
+            <ul class="${cssClasses.childTagsList} js-child-tags-list">
+              ${tagInfo.childTags
+                .map(
+                  (childTag) =>
+                    `<li><a href="/${childTag}">${childTag.split('/').pop()}</a></li>`,
+                )
+                .join('')}
+            </ul>
+          `;
+          if (articlesSection) {
+            content.insertBefore(newSection, articlesSection);
+          } else {
+            content.appendChild(newSection);
+          }
+        } else {
+          // Update existing child tags
+          const list = childTagsSection.querySelector('.js-child-tags-list');
+          if (list) {
+            list.innerHTML = tagInfo.childTags
+              .map(
+                (childTag) =>
+                  `<li><a href="/${childTag}">${childTag.split('/').pop()}</a></li>`,
+              )
+              .join('');
+          }
+        }
+      } else {
+        // Remove child tags section if no children
+        if (childTagsSection) {
+          childTagsSection.remove();
+        }
+      }
+
+      // Update articles
+      const articlesSection = content.querySelector('.js-tag-articles');
+      if (tagInfo.articles.length > 0) {
+        if (!articlesSection) {
+          // Create articles section
+          const newSection = document.createElement('section');
+          newSection.className = `${cssClasses.tagArticles} js-tag-articles`;
+          newSection.innerHTML = `
+            <h3>Articles</h3>
+            <ul class="${cssClasses.tagArticlesList} js-tag-articles-list">
+              ${tagInfo.articles
+                .map(
+                  (article) =>
+                    `<li><a href="/${article.permalink}">${article.title}</a></li>`,
+                )
+                .join('')}
+            </ul>
+          `;
+          content.appendChild(newSection);
+        } else {
+          // Update existing articles
+          const list = articlesSection.querySelector('.js-tag-articles-list');
+          if (list) {
+            list.innerHTML = tagInfo.articles
+              .map(
+                (article) =>
+                  `<li><a href="/${article.permalink}">${article.title}</a></li>`,
+              )
+              .join('');
+          }
+        }
+      } else {
+        // Remove articles section if no articles
+        if (articlesSection) {
+          articlesSection.remove();
+        }
+      }
+
+      // Re-bind parent button click event
+      bindParentButtonEvent();
+    }
+
+    // Bind parent button click event
+    function bindParentButtonEvent() {
+      const parentButton = sidebar.querySelector('.js-parent-tag-button');
+      if (!parentButton) return;
+
+      // Remove old event listener by cloning
+      const newButton = parentButton.cloneNode(true) as HTMLElement;
+      parentButton.replaceWith(newButton);
+
+      newButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        const parentTag = newButton.getAttribute('data-parent-tag');
+        if (parentTag) {
+          updateSidebarContent(parentTag);
+        }
+      });
+    }
+
+    // Initial binding
+    bindParentButtonEvent();
+  }
+
+  // Initialize on page load
+  initDynamicSidebar();
+
+  // Re-initialize on navigation (for SPAs)
+  document.addEventListener('astro:page-load', initDynamicSidebar);
+</script>

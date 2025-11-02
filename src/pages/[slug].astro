@@ -21,6 +21,6 @@ const { entry } = Astro.props;
 const { Content } = await entry.render();
 ---
 
-<Main title={entry.data.title}>
+<Main title={entry.data.title} currentTag={entry.data.tag}>
   <Content />
 </Main>
