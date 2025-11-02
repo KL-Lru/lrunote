@@ -1,10 +1,10 @@
 ---
 import type { GetStaticPaths } from 'astro';
-import { getCollection, type CollectionEntry } from 'astro:content';
+import { getCollection } from 'astro:content';
 import Main from '@/components/layouts/Main.astro';
 
 export const getStaticPaths = (async () => {
-  const allContents = (await getCollection('contents')) as CollectionEntry<'contents'>[];
+  const allContents = await getCollection('contents');
 
   return allContents.map((content) => ({
     params: { slug: content.data.permalink },
