@@ -2,21 +2,25 @@
 import type { GetStaticPaths } from 'astro';
 import { getCollection } from 'astro:content';
 import Main from '@/components/layouts/Main.astro';
+import { tagSchema, extractTagPaths } from '@/utils/tags';
 
 export const getStaticPaths = (async () => {
   const allArticles = await getCollection('articles');
+  const validTags = extractTagPaths(tagSchema);
 
-  return allArticles.map((article) => ({
-    params: { slug: article.data.permalink },
-    props: { entry: article },
-  }));
+  // Filter out articles whose permalink conflicts with tags
+  return allArticles
+    .filter((article) => !validTags.includes(article.data.permalink))
+    .map((article) => ({
+      params: { slug: article.data.permalink },
+      props: { entry: article },
+    }));
 }) satisfies GetStaticPaths;
 
 const { entry } = Astro.props;
-const { title } = entry.data;
 const { Content } = await entry.render();
 ---
 
-<Main title={title}>
+<Main title={entry.data.title}>
   <Content />
 </Main>

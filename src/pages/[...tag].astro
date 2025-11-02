@@ -1,0 +1,29 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
+import Main from '@/components/layouts/Main.astro';
+import TagList from '@/components/TagList.astro';
+import { tagSchema, extractTagPaths } from '@/utils/tags';
+
+export const getStaticPaths = (async () => {
+  const allArticles = await getCollection('articles');
+  const validTags = extractTagPaths(tagSchema);
+
+  // All tags (both single and multi-segment)
+  return validTags.map((tag) => {
+    // Filter articles that have this exact tag
+    const articles = allArticles.filter((article) => article.data.tag === tag);
+
+    return {
+      params: { tag },
+      props: { articles, tag },
+    };
+  });
+}) satisfies GetStaticPaths;
+
+const { articles, tag } = Astro.props;
+---
+
+<Main title={`Tag: ${tag}`}>
+  <TagList tag={tag} articles={articles} />
+</Main>
