@@ -1,0 +1,46 @@
+{
+  "frontend": [
+    {
+      "react": [
+        {
+          "Component": []
+        },
+        {
+          "Hooks": []
+        }
+      ]
+    },
+    {
+      "vue": [
+        {
+          "Component": []
+        },
+        {
+          "Composables": []
+        }
+      ]
+    }
+  ],
+  "backend": [
+    {
+      "nodejs": [
+        {
+          "Express": []
+        },
+        {
+          "Fastify": []
+        }
+      ]
+    },
+    {
+      "python": [
+        {
+          "Django": []
+        },
+        {
+          "FastAPI": []
+        }
+      ]
+    }
+  ]
+}
