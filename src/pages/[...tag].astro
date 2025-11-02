@@ -24,6 +24,6 @@ export const getStaticPaths = (async () => {
 const { articles, tag } = Astro.props;
 ---
 
-<Main title={`Tag: ${tag}`} currentTag={tag}>
+<Main title={`Tag: ${tag}`}>
   <TagList tag={tag} articles={articles} />
 </Main>

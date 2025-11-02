@@ -7,13 +7,16 @@ import Content from '@/components/controls/Content.astro';
 import ThemeHandler from '@/components/controls/ThemeHandler.astro';
 import styles from '@/components/layouts/Main.module.css';
 import '@/assets/styles/globals.css';
+import { extractTagPaths } from '@/utils/tags';
+import tagSchema from '@/tag.schema.json';
 
-interface Props {
-  title: string;
-  currentTag?: string;
-}
+const props = Astro.props.frontmatter || Astro.props;
+const { title } = props;
 
-const { title, currentTag } = Astro.props.frontmatter || Astro.props;
+// Calculate current tag from URL or props
+const currentPath = Astro.url.pathname.replace(/^\//, '').replace(/\/$/, '');
+const validTags = extractTagPaths(tagSchema);
+const currentTag = props.currentTag || (validTags.includes(currentPath) ? currentPath : undefined);
 ---
 
 <html lang="ja">
