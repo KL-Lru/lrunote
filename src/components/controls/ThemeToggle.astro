@@ -22,7 +22,13 @@ import styles from './ThemeToggle.module.css';
 
   if (toggleElement) {
     toggleElement.addEventListener('click', () => {
-      document.documentElement.classList.add('switch');
+      const html = document.documentElement;
+
+      if (html.classList.contains('switch')) {
+        return;
+      }
+
+      html.classList.add('switch');
 
       if (getTheme() === 'dark') {
         setTheme('light');
@@ -30,9 +36,12 @@ import styles from './ThemeToggle.module.css';
         setTheme('dark');
       }
 
-      requestAnimationFrame(() => {
-        document.documentElement.classList.remove('switch');
-      });
+      const handleTransitionEnd = () => {
+        html.classList.remove('switch');
+        html.removeEventListener('transitionend', handleTransitionEnd);
+      };
+
+      html.addEventListener('transitionend', handleTransitionEnd);
     });
   }
 </script>
