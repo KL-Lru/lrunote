@@ -43,7 +43,15 @@ const articlesCollection = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string().min(1, 'Title is required'),
-    permalink: z.string().min(1, 'Permalink is required'),
+    permalink: z
+      .string()
+      .min(1, 'Permalink is required')
+      .refine(
+        (permalink) => !validTags.has(permalink),
+        (permalink) => ({
+          message: `Permalink "${permalink}" conflicts with an existing tag. Tags are reserved and cannot be used as permalinks. Available tags: ${Array.from(validTags).join(', ')}`,
+        }),
+      ),
     tag: z
       .string()
       .min(1, 'Tag is required')
