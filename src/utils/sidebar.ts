@@ -32,6 +32,7 @@ function activateLayer(layer: Element, direction: 'left' | 'right') {
   };
 
   layer.addEventListener('animationend', resetAnimation);
+  sidebarElement()?.setAttribute(SIDEBAR_DATA_ATTRS.CURRENT_TAG, layer.getAttribute(SIDEBAR_DATA_ATTRS.TAG) || '');
 }
 
 function deactivateLayer(layer: Element) {
@@ -39,9 +40,11 @@ function deactivateLayer(layer: Element) {
 }
 
 function movementDirection(currentTag: string, targetTag: string): 'left' | 'right' {
-  if (currentTag.includes(targetTag)) {
+  if (currentTag.startsWith(targetTag + '/')) {
+    // 親タグへ移動
     return 'right';
   } else {
+    // 子タグへ移動
     return 'left';
   }
 }
