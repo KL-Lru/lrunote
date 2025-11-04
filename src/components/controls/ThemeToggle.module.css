@@ -21,23 +21,14 @@
   }
 }
 
-.iconLight {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
+.iconLight,
 .iconDark {
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-
-html:global(.light) .iconLight {
-  display: none;
-}
-
+html:global(.light) .iconLight,
 html:global(.dark) .iconDark {
   display: none;
 }
