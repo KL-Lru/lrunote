@@ -21,7 +21,7 @@ const contentLayer = await Promise.all(
 );
 ---
 
-<aside id="sidebar" data-current-tag={currentTagName} class={styles.sidebar}>
+<aside id={'sidebar'} class={styles.sidebar} data-current-tag={currentTagName} >
   <div class={styles.sidebarContainer}>
     {
       contentLayer.map((layer) => {
@@ -88,70 +88,14 @@ const contentLayer = await Promise.all(
 </aside>
 
 <script>
-  function initDynamicSidebar() {
-    const sidebar = document.getElementById('sidebar');
-    if (!sidebar) return;
+  import { onItemClick } from '@/utils/sidebar';
 
-    function getSlideDirection(
-      currentTag: string,
-      targetTag: string,
-    ): 'left' | 'right' | null {
-      // 親に移動 (タグが短くなる) → 右へスライド
-      if (
-        targetTag.length < currentTag.length &&
-        currentTag.startsWith(targetTag)
-      ) {
-        return 'right';
-      }
-      // 子に移動 (タグが長くなる) → 左へスライド
-      if (
-        targetTag.length > currentTag.length &&
-        targetTag.startsWith(currentTag)
-      ) {
-        return 'left';
-      }
-      return null;
-    }
-
-    function switchToTag(sidebarElement: HTMLElement, targetTag: string) {
-      const currentTag = sidebarElement.getAttribute('data-current-tag') || '';
-      const direction = getSlideDirection(currentTag, targetTag);
-
-      const allContents = sidebarElement.querySelectorAll('[data-tag]');
-      allContents.forEach((content) => {
-        const tag = content.getAttribute('data-tag');
-        const isActive = tag === targetTag;
-
-        content.setAttribute('data-active', String(isActive));
-
-        if (isActive && direction) {
-          content.setAttribute('data-slide-direction', direction);
-          // アニメーション終了後に方向属性を削除
-          const handleAnimationEnd = () => {
-            content.removeAttribute('data-slide-direction');
-            content.removeEventListener('animationend', handleAnimationEnd);
-          };
-          content.addEventListener('animationend', handleAnimationEnd);
-        }
-      });
-
-      sidebarElement.setAttribute('data-current-tag', targetTag);
-    }
-
-    sidebar.addEventListener('click', (e) => {
-      const target = e.target as HTMLElement;
-      const button = target.closest('[data-target-tag]') as HTMLElement;
-
-      if (button) {
-        e.preventDefault();
-        const targetTag = button.getAttribute('data-target-tag');
-        if (targetTag) {
-          switchToTag(sidebar, targetTag);
-        }
-      }
+  function initSidebar() {
+    document.querySelectorAll('[data-target-tag]').forEach((button) => {
+      button.addEventListener('click', onItemClick);
     });
   }
 
-  initDynamicSidebar();
-  document.addEventListener('astro:page-load', initDynamicSidebar);
+  initSidebar();
+  document.addEventListener('astro:page-load', initSidebar);
 </script>
