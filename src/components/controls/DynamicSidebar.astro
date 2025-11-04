@@ -8,80 +8,83 @@ const allTagsInfo = tagCollection();
 const currentTagName = currentTagInfo?.tag || '';
 
 // 全タグの記事情報を取得
-const allTagsWithArticles = await Promise.all(
-  allTagsInfo.map(async (tagInfo) => ({
-    ...tagInfo,
-    articles: await taggedArticles(tagInfo.tag),
-  })),
+const contentLayer = await Promise.all(
+  allTagsInfo.map(async (tagInfo) => {
+    const articles = await taggedArticles(tagInfo.tag);
+    return {
+      ...tagInfo,
+      articles,
+      isActive: tagInfo.tag === currentTagName,
+      hasContent: tagInfo.childTags.length > 0 || articles.length > 0,
+    };
+  }),
 );
 ---
 
 <aside id="sidebar" data-current-tag={currentTagName} class={styles.sidebar}>
-  {
-    allTagsWithArticles.map((tagInfo) => {
-      const isActive = tagInfo.tag === currentTagName;
-      const hasContent =
-        tagInfo.childTags.length > 0 || tagInfo.articles.length > 0;
+  <div class={styles.sidebarContainer}>
+    {
+      contentLayer.map((layer) => {
+        return (
+          <div
+            class={styles.sidebarContent}
+            data-tag={layer.tag}
+            data-active={layer.isActive}
+          >
+            {layer.parentTag && (
+              <div class={styles.parentTagNav}>
+                <button
+                  type="button"
+                  class={styles.parentTagButton}
+                  data-target-tag={layer.parentTag}
+                >
+                  ← {layer.parentTag}
+                </button>
+              </div>
+            )}
 
-      return (
-        <div
-          class={styles.sidebarContent}
-          data-tag={tagInfo.tag}
-          data-active={isActive}
-        >
-          {tagInfo.parentTag && (
-            <div class={styles.parentTagNav}>
-              <button
-                type="button"
-                class={styles.parentTagButton}
-                data-target-tag={tagInfo.parentTag}
-              >
-                ← {tagInfo.parentTag}
-              </button>
-            </div>
-          )}
+            <h2 class={styles.sidebarTagTitle}>{layer.tag}</h2>
 
-          <h2 class={styles.sidebarTagTitle}>Tag: {tagInfo.tag}</h2>
+            {layer.childTags.length > 0 && (
+              <section class={styles.childTags}>
+                <h3>Child Tags</h3>
+                <ul class={styles.childTagsList}>
+                  {layer.childTags.map((childTag) => (
+                    <li>
+                      <button
+                        type="button"
+                        data-target-tag={childTag}
+                        class={styles.childTagButton}
+                      >
+                        {childTag.split('/').pop()}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
 
-          {tagInfo.childTags.length > 0 && (
-            <section class={styles.childTags}>
-              <h3>Child Tags</h3>
-              <ul class={styles.childTagsList}>
-                {tagInfo.childTags.map((childTag) => (
-                  <li>
-                    <button
-                      type="button"
-                      data-target-tag={childTag}
-                      class={styles.childTagButton}
-                    >
-                      {childTag.split('/').pop()}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
+            {layer.articles.length > 0 && (
+              <section class={styles.tagArticles}>
+                <h3>Articles</h3>
+                <ul class={styles.tagArticlesList}>
+                  {layer.articles.map((article) => (
+                    <li>
+                      <a href={`/${article.data.permalink}`}>
+                        {article.data.title}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            )}
 
-          {tagInfo.articles.length > 0 && (
-            <section class={styles.tagArticles}>
-              <h3>Articles</h3>
-              <ul class={styles.tagArticlesList}>
-                {tagInfo.articles.map((article) => (
-                  <li>
-                    <a href={`/${article.data.permalink}`}>
-                      {article.data.title}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )}
-
-          {!hasContent && <p>No content found for this tag.</p>}
-        </div>
-      );
-    })
-  }
+            {!layer.hasContent && <p>No content found for this tag.</p>}
+          </div>
+        );
+      })
+    }
+  </div>
 </aside>
 
 <script>
@@ -89,12 +92,49 @@ const allTagsWithArticles = await Promise.all(
     const sidebar = document.getElementById('sidebar');
     if (!sidebar) return;
 
+    function getSlideDirection(
+      currentTag: string,
+      targetTag: string,
+    ): 'left' | 'right' | null {
+      // 親に移動 (タグが短くなる) → 右へスライド
+      if (
+        targetTag.length < currentTag.length &&
+        currentTag.startsWith(targetTag)
+      ) {
+        return 'right';
+      }
+      // 子に移動 (タグが長くなる) → 左へスライド
+      if (
+        targetTag.length > currentTag.length &&
+        targetTag.startsWith(currentTag)
+      ) {
+        return 'left';
+      }
+      return null;
+    }
+
     function switchToTag(sidebarElement: HTMLElement, targetTag: string) {
+      const currentTag = sidebarElement.getAttribute('data-current-tag') || '';
+      const direction = getSlideDirection(currentTag, targetTag);
+
       const allContents = sidebarElement.querySelectorAll('[data-tag]');
       allContents.forEach((content) => {
         const tag = content.getAttribute('data-tag');
-        content.setAttribute('data-active', String(tag === targetTag));
+        const isActive = tag === targetTag;
+
+        content.setAttribute('data-active', String(isActive));
+
+        if (isActive && direction) {
+          content.setAttribute('data-slide-direction', direction);
+          // アニメーション終了後に方向属性を削除
+          const handleAnimationEnd = () => {
+            content.removeAttribute('data-slide-direction');
+            content.removeEventListener('animationend', handleAnimationEnd);
+          };
+          content.addEventListener('animationend', handleAnimationEnd);
+        }
       });
+
       sidebarElement.setAttribute('data-current-tag', targetTag);
     }
 
