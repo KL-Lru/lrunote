@@ -1,30 +1,23 @@
 ---
-import { getCollection } from 'astro:content';
-import { generateAllTagsInfo } from '@/utils/tags';
+import { currentTag, tagCollection } from '@/utils/tags';
 import styles from './DynamicSidebar.module.css';
+import { taggedArticles } from '@/utils/articles';
 
-interface Props {
-  currentTag: string;
-}
 
-const { currentTag } = Astro.props;
-
-// Get all articles
-const allArticles = await getCollection('articles');
-
+const currentTagInfo = await currentTag(Astro.url);
 // Generate all tags information
-const allTagsInfo = await generateAllTagsInfo(allArticles);
+const allTagsInfo = tagCollection();
 
 // Get current tag info
-const currentTagInfo = allTagsInfo[currentTag];
-const tagArticles = currentTagInfo?.articles || [];
+const tagArticles = currentTagInfo?.tag ? await taggedArticles(currentTagInfo.tag) || [] : [];
 const childTags = currentTagInfo?.childTags || [];
 const parentTag = currentTagInfo?.parentTag || null;
+const tag = currentTagInfo?.tag || '';
 ---
 
 <aside
-  id="dynamic-sidebar"
-  data-current-tag={currentTag}
+  id="sidebar"
+  data-current-tag={tag}
   class={styles.sidebar}
 >
   <script
@@ -54,10 +47,10 @@ const parentTag = currentTagInfo?.parentTag || null;
 
   <div
     class:list={[styles.sidebarContent, 'js-sidebar-content']}
-    data-tag={currentTag}
+    data-tag={tag}
   >
     <h2 class:list={[styles.sidebarTagTitle, 'js-sidebar-tag-title']}>
-      Tag: {currentTag}
+      Tag: {tag}
     </h2>
 
     {
@@ -82,7 +75,7 @@ const parentTag = currentTagInfo?.parentTag || null;
           <ul class:list={[styles.tagArticlesList, 'js-tag-articles-list']}>
             {tagArticles.map((article) => (
               <li>
-                <a href={`/${article.permalink}`}>{article.title}</a>
+                <a href={`/${article.data.permalink}`}>{article.data.title}</a>
               </li>
             ))}
           </ul>
@@ -107,7 +100,7 @@ const parentTag = currentTagInfo?.parentTag || null;
   }
 
   function initDynamicSidebar() {
-    const sidebar = document.getElementById('dynamic-sidebar');
+    const sidebar = document.getElementById('sidebar');
     if (!sidebar) return;
 
     // Load all tags data from embedded JSON

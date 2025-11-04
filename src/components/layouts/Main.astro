@@ -1,22 +1,14 @@
 ---
 import TopBar from '@/components/controls/TopBar.astro';
-import SideBar from '@/components/controls/SideBar.astro';
 import DynamicSidebar from '@/components/controls/DynamicSidebar.astro';
 import Content from '@/components/controls/Content.astro';
 
 import ThemeHandler from '@/components/controls/ThemeHandler.astro';
 import styles from '@/components/layouts/Main.module.css';
 import '@/assets/styles/globals.css';
-import { extractTagPaths } from '@/utils/tags';
-import tagSchema from '@/tag.schema.json';
 
 const props = Astro.props.frontmatter || Astro.props;
 const { title } = props;
-
-// Calculate current tag from URL or props
-const currentPath = Astro.url.pathname.replace(/^\//, '').replace(/\/$/, '');
-const validTags = extractTagPaths(tagSchema);
-const currentTag = props.currentTag || (validTags.includes(currentPath) ? currentPath : undefined);
 ---
 
 <html lang="ja">
@@ -33,7 +25,7 @@ const currentTag = props.currentTag || (validTags.includes(currentPath) ? curren
         <TopBar />
       </div>
       <div class={styles.sideBarContainer}>
-        {currentTag ? <DynamicSidebar currentTag={currentTag} /> : <SideBar />}
+        <DynamicSidebar />
       </div>
       <div class={styles.mainContent}>
         <Content>

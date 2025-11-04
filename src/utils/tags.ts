@@ -1,86 +1,126 @@
 import tagSchemaJson from '@/tag.schema.json';
+import { dig } from './object';
+import { sluggedArticle } from './articles';
 
-export const tagSchema = tagSchemaJson;
+const tagSchema = tagSchemaJson as TagSchema;
 
-// Extract all valid tag paths from the tag structure
-export function extractTagPaths(
-  obj: Record<string, unknown>,
-  prefix = '',
-): string[] {
-  const paths: string[] = [];
-
-  for (const [key, value] of Object.entries(obj)) {
-    const currentPath = prefix ? `${prefix}/${key}` : key;
-
-    // Add current path
-    paths.push(currentPath);
-
-    // Process array elements recursively
-    if (Array.isArray(value)) {
-      for (const item of value) {
-        if (typeof item === 'object' && item !== null) {
-          paths.push(...extractTagPaths(item as Record<string, unknown>, currentPath));
-        }
-      }
-    }
-  }
-
-  return paths;
-}
-
-// Get parent tag of a given tag
-export function getParentTag(tag: string): string | null {
-  const parts = tag.split('/');
-  if (parts.length <= 1) {
-    return null; // No parent for top-level tags
-  }
-  return parts.slice(0, -1).join('/');
-}
-
-// Get child tags of a given tag
-export function getChildTags(tag: string): string[] {
-  const allTags = extractTagPaths(tagSchema);
-  const prefix = `${tag}/`;
-
-  return allTags.filter((t) => {
-    // Check if it starts with the prefix and has exactly one more segment
-    if (!t.startsWith(prefix)) return false;
-    const remainder = t.slice(prefix.length);
-    return !remainder.includes('/');
-  });
+interface TagSchema {
+  [key: string]: TagSchema;
 }
 
 export interface TagInfo {
   tag: string;
   parentTag: string | null;
   childTags: string[];
-  articles: Array<{ permalink: string; title: string }>;
 }
 
-// Generate all tags information for client-side use
-export async function generateAllTagsInfo(
-  allArticles: Array<{ data: { tag: string; permalink: string; title: string } }>,
-): Promise<Record<string, TagInfo>> {
-  const allTags = extractTagPaths(tagSchema);
-  const tagInfoMap: Record<string, TagInfo> = {};
+/**
+ * タグ情報を取得
+ * @param {string} tag
+ * @returns {TagInfo}
+ */
+function tagToInfo(tag: string): TagInfo {
+  return {
+    tag,
+    parentTag: parentTag(tag),
+    childTags: childTags(tag),
+  };
+}
 
-  for (const tag of allTags) {
-    const parentTag = getParentTag(tag);
-    const childTags = getChildTags(tag);
-    const articles = allArticles
-      .filter((article) => article.data.tag === tag)
-      .map((article) => ({
-        permalink: article.data.permalink,
-        title: article.data.title,
-      }));
-
-    tagInfoMap[tag] = {
-      tag,
-      parentTag,
-      childTags,
-      articles,
-    };
+/**
+ * 現在のコンテンツのタグ情報
+ */
+export async function currentTag(url: URL | undefined): Promise<TagInfo | null> {
+  if (!url) {
+    return null;
   }
 
-  return tagInfoMap;
+  // 現在のパスがタグページならそのタグ情報を返す
+  const path = url.pathname.replace(/^\//, '').replace(/\/$/, '');
+  if (tagExists(path)) {
+    return tagToInfo(path);
+  }
+
+  // 現在のパスがページの場合、そのタグ情報を返す
+  if (!path.includes('/')) {
+    const article = await sluggedArticle(path);
+
+    if (article) {
+      const tag = article.data.tag;
+      return tagToInfo(tag);
+    }
+  }
+
+  return null;
+}
+
+/**
+ * タグの存在確認
+ * @param {string} tag
+ */
+export function tagExists(tag: string | null): boolean {
+  if (tag === null) {
+    return false;
+  }
+  return dig(tagSchema, ...tag.split('/')) !== undefined;
+}
+
+/**
+ * 全タグの情報を錬成
+ * @param allArticles
+ * @returns
+ */
+export function tagCollection(): Array<TagInfo> {
+  return allTagPaths().map(tagToInfo);
+}
+
+/**
+ * 全タグパスの抽出
+ * @param {TagSchema} schema
+ * @param {string} prefix
+ * @returns {string[]}
+ */
+export function allTagPaths(
+  schema: TagSchema = tagSchema,
+  prefix = '',
+): string[] {
+  return Object.entries(schema).map(([tag, subSchema]) => {
+    const currentPath = prefix ? `${prefix}/${tag}` : tag;
+
+    return [
+      currentPath,
+      ...allTagPaths(subSchema as TagSchema, currentPath),
+    ];
+  }).flat();
+}
+
+/**
+ * 親タグの取得
+ * @param {string} tag
+ * @returns {string | null}
+ */
+export function parentTag(tag: string): string | null {
+  const paths = tag.split('/');
+
+  // TOP レベルタグ
+  if (paths.length <= 1) {
+    return null;
+  }
+
+  return paths.slice(0, -1).join('/');
+}
+
+/**
+ * 子タグの取得
+ * @param {string} tag
+ * @returns {string[]}
+ */
+export function childTags(tag: string): string[] {
+  const paths = tag.split('/');
+
+  const currentLayer = paths.reduce((schema, segment) => {
+    return (schema[segment as keyof typeof schema] || {}) as TagSchema;
+  }, tagSchema);
+
+  return Object.keys(currentLayer).map((child) => `${tag}/${child}`);
 }
