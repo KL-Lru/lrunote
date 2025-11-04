@@ -2,6 +2,7 @@
 import { currentTag, tagCollection } from '@/utils/tags';
 import styles from './DynamicSidebar.module.css';
 import { taggedArticles } from '@/utils/articles';
+import NavItem from './NavItem.astro';
 
 const currentTagInfo = await currentTag(Astro.url);
 const allTagsInfo = tagCollection();
@@ -21,7 +22,7 @@ const contentLayer = await Promise.all(
 );
 ---
 
-<aside id={'sidebar'} class={styles.sidebar} data-current-tag={currentTagName} >
+<aside id={'sidebar'} class={styles.sidebar} data-current-tag={currentTagName}>
   <div class={styles.sidebarContainer}>
     {
       contentLayer.map((layer) => {
@@ -33,19 +34,12 @@ const contentLayer = await Promise.all(
           >
             {layer.parentTag && (
               <>
-                <div class={styles.parentTagNav}>
-                  <button
-                    type="button"
-                    class={styles.parentTagButton}
-                    data-target-tag={layer.parentTag}
-                    aria-label={`Navigate to ${layer.parentTag}`}
-                  >
-                    ←
-                  </button>
-                  <a href={`/${layer.parentTag}`} class={styles.parentTagLink}>
-                    {layer.parentTag}
-                  </a>
-                </div>
+                <NavItem
+                  href={`/${layer.parentTag}`}
+                  label={layer.parentTag}
+                  targetTag={layer.parentTag}
+                  buttonPosition="left"
+                />
                 <div class={styles.divider} />
               </>
             )}
@@ -57,18 +51,13 @@ const contentLayer = await Promise.all(
                 <h3>Child Tags</h3>
                 <ul class={styles.childTagsList}>
                   {layer.childTags.map((childTag) => (
-                    <li class={styles.childTagItem}>
-                      <a href={`/${childTag}`} class={styles.childTagLink}>
-                        {childTag.split('/').pop()}
-                      </a>
-                      <button
-                        type="button"
-                        data-target-tag={childTag}
-                        class={styles.childTagButton}
-                        aria-label={`Navigate to ${childTag}`}
-                      >
-                        →
-                      </button>
+                    <li>
+                      <NavItem
+                        href={`/${childTag}`}
+                        label={childTag.split('/').pop() || childTag}
+                        targetTag={childTag}
+                        buttonPosition="right"
+                      />
                     </li>
                   ))}
                 </ul>
@@ -81,9 +70,10 @@ const contentLayer = await Promise.all(
                 <ul class={styles.tagArticlesList}>
                   {layer.articles.map((article) => (
                     <li>
-                      <a href={`/${article.data.permalink}`}>
-                        {article.data.title}
-                      </a>
+                      <NavItem
+                        href={`/${article.data.permalink}`}
+                        label={article.data.title}
+                      />
                     </li>
                   ))}
                 </ul>

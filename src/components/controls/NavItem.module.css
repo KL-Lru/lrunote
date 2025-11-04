@@ -1,0 +1,80 @@
+/* 共通スタイル */
+.navContainer {
+  display: flex;
+  align-items: stretch;
+  gap: 0;
+  width: 100%;
+}
+
+.parentTagNav,
+.childTagItem {
+  border-radius: 5px;
+  overflow: hidden;
+  background-color: var(--control-background-color);
+}
+
+/* ボタン共通スタイル */
+.parentTagButton,
+.childTagButton {
+  padding: 0.5rem 1rem;
+  flex-shrink: 0;
+
+  border: none;
+  border-radius: 0;
+
+  color: var(--text-color);
+  background-color: var(--control-background-color);
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+
+  cursor: pointer;
+
+  &:hover {
+    color: var(--invert-text-color);
+    background-color: var(--invert-background-color);
+  }
+}
+
+.parentTagButton {
+  border-right: 1px solid var(--border-color);
+}
+
+.childTagButton {
+  border-left: 1px solid var(--border-color);
+}
+
+/* リンク共通スタイル */
+.parentTagLink,
+.childTagLink,
+.articleLink {
+  padding: 0.5rem 1rem;
+
+  border: none;
+
+  color: var(--text-color);
+  background-color: var(--control-background-color);
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+
+  text-decoration: none;
+  text-align: left;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--invert-text-color);
+    background-color: var(--invert-background-color);
+  }
+}
+
+.parentTagLink,
+.childTagLink {
+  flex-grow: 1;
+  border-radius: 0;
+  font-size: inherit;
+}
+
+
+.articleLink {
+  display: block;
+  width: 100%;
+  border-radius: 5px;
+  font-family: inherit;
+}

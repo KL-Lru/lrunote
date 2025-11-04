@@ -1,0 +1,63 @@
+---
+import styles from './NavItem.module.css';
+
+interface Props {
+  href: string;
+  label: string;
+  targetTag?: string;
+  buttonPosition?: 'left' | 'right';
+}
+
+const { href, label, targetTag, buttonPosition } = Astro.props;
+
+const hasButton = !!targetTag;
+const buttonSymbol = buttonPosition === 'left' ? '←' : '→';
+
+// buttonPositionに応じてクラスを決定
+const containerClass =
+  buttonPosition === 'left' ? styles.parentTagNav : styles.childTagItem;
+const linkClass =
+  buttonPosition === 'left'
+    ? styles.parentTagLink
+    : buttonPosition === 'right'
+      ? styles.childTagLink
+      : styles.articleLink;
+const buttonClass =
+  buttonPosition === 'left' ? styles.parentTagButton : styles.childTagButton;
+---
+
+{
+  hasButton ? (
+    <div class={`${styles.navContainer} ${containerClass}`}>
+      {buttonPosition === 'left' && (
+        <button
+          type="button"
+          class={buttonClass}
+          data-target-tag={targetTag}
+          aria-label={`Navigate to ${targetTag}`}
+        >
+          {buttonSymbol}
+        </button>
+      )}
+
+      <a href={href} class={linkClass}>
+        {label}
+      </a>
+
+      {buttonPosition === 'right' && (
+        <button
+          type="button"
+          class={buttonClass}
+          data-target-tag={targetTag}
+          aria-label={`Navigate to ${targetTag}`}
+        >
+          {buttonSymbol}
+        </button>
+      )}
+    </div>
+  ) : (
+    <a href={href} class={linkClass}>
+      {label}
+    </a>
+  )
+}
