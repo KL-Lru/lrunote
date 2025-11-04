@@ -64,13 +64,14 @@ function switchToTag(targetTag: string) {
 }
 
 export function onItemClick(event: Event) {
-  const target = event.target;
-  if (!(target instanceof HTMLElement)) {
+  event.preventDefault();
+  const target = event.target as HTMLElement;
+  const button = target.closest(`[${SIDEBAR_DATA_ATTRS.TARGET_TAG}]`);
+
+  if (!button) {
     return;
   }
 
-  const tag = target.getAttribute(SIDEBAR_DATA_ATTRS.TARGET_TAG);
-  if (tag) {
-    switchToTag(tag);
-  }
+  const tag = button.getAttribute(SIDEBAR_DATA_ATTRS.TARGET_TAG)!;
+  switchToTag(tag);
 }
