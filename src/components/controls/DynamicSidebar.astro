@@ -32,15 +32,22 @@ const contentLayer = await Promise.all(
             data-active={layer.isActive}
           >
             {layer.parentTag && (
-              <div class={styles.parentTagNav}>
-                <button
-                  type="button"
-                  class={styles.parentTagButton}
-                  data-target-tag={layer.parentTag}
-                >
-                  ← {layer.parentTag}
-                </button>
-              </div>
+              <>
+                <div class={styles.parentTagNav}>
+                  <button
+                    type="button"
+                    class={styles.parentTagButton}
+                    data-target-tag={layer.parentTag}
+                    aria-label={`Navigate to ${layer.parentTag}`}
+                  >
+                    ←
+                  </button>
+                  <a href={`/${layer.parentTag}`} class={styles.parentTagLink}>
+                    {layer.parentTag}
+                  </a>
+                </div>
+                <div class={styles.divider} />
+              </>
             )}
 
             <h2 class={styles.sidebarTagTitle}>{layer.tag}</h2>
@@ -50,13 +57,17 @@ const contentLayer = await Promise.all(
                 <h3>Child Tags</h3>
                 <ul class={styles.childTagsList}>
                   {layer.childTags.map((childTag) => (
-                    <li>
+                    <li class={styles.childTagItem}>
+                      <a href={`/${childTag}`} class={styles.childTagLink}>
+                        {childTag.split('/').pop()}
+                      </a>
                       <button
                         type="button"
                         data-target-tag={childTag}
                         class={styles.childTagButton}
+                        aria-label={`Navigate to ${childTag}`}
                       >
-                        {childTag.split('/').pop()}
+                        →
                       </button>
                     </li>
                   ))}
