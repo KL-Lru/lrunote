@@ -7,6 +7,7 @@ import NavItem from './NavItem.astro';
 const currentTagInfo = await currentTag(Astro.url);
 const allTagsInfo = tagCollection();
 const currentTagName = currentTagInfo?.tag || '';
+const currentPath = Astro.url.pathname;
 
 // 全タグの記事情報を取得
 const contentLayer = await Promise.all(
@@ -68,14 +69,19 @@ const contentLayer = await Promise.all(
               <section class={styles.tagArticles}>
                 <h3>Articles</h3>
                 <ul class={styles.tagArticlesList}>
-                  {layer.articles.map((article) => (
-                    <li>
-                      <NavItem
-                        href={`/${article.data.permalink}`}
-                        label={article.data.title}
-                      />
-                    </li>
-                  ))}
+                  {layer.articles.map((article) => {
+                    const articlePath = `/${article.data.permalink}`;
+                    const isCurrentArticle = currentPath === articlePath;
+                    return (
+                      <li>
+                        <NavItem
+                          href={articlePath}
+                          label={article.data.title}
+                          isActive={isCurrentArticle}
+                        />
+                      </li>
+                    );
+                  })}
                 </ul>
               </section>
             )}

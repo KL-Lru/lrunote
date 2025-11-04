@@ -6,9 +6,16 @@ interface Props {
   label: string;
   targetTag?: string;
   buttonPosition?: 'left' | 'right';
+  isActive?: boolean;
 }
 
-const { href, label, targetTag, buttonPosition } = Astro.props;
+const {
+  href,
+  label,
+  targetTag,
+  buttonPosition,
+  isActive = false,
+} = Astro.props;
 
 const hasButton = !!targetTag;
 const buttonSymbol = buttonPosition === 'left' ? '←' : '→';
@@ -24,6 +31,7 @@ const linkClass =
       : styles.articleLink;
 const buttonClass =
   buttonPosition === 'left' ? styles.parentTagButton : styles.childTagButton;
+const activeLinkClass = isActive ? styles.active : '';
 ---
 
 {
@@ -40,7 +48,7 @@ const buttonClass =
         </button>
       )}
 
-      <a href={href} class={linkClass}>
+      <a href={href} class={`${linkClass} ${activeLinkClass}`}>
         {label}
       </a>
 
@@ -56,7 +64,7 @@ const buttonClass =
       )}
     </div>
   ) : (
-    <a href={href} class={linkClass}>
+    <a href={href} class={`${linkClass} ${activeLinkClass}`}>
       {label}
     </a>
   )

@@ -78,3 +78,10 @@
   border-radius: 5px;
   font-family: inherit;
 }
+
+/* アクティブ状態のスタイル */
+.active {
+  color: var(--invert-text-color);
+  background-color: var(--invert-background-color);
+  font-weight: bold;
+}
