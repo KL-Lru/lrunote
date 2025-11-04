@@ -1,13 +1,26 @@
 {
-  "top": {},
+  "top": {
+    "$label": "トップ"
+  },
   "frontend": {
+    "$label": "フロントエンド",
     "react": {
-      "components": {},
-      "hooks": {}
+      "$label": "React",
+      "components": {
+        "$label": "コンポーネント"
+      },
+      "hooks": {
+        "$label": "フック"
+      }
     },
-    "vue": {}
+    "vue": {
+      "$label": "Vue"
+    }
   },
   "backend": {
-    "nodejs": {}
+    "$label": "バックエンド",
+    "nodejs": {
+      "$label": "Node.js"
+    }
   }
 }

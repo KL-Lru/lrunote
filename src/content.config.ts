@@ -17,18 +17,19 @@ function extractTagPaths(
   const paths: string[] = [];
 
   for (const [key, value] of Object.entries(obj)) {
+    // Skip $label field
+    if (key === '$label') {
+      continue;
+    }
+
     const currentPath = prefix ? `${prefix}/${key}` : key;
 
     // Add current path
     paths.push(currentPath);
 
-    // Process array elements recursively
-    if (Array.isArray(value)) {
-      for (const item of value) {
-        if (typeof item === 'object' && item !== null) {
-          paths.push(...extractTagPaths(item as Record<string, unknown>, currentPath));
-        }
-      }
+    // Process object recursively
+    if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+      paths.push(...extractTagPaths(value as Record<string, unknown>, currentPath));
     }
   }
 

@@ -6,6 +6,7 @@ import {
   childTags,
   tagCollection,
   currentTag,
+  tagLabel,
 } from './tags';
 
 describe('tagExists', () => {
@@ -96,9 +97,11 @@ describe('tagCollection', () => {
 
     collection.forEach((info) => {
       expect(info).toHaveProperty('tag');
+      expect(info).toHaveProperty('label');
       expect(info).toHaveProperty('parentTag');
       expect(info).toHaveProperty('childTags');
       expect(typeof info.tag).toBe('string');
+      expect(typeof info.label).toBe('string');
       expect(Array.isArray(info.childTags)).toBe(true);
     });
   });
@@ -108,6 +111,7 @@ describe('tagCollection', () => {
     const topInfo = collection.find((info) => info.tag === 'top');
 
     expect(topInfo).toBeDefined();
+    expect(topInfo?.label).toBe('トップ');
     expect(topInfo?.parentTag).toBe(null);
     expect(topInfo?.childTags).toEqual([]);
   });
@@ -117,6 +121,7 @@ describe('tagCollection', () => {
     const reactInfo = collection.find((info) => info.tag === 'frontend/react');
 
     expect(reactInfo).toBeDefined();
+    expect(reactInfo?.label).toBe('React');
     expect(reactInfo?.parentTag).toBe('frontend');
     expect(reactInfo?.childTags).toContain('frontend/react/components');
     expect(reactInfo?.childTags).toContain('frontend/react/hooks');
@@ -168,5 +173,30 @@ describe('currentTag', () => {
 
     expect(result).toBeDefined();
     expect(result?.tag).toBe('top');
+  });
+});
+
+describe('tagLabel', () => {
+  test('returns label for tags with $label', () => {
+    expect(tagLabel('top')).toBe('トップ');
+    expect(tagLabel('frontend')).toBe('フロントエンド');
+    expect(tagLabel('backend')).toBe('バックエンド');
+  });
+
+  test('returns label for nested tags', () => {
+    expect(tagLabel('frontend/react')).toBe('React');
+    expect(tagLabel('frontend/vue')).toBe('Vue');
+    expect(tagLabel('backend/nodejs')).toBe('Node.js');
+  });
+
+  test('returns label for deeply nested tags', () => {
+    expect(tagLabel('frontend/react/components')).toBe('コンポーネント');
+    expect(tagLabel('frontend/react/hooks')).toBe('フック');
+  });
+
+  test('returns tag name when $label is not defined', () => {
+    // タグが存在しない場合、最後の部分を返す
+    const result = tagLabel('nonexistent/tag');
+    expect(result).toBe('tag');
   });
 });

@@ -5,13 +5,36 @@ import { sluggedArticle } from './articles';
 const tagSchema = tagSchemaJson as TagSchema;
 
 interface TagSchema {
-  [key: string]: TagSchema;
+  $label?: string;
+  [key: string]: TagSchema | string | undefined;
 }
 
 export interface TagInfo {
   tag: string;
+  label: string;
   parentTag: string | null;
   childTags: string[];
+}
+
+/**
+ * タグのラベルを取得
+ * @param {string} tag
+ * @returns {string}
+ */
+export function tagLabel(tag: string): string {
+  const paths = tag.split('/');
+  const schema = dig(tagSchema, ...paths);
+
+  // $label が存在する場合はそれを返す
+  if (typeof schema === 'object' && schema !== null && '$label' in schema) {
+    const label = schema.$label;
+    if (typeof label === 'string') {
+      return label;
+    }
+  }
+
+  // $label がない場合は、タグ名の最後の部分を返す
+  return paths[paths.length - 1];
 }
 
 /**
@@ -22,6 +45,7 @@ export interface TagInfo {
 function tagToInfo(tag: string): TagInfo {
   return {
     tag,
+    label: tagLabel(tag),
     parentTag: parentTag(tag),
     childTags: childTags(tag),
   };
@@ -84,14 +108,16 @@ export function allTagPaths(
   schema: TagSchema = tagSchema,
   prefix = '',
 ): string[] {
-  return Object.entries(schema).map(([tag, subSchema]) => {
-    const currentPath = prefix ? `${prefix}/${tag}` : tag;
+  return Object.entries(schema)
+    .filter(([key]) => key !== '$label') // $label を除外
+    .map(([tag, subSchema]) => {
+      const currentPath = prefix ? `${prefix}/${tag}` : tag;
 
-    return [
-      currentPath,
-      ...allTagPaths(subSchema as TagSchema, currentPath),
-    ];
-  }).flat();
+      return [
+        currentPath,
+        ...allTagPaths(subSchema as TagSchema, currentPath),
+      ];
+    }).flat();
 }
 
 /**
@@ -122,5 +148,7 @@ export function childTags(tag: string): string[] {
     return (schema[segment as keyof typeof schema] || {}) as TagSchema;
   }, tagSchema);
 
-  return Object.keys(currentLayer).map((child) => `${tag}/${child}`);
+  return Object.keys(currentLayer)
+    .filter((key) => key !== '$label') // $label を除外
+    .map((child) => `${tag}/${child}`);
 }

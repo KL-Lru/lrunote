@@ -5,17 +5,17 @@ import { tagCollection } from '@/utils/tags';
 import { taggedArticles } from '@/utils/articles';
 
 export const getStaticPaths = (async () => {
-  return tagCollection().map(({ tag }) => {
+  return tagCollection().map(({ tag, label }) => {
     const articles = taggedArticles(tag);
 
     return {
       params: { tag },
-      props: { articles, tag },
+      props: { articles, tag, label },
     };
   });
 }) satisfies GetStaticPaths;
 
-const { tag } = Astro.props;
+const { label } = Astro.props;
 ---
 
-<Main title={`Tag: ${tag}`} />
+<Main title={`Tag: ${label}`} />
