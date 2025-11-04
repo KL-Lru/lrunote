@@ -1,6 +1,6 @@
 ---
 import TopBar from '@/components/controls/TopBar.astro';
-import DynamicSidebar from '@/components/controls/DynamicSidebar.astro';
+import Sidebar from '@/components/controls/Sidebar.astro';
 import Content from '@/components/controls/Content.astro';
 
 import ThemeHandler from '@/components/controls/ThemeHandler.astro';
@@ -25,7 +25,7 @@ const { title } = props;
         <TopBar />
       </div>
       <div class={styles.sideBarContainer}>
-        <DynamicSidebar />
+        <Sidebar />
       </div>
       <div class={styles.mainContent}>
         <Content>
