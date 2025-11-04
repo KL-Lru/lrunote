@@ -1,5 +1,5 @@
 ---
-import { currentTag, tagCollection } from '@/utils/tags';
+import { currentTag, tagCollection, tagLabel } from '@/utils/tags';
 import styles from './Sidebar.module.css';
 import { taggedArticles } from '@/utils/articles';
 import NavItem from './NavItem.astro';
@@ -33,21 +33,20 @@ const contentLayer = await Promise.all(
             data-tag={layer.tag}
             data-active={layer.isActive}
           >
-            {layer.parentTag && (
-              <>
-                <NavItem
-                  href={`/${layer.parentTag}`}
-                  label={layer.parentTag}
-                  targetTag={layer.parentTag}
-                  buttonPosition="left"
-                />
-                <div class={styles.divider} />
-              </>
-            )}
-
             <h2 class={styles.sidebarTagTitle}>
               <a href={`/${layer.tag}`}>{layer.label}</a>
             </h2>
+
+            <div class={styles.divider} />
+
+            {layer.parentTag && (
+              <NavItem
+                href={`/${layer.parentTag}`}
+                label={tagLabel(layer.parentTag)}
+                targetTag={layer.parentTag}
+                buttonPosition="left"
+              />
+            )}
 
             {layer.childTags.length > 0 && (
               <section class={styles.childTags}>
@@ -57,7 +56,7 @@ const contentLayer = await Promise.all(
                     <li>
                       <NavItem
                         href={`/${childTag}`}
-                        label={childTag.split('/').pop() || childTag}
+                        label={tagLabel(childTag)}
                         targetTag={childTag}
                         buttonPosition="right"
                       />

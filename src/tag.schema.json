@@ -1,26 +1,26 @@
 {
   "top": {
-    "$label": "トップ"
-  },
-  "frontend": {
-    "$label": "フロントエンド",
-    "react": {
-      "$label": "React",
-      "components": {
-        "$label": "コンポーネント"
+    "$label": "トップ",
+    "frontend": {
+      "$label": "フロントエンド",
+      "react": {
+        "$label": "React",
+        "components": {
+          "$label": "コンポーネント"
+        },
+        "hooks": {
+          "$label": "フック"
+        }
       },
-      "hooks": {
-        "$label": "フック"
+      "vue": {
+        "$label": "Vue"
       }
     },
-    "vue": {
-      "$label": "Vue"
-    }
-  },
-  "backend": {
-    "$label": "バックエンド",
-    "nodejs": {
-      "$label": "Node.js"
+    "backend": {
+      "$label": "バックエンド",
+      "nodejs": {
+        "$label": "Node.js"
+      }
     }
   }
 }
