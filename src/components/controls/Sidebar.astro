@@ -45,7 +45,9 @@ const contentLayer = await Promise.all(
               </>
             )}
 
-            <h2 class={styles.sidebarTagTitle}>{layer.tag}</h2>
+            <h2 class={styles.sidebarTagTitle}>
+              <a href={`/${layer.tag}`}>{layer.label}</a>
+            </h2>
 
             {layer.childTags.length > 0 && (
               <section class={styles.childTags}>
