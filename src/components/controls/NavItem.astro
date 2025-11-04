@@ -1,4 +1,5 @@
 ---
+import { Icon } from 'astro-icon/components';
 import styles from './NavItem.module.css';
 
 interface Props {
@@ -17,55 +18,35 @@ const {
   isActive = false,
 } = Astro.props;
 
-const hasButton = !!targetTag;
-const buttonSymbol = buttonPosition === 'left' ? '←' : '→';
-
-// buttonPositionに応じてクラスを決定
-const containerClass =
-  buttonPosition === 'left' ? styles.parentTagNav : styles.childTagItem;
-const linkClass =
-  buttonPosition === 'left'
-    ? styles.parentTagLink
-    : buttonPosition === 'right'
-      ? styles.childTagLink
-      : styles.articleLink;
-const buttonClass =
-  buttonPosition === 'left' ? styles.parentTagButton : styles.childTagButton;
-const activeLinkClass = isActive ? styles.active : '';
+const ICON_SIZE = 28;
 ---
 
-{
-  hasButton ? (
-    <div class={`${styles.navContainer} ${containerClass}`}>
-      {buttonPosition === 'left' && (
-        <button
-          type="button"
-          class={buttonClass}
-          data-target-tag={targetTag}
-          aria-label={`Navigate to ${targetTag}`}
-        >
-          {buttonSymbol}
-        </button>
-      )}
+<div class={styles.navContainer}>
+  {
+    buttonPosition === 'left' && (
+      <button
+        type="button"
+        class={styles.navButton}
+        data-target-tag={targetTag}
+      >
+        <Icon name={'mdi:menu-left'} size={ICON_SIZE} />
+      </button>
+    )
+  }
 
-      <a href={href} class={`${linkClass} ${activeLinkClass}`}>
-        {label}
-      </a>
+  <a href={href} class:list={[styles.navLink, { [styles.active]: isActive }]}>
+    {label}
+  </a>
 
-      {buttonPosition === 'right' && (
-        <button
-          type="button"
-          class={buttonClass}
-          data-target-tag={targetTag}
-          aria-label={`Navigate to ${targetTag}`}
-        >
-          {buttonSymbol}
-        </button>
-      )}
-    </div>
-  ) : (
-    <a href={href} class={`${linkClass} ${activeLinkClass}`}>
-      {label}
-    </a>
-  )
-}
+  {
+    buttonPosition === 'right' && (
+      <button
+        type="button"
+        class={styles.navButton}
+        data-target-tag={targetTag}
+      >
+        <Icon name={'mdi:menu-right'} size={ICON_SIZE} />
+      </button>
+    )
+  }
+</div>
