@@ -7824,6 +7824,7 @@ __metadata:
     nanostores: "npm:^1.0.1"
     playwright: "npm:^1.54.2"
     rehype-mermaid: "npm:^3.0.0"
+    smol-toml: "npm:^1.4.2"
     sudachi-synonyms-dictionary: "npm:^14.0.0"
     textlint: "npm:^14.7.2"
     textlint-filter-rule-comments: "npm:^1.2.2"
