@@ -1,7 +1,7 @@
 ---
 import styles from './Sidebar.module.css';
 import NavItem from './NavItem.astro';
-import { contentCollection } from '@/utils/contents';
+import { contentCollection, getContentInfo } from '@/utils/contents';
 import { parentFolder } from '@/utils/paths';
 import { articleExists } from '@/utils/articles';
 
@@ -16,16 +16,14 @@ const contents = contentCollection();
 
 // 全カテゴリパスの記事情報を取得
 const contentLayer = contents.map((contentInfo) => {
-  const parent = parentFolder(contentInfo.path);
+  const parent = getContentInfo(parentFolder(contentInfo.path));
 
   return {
     ...contentInfo,
-    parentPath: parent,
+    parent: parent,
     isActive: contentInfo.path === currentFolderPath,
   };
 });
-
-console.log('currentFolderPath:', currentFolderPath);
 ---
 
 <aside
@@ -43,16 +41,16 @@ console.log('currentFolderPath:', currentFolderPath);
             data-active={layer.isActive}
           >
             <h2 class={styles.sidebarTagTitle}>
-              <a href={layer.path}>{layer.config.title}</a>
+              <a href={`/${layer.path}`}>{layer.config.title}</a>
             </h2>
 
             <div class={styles.divider} />
 
-            {layer.parentPath !== null && (
+            {layer.parent !== null && (
               <NavItem
-                href={`/${layer.parentPath}`}
-                label={layer.parentPath}
-                targetPath={layer.parentPath}
+                href={`/${layer.parent.path}`}
+                label={layer.parent.config.title}
+                targetPath={layer.parent.path}
                 buttonPosition="left"
               />
             )}
@@ -67,11 +65,14 @@ console.log('currentFolderPath:', currentFolderPath);
                         layer.path !== ''
                           ? `${layer.path}/${itemPath}`
                           : itemPath;
+                      const contentInfo = getContentInfo(target);
                       return (
                         <li>
                           <NavItem
                             href={`/${target}`}
-                            label={itemPath}
+                            label={
+                              contentInfo ? contentInfo.config.title : itemPath
+                            }
                             targetPath={target}
                             isActive={currentUrlPath === target}
                             buttonPosition={

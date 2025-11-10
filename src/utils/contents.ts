@@ -40,6 +40,13 @@ export function contentCollection(): Array<ContentInfo> {
   return contents;
 }
 
+export function getContentInfo(folder: string): ContentInfo | null {
+  const contents = contentCollection();
+  const content = contents.find((c) => c.path === folder);
+
+  return content || null;
+}
+
 function isContentConfig(obj: unknown): obj is ContentConfig {
   if (typeof obj !== 'object' || obj === null) return false;
 
