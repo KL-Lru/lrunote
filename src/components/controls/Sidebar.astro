@@ -1,93 +1,91 @@
 ---
-import { currentTag, tagCollection, tagLabel, tagToUrl } from '@/utils/tags';
 import styles from './Sidebar.module.css';
-import { taggedArticles } from '@/utils/articles';
 import NavItem from './NavItem.astro';
+import { contentCollection } from '@/utils/contents';
+import { parentFolder } from '@/utils/paths';
+import { articleExists } from '@/utils/articles';
 
-const currentTagInfo = await currentTag(Astro.url);
-const allTagsInfo = tagCollection();
-const currentTagName = currentTagInfo?.tag || '';
-const currentPath = Astro.url.pathname;
+const currentUrlPath =
+  Astro.url.pathname.replace(/\/$/, '').replace(/^\//, '') || '';
+const isArticle = await articleExists(currentUrlPath);
+const currentFolderPath = isArticle
+  ? parentFolder(currentUrlPath)
+  : currentUrlPath;
 
-// 全タグの記事情報を取得
-const contentLayer = await Promise.all(
-  allTagsInfo.map(async (tagInfo) => {
-    const articles = await taggedArticles(tagInfo.tag);
-    return {
-      ...tagInfo,
-      articles,
-      isActive: tagInfo.tag === currentTagName,
-      hasContent: tagInfo.childTags.length > 0 || articles.length > 0,
-    };
-  }),
-);
+const contents = contentCollection();
+
+// 全カテゴリパスの記事情報を取得
+const contentLayer = contents.map((contentInfo) => {
+  const parent = parentFolder(contentInfo.path);
+
+  return {
+    ...contentInfo,
+    parentPath: parent,
+    isActive: contentInfo.path === currentFolderPath,
+  };
+});
+
+console.log('currentFolderPath:', currentFolderPath);
 ---
 
-<aside id={'sidebar'} class={styles.sidebar} data-current-tag={currentTagName}>
+<aside
+  id={'sidebar'}
+  class={styles.sidebar}
+  data-current-path={currentFolderPath}
+>
   <div class={styles.sidebarContainer}>
     {
       contentLayer.map((layer) => {
         return (
           <div
             class={styles.sidebarContent}
-            data-tag={layer.tag}
+            data-path={layer.path}
             data-active={layer.isActive}
           >
             <h2 class={styles.sidebarTagTitle}>
-              <a href={`/${tagToUrl(layer.tag)}`}>{layer.label}</a>
+              <a href={layer.path}>{layer.config.title}</a>
             </h2>
 
             <div class={styles.divider} />
 
-            {layer.parentTag && (
+            {layer.parentPath !== null && (
               <NavItem
-                href={`/${tagToUrl(layer.parentTag)}`}
-                label={tagLabel(layer.parentTag)}
-                targetTag={layer.parentTag}
+                href={`/${layer.parentPath}`}
+                label={layer.parentPath}
+                targetPath={layer.parentPath}
                 buttonPosition="left"
               />
             )}
 
-            {layer.childTags.length > 0 && (
-              <section class={styles.childTags}>
-                <h3>Child Tags</h3>
-                <ul class={styles.childTagsList}>
-                  {layer.childTags.map((childTag) => (
-                    <li>
-                      <NavItem
-                        href={`/${tagToUrl(childTag)}`}
-                        label={tagLabel(childTag)}
-                        targetTag={childTag}
-                        buttonPosition="right"
-                      />
-                    </li>
-                  ))}
-                </ul>
-              </section>
-            )}
-
-            {layer.articles.length > 0 && (
-              <section class={styles.tagArticles}>
-                <h3>Articles</h3>
-                <ul class={styles.tagArticlesList}>
-                  {layer.articles.map((article) => {
-                    const articlePath = `/${article.data.permalink}`;
-                    const isCurrentArticle = currentPath === articlePath;
-                    return (
-                      <li>
-                        <NavItem
-                          href={articlePath}
-                          label={article.data.title}
-                          isActive={isCurrentArticle}
-                        />
-                      </li>
-                    );
-                  })}
-                </ul>
-              </section>
-            )}
-
-            {!layer.hasContent && <p>No content found for this tag.</p>}
+            {layer.config.sections?.length > 0 &&
+              layer.config.sections.map((section) => (
+                <section class={styles.childTags}>
+                  <h3>{section.title}</h3>
+                  <ul class={styles.childTagsList}>
+                    {section.items.map(async (itemPath) => {
+                      const target =
+                        layer.path !== ''
+                          ? `${layer.path}/${itemPath}`
+                          : itemPath;
+                      return (
+                        <li>
+                          <NavItem
+                            href={`/${target}`}
+                            label={itemPath}
+                            targetPath={target}
+                            isActive={currentUrlPath === target}
+                            buttonPosition={
+                              (await articleExists(target))
+                                ? undefined
+                                : 'right'
+                            }
+                          />
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </section>
+              ))}
           </div>
         );
       })
@@ -99,7 +97,7 @@ const contentLayer = await Promise.all(
   import { onItemClick } from '@/utils/sidebar';
 
   function initSidebar() {
-    document.querySelectorAll('[data-target-tag]').forEach((button) => {
+    document.querySelectorAll('[data-target-path]').forEach((button) => {
       button.addEventListener('click', onItemClick);
     });
   }

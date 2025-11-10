@@ -7,9 +7,12 @@ import fs from 'fs';
  * @returns {string | null}
  */
 export function parentFolder(currentPath: string): string | null {
+  if (currentPath === '') {
+    return null;
+  }
   const dir = path.dirname(currentPath);
 
-  return dir === '.' ? null : dir;
+  return dir === '.' ? '' : dir;
 }
 
 /**
@@ -18,6 +21,9 @@ export function parentFolder(currentPath: string): string | null {
  * @returns {string[]}
  */
 export function childFolders(currentPath: string): string[] {
+  if (!fs.existsSync(currentPath) || !fs.lstatSync(currentPath).isDirectory()) {
+    return [];
+  }
   const entries = fs.readdirSync(currentPath, { withFileTypes: true });
   return entries
     .filter((entry) => entry.isDirectory())

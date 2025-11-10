@@ -30,3 +30,9 @@ export async function articlesInFolder(folder: string): Promise<Array<Article>> 
     return parentFolder(article.id) === folder;
   });
 }
+
+export async function articleExists(path: string): Promise<boolean> {
+  const articles = await articleCollection();
+
+  return articles.some((article) => article.id.replace(/\.mdx?$/, '') === path);
+}

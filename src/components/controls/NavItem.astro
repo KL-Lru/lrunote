@@ -5,7 +5,7 @@ import styles from './NavItem.module.css';
 interface Props {
   href: string;
   label: string;
-  targetTag?: string;
+  targetPath?: string;
   buttonPosition?: 'left' | 'right';
   isActive?: boolean;
 }
@@ -13,7 +13,7 @@ interface Props {
 const {
   href,
   label,
-  targetTag,
+  targetPath,
   buttonPosition,
   isActive = false,
 } = Astro.props;
@@ -27,7 +27,7 @@ const ICON_SIZE = 28;
       <button
         type="button"
         class={styles.navButton}
-        data-target-tag={targetTag}
+        data-target-path={targetPath}
       >
         <Icon name={'mdi:menu-left'} size={ICON_SIZE} />
       </button>
@@ -43,7 +43,7 @@ const ICON_SIZE = 28;
       <button
         type="button"
         class={styles.navButton}
-        data-target-tag={targetTag}
+        data-target-path={targetPath}
       >
         <Icon name={'mdi:menu-right'} size={ICON_SIZE} />
       </button>

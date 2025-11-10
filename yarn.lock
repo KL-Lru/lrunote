@@ -1400,6 +1400,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@jsr/std__collections@npm:^1.1.3":
+  version: 1.1.3
+  resolution: "@jsr/std__collections@npm:1.1.3::__archiveUrl=https%3A%2F%2Fnpm.jsr.io%2F~%2F11%2F%40jsr%2Fstd__collections%2F1.1.3.tgz"
+  checksum: 10c0/38053fc2082b6a644efee8594c7c6bf46a7265aacce075ba31759ece817623c6b325f2663c72cf3232a159a3f6d5efa6adcefaa04159422f719bc8089c0e8160
+  languageName: node
+  linkType: hard
+
 "@keyv/bigmap@npm:^1.0.2":
   version: 1.0.3
   resolution: "@keyv/bigmap@npm:1.0.3"
@@ -1521,15 +1528,6 @@ __metadata:
     zod: "npm:^3.23.8"
     zod-to-json-schema: "npm:^3.24.1"
   checksum: 10c0/fcaabe06b85dda71d6b1da1cef9084acf5b97142f246c555695f792a996ebbaa93a11b0d0bf009b19f0ab6955b26172d8ae0b3111f9af56117bc754e7b9f66a9
-  languageName: node
-  linkType: hard
-
-"@nanostores/persistent@npm:^1.1.0":
-  version: 1.1.0
-  resolution: "@nanostores/persistent@npm:1.1.0"
-  peerDependencies:
-    nanostores: ^0.9.0 || ^0.10.0 || ^0.11.0 || ^1.0.0
-  checksum: 10c0/3932656acd16cad5ea950b871407693e0ac8a6e1ab4a5de7ba2d008173a8667ccc5b2206a51d535b45583e62782b81a3e29525d33e01d17d22aa8654bb38ea72
   languageName: node
   linkType: hard
 
@@ -2040,6 +2038,24 @@ __metadata:
   version: 1.0.0
   resolution: "@standard-schema/spec@npm:1.0.0"
   checksum: 10c0/a1ab9a8bdc09b5b47aa8365d0e0ec40cc2df6437be02853696a0e377321653b0d3ac6f079a8c67d5ddbe9821025584b1fb71d9cc041a6666a96f1fadf2ece15f
+  languageName: node
+  linkType: hard
+
+"@std/toml@jsr:^1.0.11":
+  version: 1.0.11
+  resolution: "@std/toml@jsr:1.0.11::__archiveUrl=https%3A%2F%2Fnpm.jsr.io%2F~%2F11%2F%40jsr%2Fstd__toml%2F1.0.11.tgz"
+  dependencies:
+    "@jsr/std__collections": "npm:^1.1.3"
+  checksum: 10c0/6024a0e991b5214fe6262aac12458191e5d99450586dc7cb36f74190180b8c26fc757acaa970a0992a63f4cb59b25c4b27070ca644c86f19e3f76ce9f04c51c5
+  languageName: node
+  linkType: hard
+
+"@std/toml@npm:@jsr/std__toml@^1.0.11":
+  version: 1.0.11
+  resolution: "@jsr/std__toml@npm:1.0.11::__archiveUrl=https%3A%2F%2Fnpm.jsr.io%2F~%2F11%2F%40jsr%2Fstd__toml%2F1.0.11.tgz"
+  dependencies:
+    "@jsr/std__collections": "npm:^1.1.3"
+  checksum: 10c0/6024a0e991b5214fe6262aac12458191e5d99450586dc7cb36f74190180b8c26fc757acaa970a0992a63f4cb59b25c4b27070ca644c86f19e3f76ce9f04c51c5
   languageName: node
   linkType: hard
 
@@ -7811,7 +7827,7 @@ __metadata:
     "@fontsource/biz-udpgothic": "npm:^5.2.8"
     "@fontsource/inconsolata": "npm:^5.2.8"
     "@iconify-json/mdi": "npm:^1.2.3"
-    "@nanostores/persistent": "npm:^1.1.0"
+    "@std/toml": "jsr:^1.0.11"
     "@stylistic/eslint-plugin": "npm:^5.1.0"
     "@textlint-ja/textlint-rule-no-synonyms": "npm:^1.3.0"
     astro: "npm:5.14.4"
@@ -7821,10 +7837,8 @@ __metadata:
     eslint-plugin-react: "npm:^7.37.5"
     globals: "npm:^16.2.0"
     jiti: "npm:^2.6.1"
-    nanostores: "npm:^1.0.1"
     playwright: "npm:^1.54.2"
     rehype-mermaid: "npm:^3.0.0"
-    smol-toml: "npm:^1.4.2"
     sudachi-synonyms-dictionary: "npm:^14.0.0"
     textlint: "npm:^14.7.2"
     textlint-filter-rule-comments: "npm:^1.2.2"
@@ -9231,13 +9245,6 @@ __metadata:
   bin:
     nanoid: bin/nanoid.cjs
   checksum: 10c0/40e7f70b3d15f725ca072dfc4f74e81fcf1fbb02e491cf58ac0c79093adc9b0a73b152bcde57df4b79cd097e13023d7504acb38404a4da7bc1cd8e887b82fe0b
-  languageName: node
-  linkType: hard
-
-"nanostores@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "nanostores@npm:1.0.1"
-  checksum: 10c0/9fa5bd9f4beb1ac7cd83c935357057e4217e2eb0e36ef93ce87ed8a6814590c44e7aa843e9337089222cfb5231fdf0474d207debd12787b4582519393253fe22
   languageName: node
   linkType: hard
 

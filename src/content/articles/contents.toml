@@ -1,0 +1,10 @@
+title = "HOME"
+
+[[sections]]
+title = "Sample"
+
+items = [
+  'frontend',
+  'about',
+  'sample'
+]

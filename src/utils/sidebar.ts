@@ -1,9 +1,9 @@
 export const SIDEBAR_ID = 'sidebar';
 
 export const SIDEBAR_DATA_ATTRS = {
-  TAG: 'data-tag',
-  CURRENT_TAG: 'data-current-tag',
-  TARGET_TAG: 'data-target-tag',
+  PATH: 'data-path',
+  CURRENT_PATH: 'data-current-path',
+  TARGET_PATH: 'data-target-path',
   ACTIVE: 'data-active',
   SLIDE_DIRECTION: 'data-slide-direction',
 };
@@ -15,11 +15,11 @@ function sidebarElement() {
 function sidebarLayers() {
   const sidebar = sidebarElement();
 
-  return sidebar ? sidebar.querySelectorAll(`[${SIDEBAR_DATA_ATTRS.TAG}]`) : [];
+  return sidebar ? sidebar.querySelectorAll(`[${SIDEBAR_DATA_ATTRS.PATH}]`) : [];
 }
 
-function currentTag() {
-  return sidebarElement()?.getAttribute(SIDEBAR_DATA_ATTRS.CURRENT_TAG) || '';
+function currentPath() {
+  return sidebarElement()?.getAttribute(SIDEBAR_DATA_ATTRS.CURRENT_PATH) || '';
 }
 
 function activateLayer(layer: Element, direction: 'left' | 'right') {
@@ -32,30 +32,30 @@ function activateLayer(layer: Element, direction: 'left' | 'right') {
   };
 
   layer.addEventListener('animationend', resetAnimation);
-  sidebarElement()?.setAttribute(SIDEBAR_DATA_ATTRS.CURRENT_TAG, layer.getAttribute(SIDEBAR_DATA_ATTRS.TAG) || '');
+  sidebarElement()?.setAttribute(SIDEBAR_DATA_ATTRS.CURRENT_PATH, layer.getAttribute(SIDEBAR_DATA_ATTRS.PATH) || '');
 }
 
 function deactivateLayer(layer: Element) {
   layer.setAttribute(SIDEBAR_DATA_ATTRS.ACTIVE, 'false');
 }
 
-function movementDirection(currentTag: string, targetTag: string): 'left' | 'right' {
-  if (currentTag.startsWith(targetTag + '/')) {
-    // 親タグへ移動
+function movementDirection(currentPath: string, targetPath: string): 'left' | 'right' {
+  if (currentPath.startsWith(targetPath + '/')) {
+    // 親カテゴリへ移動
     return 'right';
   } else {
-    // 子タグへ移動
+    // 子カテゴリへ移動
     return 'left';
   }
 }
 
-function switchToTag(targetTag: string) {
-  const current = currentTag();
-  const direction = movementDirection(current, targetTag);
+function switchToPath(targetPath: string) {
+  const current = currentPath();
+  const direction = movementDirection(current, targetPath);
 
   sidebarLayers().forEach((layer) => {
-    const layerTag = layer.getAttribute(SIDEBAR_DATA_ATTRS.TAG);
-    if (layerTag === targetTag) {
+    const layerPath = layer.getAttribute(SIDEBAR_DATA_ATTRS.PATH);
+    if (layerPath === targetPath) {
       activateLayer(layer, direction);
     } else {
       deactivateLayer(layer);
@@ -66,12 +66,12 @@ function switchToTag(targetTag: string) {
 export function onItemClick(event: Event) {
   event.preventDefault();
   const target = event.target as HTMLElement;
-  const button = target.closest(`[${SIDEBAR_DATA_ATTRS.TARGET_TAG}]`);
+  const button = target.closest(`[${SIDEBAR_DATA_ATTRS.TARGET_PATH}]`);
 
   if (!button) {
     return;
   }
 
-  const tag = button.getAttribute(SIDEBAR_DATA_ATTRS.TARGET_TAG)!;
-  switchToTag(tag);
+  const path = button.getAttribute(SIDEBAR_DATA_ATTRS.TARGET_PATH)!;
+  switchToPath(path);
 }
