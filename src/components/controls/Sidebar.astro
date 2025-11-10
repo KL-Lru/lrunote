@@ -1,5 +1,5 @@
 ---
-import { currentTag, tagCollection, tagLabel } from '@/utils/tags';
+import { currentTag, tagCollection, tagLabel, tagToUrl } from '@/utils/tags';
 import styles from './Sidebar.module.css';
 import { taggedArticles } from '@/utils/articles';
 import NavItem from './NavItem.astro';
@@ -34,14 +34,14 @@ const contentLayer = await Promise.all(
             data-active={layer.isActive}
           >
             <h2 class={styles.sidebarTagTitle}>
-              <a href={`/${layer.tag}`}>{layer.label}</a>
+              <a href={`/${tagToUrl(layer.tag)}`}>{layer.label}</a>
             </h2>
 
             <div class={styles.divider} />
 
             {layer.parentTag && (
               <NavItem
-                href={`/${layer.parentTag}`}
+                href={`/${tagToUrl(layer.parentTag)}`}
                 label={tagLabel(layer.parentTag)}
                 targetTag={layer.parentTag}
                 buttonPosition="left"
@@ -55,7 +55,7 @@ const contentLayer = await Promise.all(
                   {layer.childTags.map((childTag) => (
                     <li>
                       <NavItem
-                        href={`/${childTag}`}
+                        href={`/${tagToUrl(childTag)}`}
                         label={tagLabel(childTag)}
                         targetTag={childTag}
                         buttonPosition="right"

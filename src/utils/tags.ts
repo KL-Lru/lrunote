@@ -17,6 +17,35 @@ export interface TagInfo {
 }
 
 /**
+ * タグパスをURLパスに変換
+ * @param {string} tag - タグパス (例: "top/frontend/react")
+ * @returns {string} - URLパス (例: "frontend/react")
+ */
+export function tagToUrl(tag: string): string {
+  if (tag === 'top') {
+    return '';
+  }
+  if (tag.startsWith('top/')) {
+    return tag.slice(4); // "top/" を削除
+  }
+  return tag;
+}
+
+/**
+ * URLパスをタグパスに変換
+ * @param {string} urlPath - URLパス (例: "frontend/react")
+ * @returns {string} - タグパス (例: "top/frontend/react")
+ */
+export function urlToTag(urlPath: string): string {
+  if (urlPath === '' || urlPath === '/') {
+    return 'top';
+  }
+  // 先頭のスラッシュを削除
+  const cleanPath = urlPath.startsWith('/') ? urlPath.slice(1) : urlPath;
+  return `top/${cleanPath}`;
+}
+
+/**
  * タグのラベルを取得
  * @param {string} tag
  * @returns {string}
@@ -60,14 +89,16 @@ export async function currentTag(url: URL | undefined): Promise<TagInfo | null> 
   }
 
   // 現在のパスがタグページならそのタグ情報を返す
-  const path = url.pathname.replace(/^\//, '').replace(/\/$/, '');
-  if (tagExists(path)) {
-    return tagToInfo(path);
+  const urlPath = url.pathname.replace(/^\//, '').replace(/\/$/, '');
+  const tag = urlToTag(urlPath);
+
+  if (tagExists(tag)) {
+    return tagToInfo(tag);
   }
 
   // 現在のパスがページの場合、そのタグ情報を返す
-  if (!path.includes('/')) {
-    const article = await sluggedArticle(path);
+  if (!urlPath.includes('/')) {
+    const article = await sluggedArticle(urlPath);
 
     if (article) {
       const tag = article.data.tag;

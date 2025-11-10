@@ -1,21 +1,29 @@
 ---
 import type { GetStaticPaths } from 'astro';
 import Main from '@/components/layouts/Main.astro';
-import { tagCollection } from '@/utils/tags';
+import { tagCollection, tagToUrl } from '@/utils/tags';
 import { taggedArticles } from '@/utils/articles';
 
 export const getStaticPaths = (async () => {
-  return tagCollection().map(({ tag, label }) => {
-    const articles = taggedArticles(tag);
+  return tagCollection()
+    .map(({ tag, label }) => {
+      const articles = taggedArticles(tag);
+      const urlPath = tagToUrl(tag);
 
-    return {
-      params: { tag },
-      props: { articles, tag, label },
-    };
-  });
+      // 空文字列（topタグ）の場合はスキップ（index.mdxで処理）
+      if (urlPath === '') {
+        return null;
+      }
+
+      return {
+        params: { tag: urlPath },
+        props: { articles, tag, label },
+      };
+    })
+    .filter((path) => path !== null);
 }) satisfies GetStaticPaths;
 
-const { label } = Astro.props;
+const { label, tag } = Astro.props;
 ---
 
-<Main title={`Tag: ${label}`} />
+<Main title={`Tag: ${label}`} currentTag={tag} />
