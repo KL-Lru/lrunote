@@ -1,0 +1,25 @@
+import path from 'path';
+import fs from 'fs';
+
+/**
+ * 親ディレクトリパスを取得
+ * @param {string} currentPath - ディレクトリパス
+ * @returns {string | null}
+ */
+export function parentFolder(currentPath: string): string | null {
+  const dir = path.dirname(currentPath);
+
+  return dir === '.' ? null : dir;
+}
+
+/**
+ * 子ディレクトリパスを取得
+ * @param {string} currentPath - ディレクトリパス
+ * @returns {string[]}
+ */
+export function childFolders(currentPath: string): string[] {
+  const entries = fs.readdirSync(currentPath, { withFileTypes: true });
+  return entries
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => path.join(currentPath, entry.name));
+}

@@ -1,4 +1,5 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { parentFolder } from './paths';
 
 type Article = CollectionEntry<'articles'>;
 
@@ -11,19 +12,21 @@ export async function articleCollection(): Promise<Array<Article>> {
 }
 
 /**
- * タグに紐づく記事を取得
- * @param {string} tag
- * @returns {Promise<Array<Article>>}
- */
-export async function taggedArticles(tag: string): Promise<Array<Article>> {
-  return (await articleCollection()).filter((article) => article.data.tag === tag);
-}
-
-/**
  * パーマリンクに紐づく記事を取得
  * @param {string} slug
  * @returns {Promise<Article | undefined>}
  */
-export async function sluggedArticle(slug: string): Promise<Article | undefined> {
+export async function permanentArticle(slug: string): Promise<Article | undefined> {
   return (await articleCollection()).find((article) => article.data.permalink === slug);
+}
+
+/**
+ * 特定ディレクトリ配下の記事を取得
+ * @param {string} folder - ディレクトリパス
+ * @returns {Promise<Array<Article>>}
+ */
+export async function articlesInFolder(folder: string): Promise<Array<Article>> {
+  return (await articleCollection()).filter((article) => {
+    return parentFolder(article.id) === folder;
+  });
 }

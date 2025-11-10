@@ -1,0 +1,26 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Main from '@/components/layouts/Main.astro';
+import { articleCollection } from '@/utils/articles';
+import { parentFolder } from '@/utils/paths';
+
+export const getStaticPaths = (async () => {
+  const collection = await articleCollection();
+
+  return collection.map((article) => {
+    const slug = article.id.replace(/\.(mdx?|md)$/, '');
+    return {
+      params: { slug },
+      props: { entry: article },
+    };
+  });
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const categoryPath = parentFolder(entry.id);
+---
+
+<Main title={entry.data.title} currentTag={categoryPath}>
+  <Content />
+</Main>
