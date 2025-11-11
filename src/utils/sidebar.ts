@@ -8,20 +8,35 @@ export const SIDEBAR_DATA_ATTRS = {
   SLIDE_DIRECTION: 'data-slide-direction',
 };
 
+/**
+ * Sidebar 要素を取得する
+ */
 function sidebarElement() {
   return document.getElementById(SIDEBAR_ID);
 }
 
+/**
+ * Sidebar レイヤー要素を取得する
+ */
 function sidebarLayers() {
   const sidebar = sidebarElement();
 
-  return sidebar ? sidebar.querySelectorAll(`[${SIDEBAR_DATA_ATTRS.PATH}]`) : [];
+  return sidebar ? Array.from(sidebar.querySelectorAll(`[${SIDEBAR_DATA_ATTRS.PATH}]`)) : [];
 }
 
+/**
+ * 現在アクティブなレイヤーのパスを取得する
+ * @returns
+ */
 function currentPath() {
   return sidebarElement()?.getAttribute(SIDEBAR_DATA_ATTRS.CURRENT_PATH) || '';
 }
 
+/**
+ * レイヤーをアクティブにする
+ * @param layer
+ * @param direction
+ */
 function activateLayer(layer: Element, direction: 'left' | 'right') {
   layer.setAttribute(SIDEBAR_DATA_ATTRS.ACTIVE, 'true');
   layer.setAttribute(SIDEBAR_DATA_ATTRS.SLIDE_DIRECTION, direction);
@@ -35,10 +50,20 @@ function activateLayer(layer: Element, direction: 'left' | 'right') {
   sidebarElement()?.setAttribute(SIDEBAR_DATA_ATTRS.CURRENT_PATH, layer.getAttribute(SIDEBAR_DATA_ATTRS.PATH) || '');
 }
 
+/**
+ * レイヤーを非アクティブにする
+ * @param layer
+ */
 function deactivateLayer(layer: Element) {
   layer.setAttribute(SIDEBAR_DATA_ATTRS.ACTIVE, 'false');
 }
 
+/**
+ * 移動方向を計算する
+ * @param currentPath
+ * @param targetPath
+ * @returns
+ */
 function movementDirection(currentPath: string, targetPath: string): 'left' | 'right' {
   if (currentPath.startsWith(targetPath + '/')) {
     // 親カテゴリへ移動
@@ -49,6 +74,10 @@ function movementDirection(currentPath: string, targetPath: string): 'left' | 'r
   }
 }
 
+/**
+ * 指定されたパスに切り替える
+ * @param targetPath
+ */
 function switchToPath(targetPath: string) {
   const current = currentPath();
   const direction = movementDirection(current, targetPath);
@@ -63,6 +92,10 @@ function switchToPath(targetPath: string) {
   });
 }
 
+/**
+ * アイテムがクリックされたときの処理
+ * @param event
+ */
 export function onItemClick(event: Event) {
   event.preventDefault();
   const target = event.target as HTMLElement;
