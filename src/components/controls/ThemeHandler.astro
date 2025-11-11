@@ -20,9 +20,6 @@
   function getTheme() {
     const theme = localStorage.getItem(THEME_KEY);
 
-    if (theme === 'system' || theme === null) {
-      return systemTheme();
-    }
     if (theme === 'light' || theme === 'dark') {
       return theme;
     }
