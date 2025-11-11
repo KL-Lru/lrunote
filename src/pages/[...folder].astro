@@ -20,7 +20,8 @@ const { config } = content;
   <h1>{config.title}</h1>
 
   {
-    config.sections?.length > 0 &&
+    config.sections &&
+      config.sections.length > 0 &&
       config.sections.map((section) => (
         <section>
           <h2>{section.title}</h2>

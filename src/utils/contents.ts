@@ -65,7 +65,7 @@ function isContentSection(obj: unknown): obj is ContentSection {
   if (typeof obj !== 'object' || obj === null) return false;
 
   const section = obj as ContentSection;
-  if (section.title && typeof section.title !== 'string') return false;
+  if (typeof section.title !== 'string') return false;
 
   if (!Array.isArray(section.items)) return false;
   for (const item of section.items) {

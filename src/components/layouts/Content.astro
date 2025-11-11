@@ -1,7 +1,9 @@
----
-import styles from './Content.module.css';
----
-
-<div class={styles.content}>
+<div class="content">
   <slot />
 </div>
+
+<style>
+  .content {
+    padding: 1rem 3rem;
+  }
+</style>

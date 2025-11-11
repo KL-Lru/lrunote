@@ -2,9 +2,7 @@
 import TopBar from '@/components/controls/TopBar.astro';
 import Sidebar from '@/components/controls/Sidebar.astro';
 import Content from '@/components/layouts/Content.astro';
-
 import ThemeHandler from '@/components/controls/ThemeHandler.astro';
-import styles from '@/components/layouts/Main.module.css';
 import '@/assets/styles/globals.css';
 
 const props = Astro.props.frontmatter || Astro.props;
@@ -20,14 +18,14 @@ const { title } = props;
     <ThemeHandler />
   </head>
   <body>
-    <main class={styles.container}>
-      <div class={styles.topBarContainer}>
+    <main class="container">
+      <div class="topBarContainer">
         <TopBar />
       </div>
-      <div class={styles.sideBarContainer}>
+      <div class="sideBarContainer">
         <Sidebar />
       </div>
-      <div class={styles.mainContent}>
+      <div class="mainContent">
         <Content>
           <slot />
         </Content>
@@ -35,3 +33,29 @@ const { title } = props;
     </main>
   </body>
 </html>
+
+<style>
+  .container {
+    display: grid;
+    grid-template-areas:
+      'topbar topbar'
+      'sidebar main';
+    grid-template-columns: min-content 1fr;
+    grid-template-rows: min-content 1fr;
+
+    height: 100vh;
+    width: 100vw;
+  }
+
+  .topBarContainer {
+    grid-area: topbar;
+  }
+
+  .sideBarContainer {
+    grid-area: sidebar;
+  }
+
+  .mainContent {
+    grid-area: main;
+  }
+</style>
