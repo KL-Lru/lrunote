@@ -12,9 +12,7 @@ import { Icon } from 'astro-icon/components';
 </button>
 
 <script>
-  // @see ThemeHandler
-  declare function getTheme(): 'light' | 'dark';
-  declare function setTheme(theme: 'light' | 'dark'): void;
+  import { getTheme, setTheme } from '@/utils/theme';
 
   const toggleElement = document.querySelector('#theme-toggle');
 

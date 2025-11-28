@@ -2,7 +2,8 @@
 import TopBar from '@/components/controls/TopBar.astro';
 import Sidebar from '@/components/controls/Sidebar.astro';
 import Content from '@/components/layouts/Content.astro';
-import ThemeHandler from '@/components/controls/ThemeHandler.astro';
+
+import initialize from '@/assets/scripts/init?inline-bundle';
 import '@/assets/styles/globals.css';
 
 const props = Astro.props.frontmatter || Astro.props;
@@ -13,9 +14,8 @@ const { title } = props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
     <title>{title}</title>
-    <ThemeHandler />
+    <script is:inline set:html={initialize} />
   </head>
   <body>
     <main class="container">
