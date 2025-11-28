@@ -1,47 +1,51 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
-import { parentFolder } from './paths';
+import { absolute, parent, relative } from './paths';
 
 type Article = CollectionEntry<'articles'>;
 
+type WrappedArticle = Article & {
+  slug: string;
+};
+
+function extend(article: Article): WrappedArticle {
+  return {
+    ...article,
+    // StaticPaths 展開用の slug プロパティは相対パス指定が必要
+    slug: relative(article.id),
+  };
+}
+
 /**
  * 記事コレクションをすべて取得
- * @returns {Promise<Array<Article>>}
  */
-export async function articleCollection(): Promise<Array<Article>> {
-  return await getCollection('articles');
+export async function articleCollection() {
+  return (await getCollection('articles')).map(extend);
 }
 
 /**
  * パーマリンクに紐づく記事を取得
- * @param {string} slug
- * @returns {Promise<Article | undefined>}
+ * @param {string} perm
  */
-export async function permanentArticle(slug: string): Promise<Article | undefined> {
-  return (await articleCollection()).find((article) => article.data.permalink === slug);
+export async function permanentArticle(perm: string) {
+  return (await articleCollection()).find((article) => absolute(article.data.permalink) === absolute(perm));
 }
 
 /**
  * 特定ディレクトリ配下の記事を取得
- * @param {string} folder - ディレクトリパス
- * @returns {Promise<Array<Article>>}
+ * @param {string} path - ディレクトリパス
  */
-export async function articlesInFolder(folder: string): Promise<Array<Article>> {
+export async function articlesInFolder(path: string) {
   return (await articleCollection()).filter((article) => {
-    return parentFolder(article.id) === folder;
+    return parent(absolute(article.id)) === absolute(path);
   });
 }
 
 /**
  * 指定パスに記事が存在するか確認
- * @param {string} path - 記事パス
- * @returns {Promise<boolean>}
+ * @param {string} path - 記事パス (no slash)
  */
-export async function articleExists(path: string): Promise<boolean> {
+export async function articleExists(path: string) {
   const articles = await articleCollection();
 
-  return articles.some((article) => idToPath(article) === path);
-}
-
-function idToPath(article: Article): string {
-  return article.id.replace(/\.mdx?$/, '');
+  return articles.some((article) => absolute(article.id) === absolute(path));
 }
