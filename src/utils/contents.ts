@@ -11,12 +11,44 @@ interface ContentInfo {
 
 interface ContentConfig {
   title: string;
+  items?: string[];
   sections?: Array<ContentSection>;
 }
 
 interface ContentSection {
   title: string;
+  description?: string;
   items: string[];
+}
+
+function allContentPaths(): Array<string> {
+  const files = globSync('**/*.md', { cwd: CONTENT_DIR });
+  return files.map((file) => path.join(CONTENT_DIR, file));
+}
+
+function allParsedConfigs(): Array<{ id: string; config: ContentConfig }> {
+  const contents = allContentPaths();
+  return contents.map((content_file) => {
+    const fileContent = fs.readFileSync(content_file, 'utf-8');
+    const parsed = parse(fileContent);
+
+    if (isContentConfig(parsed)) {
+      return {
+        id: contentId(content_file),
+        config: parsed,
+      };
+    } else {
+      throw new Error(`Invalid content config in file: ${content_file}`);
+    }
+  });
+}
+
+function contentId(content_file: string): string {
+  return path.relative(CONTENT_DIR, path.dirname(content_file));
+}
+
+function absoluteLink(content_id: string) {
+  return `/${content_id}`;
 }
 
 export function contentCollection(): Array<ContentInfo> {
@@ -29,7 +61,7 @@ export function contentCollection(): Array<ContentInfo> {
 
     if (isContentConfig(parsed)) {
       return {
-        path: path.relative(CONTENT_DIR, path.dirname(filePath)),
+        path: contentId(filePath),
         config: parsed,
       };
     } else {

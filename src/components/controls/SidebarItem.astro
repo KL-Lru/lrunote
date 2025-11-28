@@ -4,25 +4,19 @@ import { Icon } from 'astro-icon/components';
 interface Props {
   href: string;
   label: string;
-  targetPath?: string;
-  buttonPosition?: 'left' | 'right';
   isActive?: boolean;
+  targetPath?: string;
+  variant?: 'left' | 'right';
 }
 
-const {
-  href,
-  label,
-  targetPath,
-  buttonPosition,
-  isActive = false,
-} = Astro.props;
+const { href, label, targetPath, variant, isActive = false } = Astro.props;
 
 const ICON_SIZE = 28;
 ---
 
 <div class={'navContainer'}>
   {
-    buttonPosition === 'left' && (
+    variant === 'left' && (
       <button type="button" class={'navButton'} data-target-path={targetPath}>
         <Icon name={'mdi:menu-left'} size={ICON_SIZE} />
       </button>
@@ -34,7 +28,7 @@ const ICON_SIZE = 28;
   </a>
 
   {
-    buttonPosition === 'right' && (
+    variant === 'right' && (
       <button type="button" class={'navButton'} data-target-path={targetPath}>
         <Icon name={'mdi:menu-right'} size={ICON_SIZE} />
       </button>
@@ -56,56 +50,43 @@ const ICON_SIZE = 28;
     background-color: var(--control-background-color);
   }
 
+  .navButton,
+  .navLink {
+    border: none;
+
+    color: var(--text-color);
+    background-color: var(--control-background-color);
+    transition:
+      background-color 0.2s ease-in-out,
+      color 0.2s ease-in-out;
+
+    cursor: pointer;
+
+    &:hover {
+      color: var(--invert-text-color);
+      background-color: var(--invert-background-color);
+    }
+  }
+
   .navButton {
     flex-shrink: 0;
 
     display: flex;
     align-items: center;
     justify-content: center;
-
-    border: none;
-    border-radius: 0;
-
-    color: var(--text-color);
-    background-color: var(--control-background-color);
-    transition:
-      background-color 0.2s ease-in-out,
-      color 0.2s ease-in-out;
-
-    cursor: pointer;
-
-    &:hover {
-      color: var(--invert-text-color);
-      background-color: var(--invert-background-color);
-    }
   }
 
   .navLink {
-    padding: 0.5rem 1rem;
     flex-grow: 1;
 
-    border: none;
-
-    color: var(--text-color);
-    background-color: var(--control-background-color);
-    transition:
-      background-color 0.2s ease-in-out,
-      color 0.2s ease-in-out;
+    padding: 0.5rem 1rem;
 
     text-decoration: none;
     text-align: left;
-    cursor: pointer;
-
-    &:hover {
-      color: var(--invert-text-color);
-      background-color: var(--invert-background-color);
-    }
   }
 
-  /* アクティブ状態のスタイル */
   .active {
     color: var(--invert-text-color);
     background-color: var(--invert-background-color);
-    font-weight: bold;
   }
 </style>

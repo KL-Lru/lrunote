@@ -1,5 +1,5 @@
 ---
-import NavItem from './NavItem.astro';
+import SidebarItem from './SidebarItem.astro';
 import { contentCollection, getContentInfo } from '@/utils/contents';
 import { parentFolder } from '@/utils/paths';
 import { articleExists } from '@/utils/articles';
@@ -46,11 +46,11 @@ const contentLayer = contents.map((contentInfo) => {
 
             <div class={'divider'} />
             {layer.parent !== null && (
-              <NavItem
+              <SidebarItem
                 href={`/${layer.parent.path}`}
                 label={layer.parent.config.title}
                 targetPath={layer.parent.path}
-                buttonPosition="left"
+                variant="left"
               />
             )}
 
@@ -68,14 +68,14 @@ const contentLayer = contents.map((contentInfo) => {
                       const contentInfo = getContentInfo(target);
                       return (
                         <li>
-                          <NavItem
+                          <SidebarItem
                             href={`/${target}`}
                             label={
                               contentInfo ? contentInfo.config.title : itemPath
                             }
                             targetPath={target}
                             isActive={currentUrlPath === target}
-                            buttonPosition={
+                            variant={
                               (await articleExists(target))
                                 ? undefined
                                 : 'right'
