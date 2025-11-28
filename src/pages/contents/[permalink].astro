@@ -3,7 +3,7 @@ import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
 import Main from '@/components/layouts/Main.astro';
 import { articleCollection } from '@/utils/articles';
-import { parentFolder } from '@/utils/paths';
+import { parent } from '@/utils/paths';
 
 export const getStaticPaths = (async () => {
   const collection = await articleCollection();
@@ -16,7 +16,7 @@ export const getStaticPaths = (async () => {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
-const categoryPath = parentFolder(entry.id);
+const categoryPath = parent(entry.id);
 ---
 
 <Main title={entry.data.title} currentTag={categoryPath}>
