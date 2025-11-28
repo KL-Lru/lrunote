@@ -1,5 +1,6 @@
 ---
 import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
 import Main from '@/components/layouts/Main.astro';
 import { articleCollection } from '@/utils/articles';
 import { parentFolder } from '@/utils/paths';
@@ -17,7 +18,7 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const { entry } = Astro.props;
-const { Content } = await entry.render();
+const { Content } = await render(entry);
 const categoryPath = parentFolder(entry.id);
 ---
 

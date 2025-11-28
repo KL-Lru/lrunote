@@ -31,8 +31,17 @@ export async function articlesInFolder(folder: string): Promise<Array<Article>> 
   });
 }
 
+/**
+ * 指定パスに記事が存在するか確認
+ * @param {string} path - 記事パス
+ * @returns {Promise<boolean>}
+ */
 export async function articleExists(path: string): Promise<boolean> {
   const articles = await articleCollection();
 
-  return articles.some((article) => article.id.replace(/\.mdx?$/, '') === path);
+  return articles.some((article) => idToPath(article) === path);
+}
+
+function idToPath(article: Article): string {
+  return article.id.replace(/\.mdx?$/, '');
 }
