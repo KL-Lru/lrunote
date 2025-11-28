@@ -1,13 +1,12 @@
 import path from 'path';
-import fs from 'fs';
 
 /**
  * 親ディレクトリパスを取得
  * @param {string} currentPath - ディレクトリパス
  * @returns {string | null}
  */
-export function parentFolder(currentPath: string): string | null {
-  if (currentPath === '') {
+export function parent(currentPath: string): string | null {
+  if (currentPath === '' || currentPath === '/') {
     return null;
   }
   const dir = path.dirname(currentPath);
@@ -16,16 +15,27 @@ export function parentFolder(currentPath: string): string | null {
 }
 
 /**
- * 子ディレクトリパスを取得
- * @param {string} currentPath - ディレクトリパス
- * @returns {string[]}
+ * パスを絶対パスに変換. ファイルパスではなくURLパスとしての変換であり, 先頭にスラッシュを付与するのみ
+ * @param path
+ * @returns
  */
-export function childFolders(currentPath: string): string[] {
-  if (!fs.existsSync(currentPath) || !fs.lstatSync(currentPath).isDirectory()) {
-    return [];
+export function absolute(path: string) {
+  if (path.startsWith('/')) {
+    return path;
   }
-  const entries = fs.readdirSync(currentPath, { withFileTypes: true });
-  return entries
-    .filter((entry) => entry.isDirectory())
-    .map((entry) => path.join(currentPath, entry.name));
+
+  return '/' + path;
+}
+
+/**
+ * パスを相対パスに変換. ファイルパスではなくURLパスとしての変換であり, 先頭のスラッシュを削除するのみ
+ * @param path
+ * @returns
+ */
+export function relative(path: string) {
+  while (path.startsWith('/')) {
+    path = path.slice(1);
+  }
+
+  return path;
 }
