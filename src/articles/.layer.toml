@@ -4,7 +4,6 @@ title = "HOME"
 title = "Sample"
 
 items = [
-  'frontend',
   'about',
-  'sample'
+  'frontend',
 ]

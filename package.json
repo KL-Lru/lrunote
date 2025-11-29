@@ -22,7 +22,6 @@
     "@fontsource/biz-udpgothic": "^5.2.8",
     "@fontsource/inconsolata": "^5.2.8",
     "@iconify-json/mdi": "^1.2.3",
-    "@std/toml": "jsr:^1.0.11",
     "astro": "5.14.4",
     "astro-icon": "^1.1.5",
     "playwright": "^1.54.2",

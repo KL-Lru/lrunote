@@ -1400,13 +1400,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jsr/std__collections@npm:^1.1.3":
-  version: 1.1.3
-  resolution: "@jsr/std__collections@npm:1.1.3::__archiveUrl=https%3A%2F%2Fnpm.jsr.io%2F~%2F11%2F%40jsr%2Fstd__collections%2F1.1.3.tgz"
-  checksum: 10c0/38053fc2082b6a644efee8594c7c6bf46a7265aacce075ba31759ece817623c6b325f2663c72cf3232a159a3f6d5efa6adcefaa04159422f719bc8089c0e8160
-  languageName: node
-  linkType: hard
-
 "@keyv/bigmap@npm:^1.0.2":
   version: 1.0.3
   resolution: "@keyv/bigmap@npm:1.0.3"
@@ -2038,24 +2031,6 @@ __metadata:
   version: 1.0.0
   resolution: "@standard-schema/spec@npm:1.0.0"
   checksum: 10c0/a1ab9a8bdc09b5b47aa8365d0e0ec40cc2df6437be02853696a0e377321653b0d3ac6f079a8c67d5ddbe9821025584b1fb71d9cc041a6666a96f1fadf2ece15f
-  languageName: node
-  linkType: hard
-
-"@std/toml@jsr:^1.0.11":
-  version: 1.0.11
-  resolution: "@std/toml@jsr:1.0.11::__archiveUrl=https%3A%2F%2Fnpm.jsr.io%2F~%2F11%2F%40jsr%2Fstd__toml%2F1.0.11.tgz"
-  dependencies:
-    "@jsr/std__collections": "npm:^1.1.3"
-  checksum: 10c0/6024a0e991b5214fe6262aac12458191e5d99450586dc7cb36f74190180b8c26fc757acaa970a0992a63f4cb59b25c4b27070ca644c86f19e3f76ce9f04c51c5
-  languageName: node
-  linkType: hard
-
-"@std/toml@npm:@jsr/std__toml@^1.0.11":
-  version: 1.0.11
-  resolution: "@jsr/std__toml@npm:1.0.11::__archiveUrl=https%3A%2F%2Fnpm.jsr.io%2F~%2F11%2F%40jsr%2Fstd__toml%2F1.0.11.tgz"
-  dependencies:
-    "@jsr/std__collections": "npm:^1.1.3"
-  checksum: 10c0/6024a0e991b5214fe6262aac12458191e5d99450586dc7cb36f74190180b8c26fc757acaa970a0992a63f4cb59b25c4b27070ca644c86f19e3f76ce9f04c51c5
   languageName: node
   linkType: hard
 
@@ -7827,7 +7802,6 @@ __metadata:
     "@fontsource/biz-udpgothic": "npm:^5.2.8"
     "@fontsource/inconsolata": "npm:^5.2.8"
     "@iconify-json/mdi": "npm:^1.2.3"
-    "@std/toml": "jsr:^1.0.11"
     "@stylistic/eslint-plugin": "npm:^5.1.0"
     "@textlint-ja/textlint-rule-no-synonyms": "npm:^1.3.0"
     astro: "npm:5.14.4"
