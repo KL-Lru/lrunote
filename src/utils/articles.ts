@@ -3,7 +3,7 @@ import { absolute, parent, relative } from './paths';
 
 type Article = CollectionEntry<'articles'>;
 
-type WrappedArticle = Article & {
+export type WrappedArticle = Article & {
   slug: string;
 };
 

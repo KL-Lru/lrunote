@@ -1,0 +1,22 @@
+---
+import type { GetStaticPaths } from 'astro';
+import Main from '@/components/layouts/Main.astro';
+import { layerCollection } from '@/utils/layers';
+
+export const getStaticPaths = (async () => {
+  const layers = await layerCollection();
+
+  return layers
+    .filter((layer) => !!layer.slug)
+    .map((layer) => ({
+      params: { layer: layer.slug },
+      props: { layer },
+    }));
+}) satisfies GetStaticPaths;
+
+const { layer } = Astro.props;
+---
+
+<Main title={layer.data.title}>
+  <h1>{layer.data.title}</h1>
+</Main>

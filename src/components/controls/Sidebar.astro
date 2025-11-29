@@ -1,96 +1,17 @@
 ---
-import SidebarItem from './SidebarItem.astro';
-import { contentCollection, getContentInfo } from '@/utils/contents';
-import { parentFolder } from '@/utils/paths';
-import { articleExists } from '@/utils/articles';
+import { clean, currentLayer } from '@/utils/paths';
+import { layerCollection } from '@/utils/layers';
+import SidebarLayer from './SidebarLayer.astro';
 
-const currentUrlPath =
-  Astro.url.pathname.replace(/\/$/, '').replace(/^\//, '') || '';
-const isArticle = await articleExists(currentUrlPath);
-const currentFolderPath = isArticle
-  ? parentFolder(currentUrlPath)
-  : currentUrlPath;
+const currentPath = clean(Astro.url.pathname);
+const currentLayerPath = await currentLayer(currentPath);
 
-const contents = contentCollection();
-
-// 全カテゴリパスの記事情報を取得
-const contentLayer = contents.map((contentInfo) => {
-  const parent = parentFolder(contentInfo.path);
-  const parentInfo = parent ? getContentInfo(parent) : null;
-
-  return {
-    ...contentInfo,
-    parent: parentInfo,
-    isActive: contentInfo.path === currentFolderPath,
-  };
-});
+const layers = await layerCollection();
 ---
 
-<aside
-  id={'sidebar'}
-  class={'sidebar'}
-  data-current-path={currentFolderPath}
->
+<aside id={'sidebar'} class={'sidebar'} data-current-path={currentLayerPath}>
   <div class={'sidebarContainer'}>
-    {
-      contentLayer.map((layer) => {
-        return (
-          <div
-            class={'sidebarContent'}
-            data-path={layer.path}
-            data-active={layer.isActive}
-          >
-            <h2 class={'sidebarTagTitle'}>
-              <a href={`/${layer.path}`}>{layer.config.title}</a>
-            </h2>
-
-            <div class={'divider'} />
-            {layer.parent !== null && (
-              <SidebarItem
-                href={`/${layer.parent.path}`}
-                label={layer.parent.config.title}
-                targetPath={layer.parent.path}
-                variant="left"
-              />
-            )}
-
-            {layer.config.sections &&
-              layer.config.sections.length > 0 &&
-              layer.config.sections.map((section) => (
-                <section class={'childTags'}>
-                  <h3>{section.title}</h3>
-                  <ul class={'childTagsList'}>
-                    {section.items.map(async (itemPath) => {
-                      const target =
-                        layer.path !== ''
-                          ? `${layer.path}/${itemPath}`
-                          : itemPath;
-                      const contentInfo = getContentInfo(target);
-                      return (
-                        <li>
-                          <SidebarItem
-                            href={`/${target}`}
-                            label={
-                              contentInfo ? contentInfo.config.title : itemPath
-                            }
-                            targetPath={target}
-                            isActive={currentUrlPath === target}
-                            variant={
-                              (await articleExists(target))
-                                ? undefined
-                                : 'right'
-                            }
-                          />
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </section>
-              ))}
-          </div>
-        );
-      })
-    }
+    {layers.map((layer) => <SidebarLayer layer={layer} />)}
   </div>
 </aside>
 
@@ -157,75 +78,5 @@ const contentLayer = contents.map((contentInfo) => {
       transform: translateX(0);
       opacity: 1;
     }
-  }
-
-  .sidebarContent {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-
-    transition:
-      opacity 0.2s ease-out,
-      visibility 0.2s ease-out;
-
-    &[data-active='true'] {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
-    }
-
-    &[data-active='true'][data-slide-direction='left'] {
-      animation: slideInFromRight 0.2s ease-out;
-    }
-
-    &[data-active='true'][data-slide-direction='right'] {
-      animation: slideInFromLeft 0.2s ease-out;
-    }
-  }
-
-  .sidebarTagTitle {
-    font-size: 1.2rem;
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-  }
-
-  .childTags,
-  .tagArticles {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .childTags h3,
-  .tagArticles h3 {
-    font-size: 1rem;
-    margin: 0 0 0.5rem 0;
-    color: var(--text-color);
-  }
-
-  .childTagsList,
-  .tagArticlesList {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-
-    list-style: none;
-    margin: 0;
-    padding: 0;
-
-    gap: 0.2rem;
   }
 </style>

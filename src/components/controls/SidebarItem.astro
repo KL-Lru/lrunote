@@ -1,15 +1,16 @@
 ---
+import type { Content } from '@/utils/layers';
 import { Icon } from 'astro-icon/components';
+import { clean } from '@/utils/paths';
+
+const currentPath = clean(Astro.url.pathname);
 
 interface Props {
-  href: string;
-  label: string;
-  isActive?: boolean;
-  targetPath?: string;
+  content: Content;
   variant?: 'left' | 'right';
 }
 
-const { href, label, targetPath, variant, isActive = false } = Astro.props;
+const { content, variant } = Astro.props;
 
 const ICON_SIZE = 28;
 ---
@@ -17,19 +18,22 @@ const ICON_SIZE = 28;
 <div class={'navContainer'}>
   {
     variant === 'left' && (
-      <button type="button" class={'navButton'} data-target-path={targetPath}>
+      <button type="button" class={'navButton'} data-target-path={content.id}>
         <Icon name={'mdi:menu-left'} size={ICON_SIZE} />
       </button>
     )
   }
 
-  <a href={href} class:list={['navLink', { active: isActive }]}>
-    {label}
+  <a
+    href={content.id}
+    class:list={['navLink', { active: currentPath === content.id }]}
+  >
+    {content.data.title}
   </a>
 
   {
     variant === 'right' && (
-      <button type="button" class={'navButton'} data-target-path={targetPath}>
+      <button type="button" class={'navButton'} data-target-path={content.id}>
         <Icon name={'mdi:menu-right'} size={ICON_SIZE} />
       </button>
     )

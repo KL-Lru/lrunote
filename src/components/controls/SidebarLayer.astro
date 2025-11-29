@@ -1,5 +1,130 @@
 ---
 import SidebarItem from './SidebarItem.astro';
+import type { WrappedLayer } from '@/utils/layers';
+import { parentLayer, layerContents } from '@/utils/layers';
+import { clean, join, currentLayer } from '@/utils/paths';
 
+const currentPath = clean(Astro.url.pathname);
+const currentLayerPath = await currentLayer(currentPath);
 
+type Props = {
+  layer: WrappedLayer;
+};
+
+const { layer } = Astro.props;
+const parent = await parentLayer(layer.id);
+const contents = await layerContents(layer.id);
+
+console.log(currentPath, layer.id);
+
+const sections = (layer.data.sections || []).map((section) => {
+  const items = section.items
+    .map((item) => {
+      const itemId = join(layer.id, item);
+
+      return contents[itemId];
+    })
+    .filter((item) => !!item);
+  return { ...section, items };
+});
 ---
+
+<div
+  class={'sidebarLayer'}
+  data-path={layer.id}
+  data-active={currentLayerPath === layer.id}
+>
+  <h2 class={'sidebarTitle'}>
+    <a href={layer.id}>{layer.data.title}</a>
+  </h2>
+
+  <div class={'divider'}></div>
+
+  {parent && <SidebarItem content={parent} variant="left" />}
+
+  {
+    sections.length > 0 &&
+      sections.map((section) => (
+        <section class={'sidebarSection'}>
+          <h3>{section.title}</h3>
+          <ul class={'sidebarContents'}>
+            {section.items.map((content) => (
+              <SidebarItem
+                content={content}
+                variant={content.collection === 'layers' ? 'right' : undefined}
+              />
+            ))}
+          </ul>
+        </section>
+      ))
+  }
+</div>
+
+<style>
+  .sidebarLayer {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    transition:
+      opacity 0.2s ease-out,
+      visibility 0.2s ease-out;
+
+    &[data-active='true'] {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    &[data-active='true'][data-slide-direction='left'] {
+      animation: slideInFromRight 0.2s ease-out;
+    }
+
+    &[data-active='true'][data-slide-direction='right'] {
+      animation: slideInFromLeft 0.2s ease-out;
+    }
+  }
+
+  .sidebarTitle {
+    font-size: 1.2rem;
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+  }
+
+  .sidebarSection {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .sidebarSection h3 {
+    font-size: 1rem;
+    margin: 0 0 0.5rem 0;
+    color: var(--text-color);
+  }
+
+  .sidebarContents {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    gap: 0.2rem;
+  }
+</style>
