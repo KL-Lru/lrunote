@@ -16,10 +16,23 @@ const layers = await layerCollection();
 </aside>
 
 <script>
-  import { onItemClick } from '@/utils/sidebar';
+  import { DATA_ATTRS as DATA, switchToPath } from '@/utils/sidebar';
+
+  function onItemClick(event: Event) {
+    event.preventDefault();
+    const target = event.target as HTMLElement;
+    const button = target.closest(`[${DATA.TARGET_PATH}]`);
+
+    if (!button) {
+      return;
+    }
+
+    const path = button.getAttribute(DATA.TARGET_PATH)!;
+    switchToPath(path);
+  }
 
   function initSidebar() {
-    document.querySelectorAll('[data-target-path]').forEach((button) => {
+    document.querySelectorAll(`[${DATA.TARGET_PATH}]`).forEach((button) => {
       button.addEventListener('click', onItemClick);
     });
   }
@@ -48,12 +61,6 @@ const layers = await layerCollection();
     position: relative;
     flex-grow: 1;
     overflow: hidden;
-  }
-
-  .divider {
-    width: 100%;
-    height: 1px;
-    background-color: var(--border-color);
   }
 
   @keyframes slideInFromLeft {

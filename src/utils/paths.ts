@@ -42,10 +42,18 @@ export function relative(path: string) {
 }
 
 export function join(...paths: string[]) {
+  if (paths[0] === '/') {
+    return '/' + paths.slice(1).map((p) => clean(p)).join('/');
+  }
+
   return paths.map((p) => clean(p)).join('/');
 }
 
 export function clean(path: string) {
+  if (path === '/') {
+    return path;
+  }
+
   return path.replace(/\/+$/g, '');
 }
 

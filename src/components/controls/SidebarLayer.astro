@@ -15,8 +15,6 @@ const { layer } = Astro.props;
 const parent = await parentLayer(layer.id);
 const contents = await layerContents(layer.id);
 
-console.log(currentPath, layer.id);
-
 const sections = (layer.data.sections || []).map((section) => {
   const items = section.items
     .map((item) => {
@@ -93,6 +91,12 @@ const sections = (layer.data.sections || []).map((section) => {
     &[data-active='true'][data-slide-direction='right'] {
       animation: slideInFromLeft 0.2s ease-out;
     }
+  }
+
+  .divider {
+    width: 100%;
+    height: 1px;
+    background-color: var(--border-color);
   }
 
   .sidebarTitle {
