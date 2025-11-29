@@ -7,6 +7,9 @@
 :where(html) {
   --font-sans: 'BIZ UDPGothic', sans-serif;
   --font-mono: 'Inconsolata', monospace;
+
+  --overlay-z: 1000;
+  --control-z: 1500;
 }
 
 html {

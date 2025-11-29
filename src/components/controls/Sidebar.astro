@@ -46,6 +46,7 @@ const layers = await layerCollection();
     height: 100%;
     width: 250px;
     padding: 1rem 2rem;
+    z-index: var(--control-z);
 
     color: var(--text-color);
     background-color: var(--control-background-color);
@@ -84,6 +85,22 @@ const layers = await layerCollection();
     100% {
       transform: translateX(0);
       opacity: 1;
+    }
+  }
+
+  @media (width < 1024px) {
+    .sidebar {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: -100%;
+
+      transition: left 0.2s ease-out;
+    }
+
+    .sidebar.open {
+      left: 0;
+
     }
   }
 </style>

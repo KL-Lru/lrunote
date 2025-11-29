@@ -1,8 +1,11 @@
 ---
+import SidebarToggle from './SidebarToggle.astro';
 import ThemeToggle from './ThemeToggle.astro';
 ---
 
 <header class="header">
+  <SidebarToggle />
+
   <div>
     <a href="/" class="logo">
       <span>Lru Note</span>
@@ -16,6 +19,7 @@ import ThemeToggle from './ThemeToggle.astro';
   .header {
     color: var(--text-color);
     background-color: var(--control-background-color);
+    z-index: var(--control-z);
 
     padding: 1rem;
     padding-left: 2rem;

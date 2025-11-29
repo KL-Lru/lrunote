@@ -30,6 +30,7 @@ const { title } = props;
           <slot />
         </Content>
       </div>
+      <div id="overlay"></div>
     </main>
   </body>
 </html>
@@ -37,14 +38,15 @@ const { title } = props;
 <style>
   .container {
     display: grid;
+    position: relative;
+    height: 100vh;
+    width: 100vw;
+
     grid-template-areas:
       'topbar topbar'
       'sidebar main';
     grid-template-columns: min-content 1fr;
     grid-template-rows: min-content 1fr;
-
-    height: 100vh;
-    width: 100vw;
   }
 
   .topBarContainer {
@@ -57,5 +59,36 @@ const { title } = props;
 
   .mainContent {
     grid-area: main;
+  }
+
+  #overlay {
+    position: fixed;
+    z-index: var(--overlay-z);
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition:
+      opacity 0.2s ease-out,
+      visibility 0.2s ease-out;
+  }
+  #overlay.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  @media (width < 1024px) {
+    .container {
+      grid-template-areas:
+        'topbar'
+        'main';
+      grid-template-columns: 1fr;
+      grid-template-rows: min-content 1fr;
+    }
   }
 </style>
