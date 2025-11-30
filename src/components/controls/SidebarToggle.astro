@@ -9,18 +9,19 @@ import { Icon } from 'astro-icon/components';
 </button>
 
 <script>
-  const toggleElement = document.querySelector('#sidebar-toggle');
-  const overlayElement = document.querySelector('#overlay');
-  const sidebarElement = document.querySelector('#sidebar');
+  import { activate, deactivate } from '@/utils/activate';
+
+  const toggleElement = document.getElementById('sidebar-toggle');
+  const overlayElement = document.getElementById('overlay');
 
   if (toggleElement && overlayElement) {
     const open = () => {
-      sidebarElement?.classList.toggle('open');
-      overlayElement.classList.toggle('active');
+      activate('overlay');
+      activate('sidebar');
     };
     const close = () => {
-      sidebarElement?.classList.remove('open');
-      overlayElement.classList.remove('active');
+      deactivate('sidebar');
+      deactivate('overlay');
     };
 
     toggleElement.addEventListener('click', open);
