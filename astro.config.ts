@@ -5,6 +5,7 @@ import { buildSync } from 'esbuild';
 import { defineConfig } from 'astro/config';
 import icon from 'astro-icon';
 import mdx from '@astrojs/mdx';
+import pagefind from 'astro-pagefind';
 import rehypeMermaid from 'rehype-mermaid';
 
 function inlineTsPlugin(): Plugin {
@@ -38,7 +39,7 @@ export default defineConfig({
     },
     plugins: [inlineTsPlugin()],
   },
-  integrations: [icon(), mdx()],
+  integrations: [icon(), mdx(), pagefind()],
   markdown: {
     rehypePlugins: [
       [
