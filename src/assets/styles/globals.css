@@ -12,10 +12,6 @@
   --control-z: 1500;
 }
 
-html {
-  scrollbar-gutter: stable;
-}
-
 html.light {
   --text-color: var(--ctp-latte-text);
   --invert-text-color: var(--ctp-latte-mantle);
