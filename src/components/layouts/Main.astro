@@ -1,6 +1,7 @@
 ---
 import TopBar from '@/components/controls/TopBar.astro';
 import Sidebar from '@/components/controls/Sidebar.astro';
+import SearchModal from '@/components/controls/SearchModal.astro';
 import Content from '@/components/layouts/Content.astro';
 
 import initialize from '@/assets/scripts/init?inline-bundle';
@@ -30,6 +31,7 @@ const { title } = props;
           <slot />
         </Content>
       </div>
+      <SearchModal />
       <div id="overlay"></div>
     </main>
   </body>
