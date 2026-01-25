@@ -19,4 +19,18 @@ const { layer } = Astro.props;
 
 <Main title={layer.data.title}>
   <h1>{layer.data.title}</h1>
+  {layer.data.sections && layer.data.sections.length > 0 && (
+    <div class="sections">
+      {layer.data.sections.map((section) => (
+        <section>
+          <h2>{section.title}</h2>
+          <ul>
+            {section.items.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+  )}
 </Main>
