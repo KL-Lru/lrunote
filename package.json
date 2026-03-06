@@ -14,7 +14,7 @@
     "lint": "eslint .",
     "textlint": "textlint .",
     "test": "vitest",
-    "postinstall": "playwright install chromium"
+    "postinstall": "[ -z \"$SKIP_CHROMIUM\" ] && playwright install chromium || true"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.7",

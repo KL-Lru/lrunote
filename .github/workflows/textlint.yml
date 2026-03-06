@@ -1,0 +1,35 @@
+name: Textlint
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/**/*.md"
+      - "src/**/*.mdx"
+  pull_request:
+    branches: [main]
+    paths:
+      - "src/**/*.md"
+      - "src/**/*.mdx"
+
+jobs:
+  textlint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+          cache: yarn
+
+      - name: Install dependencies
+        run: yarn install --immutable --ignore-scripts
+        env:
+          SKIP_CHROMIUM: "true"
+
+      - name: Run textlint
+        run: yarn textlint
