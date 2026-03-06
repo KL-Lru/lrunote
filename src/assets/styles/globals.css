@@ -56,10 +56,6 @@ body {
   font-weight: 400;
 }
 
-code {
-  font-family: var(--font-mono);
-}
-
 *::before,
 *::after {
   box-sizing: border-box;
@@ -68,4 +64,28 @@ code {
 a {
   text-decoration: none;
   color: var(--link-color);
+}
+
+
+.astro-code,
+code {
+  color: var(--text-color);
+  background-color: var(--control-background-color);
+  border-radius: 4px;
+}
+
+code {
+  padding: 0.2rem 0.4rem;
+}
+
+.astro-code {
+  padding: 0.8rem;
+}
+
+.astro-code>code {
+  padding: 0;
+}
+
+html.dark .astro-code span {
+  color: var(--shiki-dark) !important;
 }

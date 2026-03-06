@@ -41,6 +41,13 @@ export default defineConfig({
   },
   integrations: [icon(), mdx(), pagefind()],
   markdown: {
+    shikiConfig: {
+      themes: {
+        light: 'catppuccin-latte',
+        dark: 'catppuccin-mocha',
+      },
+      defaultColor: false,
+    },
     rehypePlugins: [
       [
         rehypeMermaid,
