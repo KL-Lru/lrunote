@@ -5,6 +5,7 @@ import SearchModal from '@/components/controls/SearchModal.astro';
 import Content from '@/components/layouts/Content.astro';
 
 import initialize from '@/assets/scripts/init?inline-bundle';
+import initializeAfterDOM from '@/assets/scripts/initAfterDOM?inline-bundle';
 import '@/assets/styles/globals.css';
 
 const props = Astro.props.frontmatter || Astro.props;
@@ -34,6 +35,7 @@ const { title } = props;
       <SearchModal />
       <div id="overlay"></div>
     </main>
+    <script is:inline set:html={initializeAfterDOM} />
   </body>
 </html>
 

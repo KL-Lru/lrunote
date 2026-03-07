@@ -4,6 +4,8 @@
 @import '@fontsource/inconsolata/400.css';
 @import '@fontsource/inconsolata/700.css';
 
+@import "./codeblock.css";
+
 :where(html) {
   --font-sans: 'BIZ UDPGothic', sans-serif;
   --font-mono: 'Inconsolata', monospace;
@@ -100,6 +102,7 @@ code {
 html.dark .astro-code span {
   color: var(--shiki-dark) !important;
 }
+
 html.light .astro-code span {
   color: var(--shiki-light) !important;
 }

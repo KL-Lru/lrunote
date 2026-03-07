@@ -7,6 +7,7 @@ import icon from 'astro-icon';
 import mdx from '@astrojs/mdx';
 import pagefind from 'astro-pagefind';
 import rehypeMermaid from 'rehype-mermaid';
+import { codeBlockTransformer } from './src/shiki/code-block-transformer';
 
 function inlineTsPlugin(): Plugin {
   return {
@@ -47,6 +48,7 @@ export default defineConfig({
         dark: 'catppuccin-mocha',
       },
       defaultColor: false,
+      transformers: [codeBlockTransformer()],
     },
     rehypePlugins: [
       [

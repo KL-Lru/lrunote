@@ -1,0 +1,60 @@
+  .code-block-wrapper {
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      margin: 1.5rem 0;
+  }
+
+  .code-block-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: var(--font-mono);
+      font-size: 0.8rem;
+
+      padding: 0.3rem 0.8rem;
+      border-bottom: 1px solid var(--border-color);
+  }
+
+  .code-block-lang {
+      opacity: 0.8;
+  }
+
+  .code-block-copy {
+      cursor: pointer;
+      color: var(--text-color);
+      background-color: var(--background-color);
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      padding: 0.2rem 0.3rem;
+      font-size: 1rem;
+      line-height: 0;
+      display: flex;
+      align-items: center;
+      transition:
+          background-color 0.15s,
+          border-color 0.15s;
+  }
+
+  .code-block-copy:hover {
+      color: var(--invert-text-color);
+      background-color: var(--invert-background-color);
+  }
+
+  .code-block-copy .icon-check {
+      display: none;
+  }
+
+  .code-block-copy[data-copied] .icon-copy {
+      display: none;
+  }
+
+  .code-block-copy[data-copied] .icon-check {
+      display: block;
+  }
+
+  .code-block-wrapper .astro-code {
+      border-radius: 0;
+      margin: 0;
+      overflow-x: auto;
+  }
