@@ -106,3 +106,10 @@ html.dark .astro-code span {
 html.light .astro-code span {
   color: var(--shiki-light) !important;
 }
+
+blockquote {
+  border-left: 4px solid var(--accent-color);
+  margin: 0;
+  padding-left: 1em;
+  color: var(--text-color);
+}
