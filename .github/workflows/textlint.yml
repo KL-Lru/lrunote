@@ -16,18 +16,18 @@ jobs:
   textlint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Enable Corepack
         run: corepack enable
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: lts/*
           cache: yarn
 
       - name: Install dependencies
-        run: yarn install --immutable --ignore-scripts
+        run: yarn install
         env:
           SKIP_CHROMIUM: "true"
 
