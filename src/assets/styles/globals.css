@@ -100,11 +100,13 @@ code {
 }
 
 html.dark .astro-code span {
-  color: var(--shiki-dark) !important;
+  /* eslint-disable css/no-important -- library override */
+  color: var(--shiki-dark) !important; 
 }
 
 html.light .astro-code span {
-  color: var(--shiki-light) !important;
+  /* eslint-disable css/no-important -- library override */
+  color: var(--shiki-light) !important; 
 }
 
 blockquote {
