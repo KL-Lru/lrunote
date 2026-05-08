@@ -2,8 +2,10 @@ name: Textlint
 
 on:
   push:
-    branches: [main, citest]
-
+    branches: [main]
+    paths:
+      - "src/**/*.md"
+      - "src/**/*.mdx"
   pull_request:
     branches: [main]
     paths:
