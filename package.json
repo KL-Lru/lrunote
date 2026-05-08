@@ -18,8 +18,8 @@
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.7",
-    "@catppuccin/palette": "^1.7.1",
-    "@fontsource/biz-udpgothic": "^5.2.8",
+    "@catppuccin/palette": "^1.8.0",
+    "@fontsource/biz-udpgothic": "^5.2.9",
     "@fontsource/inconsolata": "^5.2.8",
     "@iconify-json/mdi": "^1.2.3",
     "astro": "5.14.4",

@@ -242,10 +242,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@catppuccin/palette@npm:^1.7.1":
-  version: 1.7.1
-  resolution: "@catppuccin/palette@npm:1.7.1"
-  checksum: 10c0/b4577ad742310ccfd3394791be96ef8787fc6c3e90c7b9ca6dfbe12fb5e63ad8c7d1627846df4744b8edaee19ed98a2c34a292dc5e4ae8a3e877c5afafcc62d2
+"@catppuccin/palette@npm:^1.8.0":
+  version: 1.8.0
+  resolution: "@catppuccin/palette@npm:1.8.0"
+  checksum: 10c0/6626496fd6e423e6b81da93bee9ac7efa3a96c51dc9aa2b199596c5a54343c57e389e89b0b12b40d5b67ca7d10ddb1585a1c54d375b6227e644b30e9ae7311be
   languageName: node
   linkType: hard
 
@@ -888,10 +888,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fontsource/biz-udpgothic@npm:^5.2.8":
-  version: 5.2.8
-  resolution: "@fontsource/biz-udpgothic@npm:5.2.8"
-  checksum: 10c0/9f7fa781ed400392701813a6f7ebb7f01333638047aa9f4293ca34e6418191e135401a4e8d021805ca761b022444091ec54f6507d52c3994edded51b0fa85f04
+"@fontsource/biz-udpgothic@npm:^5.2.9":
+  version: 5.2.9
+  resolution: "@fontsource/biz-udpgothic@npm:5.2.9"
+  checksum: 10c0/75dcc7d7e8325c6117cd76bd3fe7fec23405dcca5359524ec72833c3250385b06f3807d34be56ab967ed498c1d8261cd273ef74d31c43ca0321abf3e57e6faee
   languageName: node
   linkType: hard
 
@@ -8031,11 +8031,11 @@ __metadata:
   resolution: "lrunote@workspace:."
   dependencies:
     "@astrojs/mdx": "npm:^4.3.7"
-    "@catppuccin/palette": "npm:^1.7.1"
+    "@catppuccin/palette": "npm:^1.8.0"
     "@eslint/css": "npm:^1.2.0"
     "@eslint/js": "npm:^10.0.1"
     "@eslint/markdown": "npm:^8.0.1"
-    "@fontsource/biz-udpgothic": "npm:^5.2.8"
+    "@fontsource/biz-udpgothic": "npm:^5.2.9"
     "@fontsource/inconsolata": "npm:^5.2.8"
     "@iconify-json/mdi": "npm:^1.2.3"
     "@stylistic/eslint-plugin": "npm:^5.10.0"
