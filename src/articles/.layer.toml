@@ -1,9 +1,9 @@
 title = "HOME"
 
 [[sections]]
-title = "Sample"
+title = "このサイトについて"
+items = ['about']
 
-items = [
   'about',
   'frontend',
 ]
