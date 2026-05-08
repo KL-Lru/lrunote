@@ -3,7 +3,3 @@ title = "HOME"
 [[sections]]
 title = "このサイトについて"
 items = ['about']
-
-  'about',
-  'frontend',
-]
