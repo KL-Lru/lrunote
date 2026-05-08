@@ -7,6 +7,7 @@ import css from '@eslint/css';
 
 import globals from 'globals';
 import { defineConfig } from 'eslint/config';
+import type { Config } from 'eslint/config';
 
 const scriptFiles = ['**/*.{js,ts,jsx,tsx}'];
 const generalIgnores = ['.astro/**', '**/node_modules/**', '**/dist/**'];
@@ -68,6 +69,9 @@ const cssConfig = [
     plugins: { css },
     language: 'css/css',
     extends: ['css/recommended'],
+    rules: {
+      'css/no-invalid-properties': ['error', { allowUnknownVariables: true }],
+    } as Config['rules'],
   }
 ];
 
