@@ -1,127 +1,93 @@
-// Type for Starlight's sidebar configuration
-interface Badge {
-  variant: 'note' | 'danger' | 'success' | 'caution' | 'tip' | 'default';
-  text: string;
-}
-interface SidebarLink {
-  type: 'link';
-  label: string;
-  href: string;
-  isCurrent: boolean;
-  badge: Badge | undefined;
-  attrs: object;
-}
-interface SidebarGroup {
-  type: 'group';
-  label: string;
-  entries: (SidebarLink | SidebarGroup)[];
-  collapsed: boolean;
-  badge: Badge | undefined;
-}
-type SidebarEntry = SidebarLink | SidebarGroup;
+export const SIDEBAR_ID = 'sidebar';
 
-// Type for sidebar configuration file
-export interface SidebarConfig {
-  navigation: Array<SidebarItem>;
-}
-interface SidebarLinkItem {
-  label: string;
-  link: string;
-}
-interface SidebarGroupItem {
-  label: string;
-  items: Array<SidebarItem>;
-}
-export type SidebarItem = SidebarLinkItem | SidebarGroupItem;
+export const DATA_ATTRS = {
+  PATH: 'data-path',
+  CURRENT_PATH: 'data-current-path',
+  TARGET_PATH: 'data-target-path',
+  ACTIVE: 'data-active',
+  SLIDE_DIRECTION: 'data-slide-direction',
+};
 
-// config file to entries
-export function configToEntries(config: SidebarConfig, currentContent: string): SidebarEntry[] {
-  return itemsToEntries(config.navigation, currentContent);
+/**
+ * Sidebar 要素を取得する
+ */
+function sidebarElement() {
+  return document.getElementById(SIDEBAR_ID);
 }
 
-function itemsToEntries(items: Array<SidebarItem>, currentContent: string): SidebarEntry[] {
-  const entries: SidebarEntry[] = [];
+/**
+ * Sidebar レイヤー要素を取得する
+ */
+function sidebarLayers() {
+  const sidebar = sidebarElement();
 
-  for (const item of items) {
-    if (isSidebarGroupItem(item)) {
-      entries.push(itemToGroup(item, currentContent));
-    } else if (isSidebarLinkItem(item)) {
-      entries.push(itemToLink(item, currentContent));
-    }
-  }
-
-  return entries;
+  return sidebar ? Array.from(sidebar.querySelectorAll(`[${DATA_ATTRS.PATH}]`)) : [];
 }
 
-function itemToLink(item: SidebarLinkItem, currentContent: string): SidebarLink {
-  const isCurrentLink = item.link !== undefined && item.link !== '/' && (item.link.startsWith('/') ? item.link.slice(1) === currentContent : item.link === currentContent);
+/**
+ * 現在アクティブなレイヤーのパスを取得する
+ * @returns
+ */
+function currentPath() {
+  return sidebarElement()?.getAttribute(DATA_ATTRS.CURRENT_PATH) || '';
+}
 
-  return {
-    type: 'link',
-    label: item.label,
-    href: item.link || '',
-    isCurrent: isCurrentLink,
-    badge: undefined,
-    attrs: {},
+/**
+ * レイヤーをアクティブにする
+ * @param layer
+ * @param direction
+ */
+function activateLayer(layer: Element, direction: 'left' | 'right') {
+  layer.setAttribute(DATA_ATTRS.ACTIVE, 'true');
+  layer.setAttribute(DATA_ATTRS.SLIDE_DIRECTION, direction);
+
+  const resetAnimation = () => {
+    layer.removeAttribute(DATA_ATTRS.SLIDE_DIRECTION);
+    layer.removeEventListener('animationend', resetAnimation);
   };
+
+  layer.addEventListener('animationend', resetAnimation);
+  sidebarElement()?.setAttribute(DATA_ATTRS.CURRENT_PATH, layer.getAttribute(DATA_ATTRS.PATH) || '');
 }
 
-function itemToGroup(item: SidebarGroupItem, currentContent: string): SidebarGroup {
-  return {
-    type: 'group',
-    label: item.label,
-    entries: itemsToEntries(item.items, currentContent),
-    collapsed: false,
-    badge: undefined,
-  };
+/**
+ * レイヤーを非アクティブにする
+ * @param layer
+ */
+function deactivateLayer(layer: Element) {
+  layer.setAttribute(DATA_ATTRS.ACTIVE, 'false');
 }
 
-// Type Guard
-export function isSidebarConfig(config: unknown): config is SidebarConfig {
-  if (typeof config !== 'object' || config === null) {
-    return false;
+/**
+ * 移動方向を計算する
+ * @param currentPath
+ * @param targetPath
+ * @returns
+ */
+function movementDirection(currentPath: string, targetPath: string): 'left' | 'right' {
+  if (currentPath.includes(targetPath)) {
+    // 親カテゴリへ移動
+    return 'right';
+  } else {
+    // 子カテゴリへ移動
+    return 'left';
   }
+}
 
-  const sidebar = (config as SidebarConfig).navigation;
-  if (!Array.isArray(sidebar)) {
-    return false;
-  }
-  for (const item of sidebar) {
-    if (!isSidebarItem(item)) {
-      return false;
+/**
+ * 指定されたパスに切り替える
+ * @param targetPath
+ */
+export function switchToPath(targetPath: string) {
+  const current = currentPath();
+  const direction = movementDirection(current, targetPath);
+
+  sidebarLayers().forEach((layer) => {
+    const layerPath = layer.getAttribute(DATA_ATTRS.PATH);
+    if (layerPath === targetPath) {
+      activateLayer(layer, direction);
+    } else {
+      deactivateLayer(layer);
     }
-  }
-
-  return true;
-}
-
-function isSidebarItem(item: unknown): item is SidebarItem {
-  return isSidebarLinkItem(item) || isSidebarGroupItem(item);
-}
-
-function isSidebarLinkItem(item: unknown): item is SidebarLinkItem {
-  if (typeof item !== 'object' || item === null) {
-    return false;
-  }
-
-  const linkItem = item as SidebarLinkItem;
-  return typeof linkItem.label === 'string' && typeof linkItem.link === 'string';
-}
-
-function isSidebarGroupItem(item: unknown): item is SidebarGroupItem {
-  if (typeof item !== 'object' || item === null) {
-    return false;
-  }
-
-  const groupItem = item as SidebarGroupItem;
-  if (typeof groupItem.label !== 'string' || !Array.isArray(groupItem.items)) {
-    return false;
-  }
-  for (const subItem of groupItem.items) {
-    if (!isSidebarItem(subItem)) {
-      return false;
-    }
-  }
-
-  return true;
+  });
 }

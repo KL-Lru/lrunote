@@ -1,0 +1,115 @@
+@import "@catppuccin/palette/css/catppuccin.css";
+@import '@fontsource/biz-udpgothic/400.css';
+@import '@fontsource/biz-udpgothic/700.css';
+@import '@fontsource/inconsolata/400.css';
+@import '@fontsource/inconsolata/700.css';
+
+@import "./codeblock.css";
+
+:where(html) {
+  --font-sans: 'BIZ UDPGothic', sans-serif;
+  --font-mono: 'Inconsolata', monospace;
+
+  --overlay-z: 1000;
+  --control-z: 1500;
+}
+
+html.light {
+  --text-color: var(--ctp-latte-text);
+  --invert-text-color: var(--ctp-latte-mantle);
+  --background-color: var(--ctp-latte-base);
+  --invert-background-color: var(--ctp-latte-text);
+  --control-background-color: var(--ctp-latte-mantle);
+  --border-color: var(--ctp-latte-overlay0);
+  --accent-color: var(--ctp-latte-sky);
+  --link-color: var(--ctp-latte-sapphire);
+}
+
+html.dark {
+  --text-color: var(--ctp-mocha-text);
+  --invert-text-color: var(--ctp-mocha-mantle);
+  --background-color: var(--ctp-mocha-base);
+  --invert-background-color: var(--ctp-mocha-text);
+  --control-background-color: var(--ctp-mocha-mantle);
+  --border-color: var(--ctp-mocha-overlay0);
+  --accent-color: var(--ctp-mocha-sky);
+  --link-color: var(--ctp-mocha-sapphire);
+}
+
+html.switch * {
+  /* theme transition */
+  transition:
+    color 0.2s ease-in-out,
+    background-color 0.2s ease-in-out,
+    border-color 0.2s ease-in-out;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+
+  box-sizing: border-box;
+
+  color: var(--text-color);
+  background-color: var(--background-color);
+
+  line-height: 1.5;
+  font-family: var(--font-sans);
+  font-weight: 400;
+}
+
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+
+table {
+  border-collapse: collapse;
+
+  th,
+  td {
+    border: 1px solid var(--border-color);
+    padding: 0.5em 1em;
+  }
+}
+
+a {
+  text-decoration: none;
+  color: var(--link-color);
+}
+
+
+.astro-code,
+code {
+  color: var(--text-color);
+  background-color: var(--control-background-color);
+  border-radius: 4px;
+}
+
+code {
+  padding: 0.2rem 0.4rem;
+}
+
+.astro-code {
+  padding: 0.8rem;
+}
+
+.astro-code>code {
+  padding: 0;
+}
+
+html.dark .astro-code span {
+  color: var(--shiki-dark) !important;
+}
+
+html.light .astro-code span {
+  color: var(--shiki-light) !important;
+}
+
+blockquote {
+  border-left: 4px solid var(--accent-color);
+  margin: 0;
+  padding-left: 1em;
+  color: var(--text-color);
+}

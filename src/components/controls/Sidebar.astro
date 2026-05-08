@@ -1,0 +1,106 @@
+---
+import { clean, currentLayer } from '@/utils/paths';
+import { layerCollection } from '@/utils/layers';
+import SidebarLayer from './SidebarLayer.astro';
+
+const currentPath = clean(Astro.url.pathname);
+const currentLayerPath = await currentLayer(currentPath);
+
+const layers = await layerCollection();
+---
+
+<aside id={'sidebar'} class={'sidebar'} data-current-path={currentLayerPath}>
+  <div class={'sidebarContainer'}>
+    {layers.map((layer) => <SidebarLayer layer={layer} />)}
+  </div>
+</aside>
+
+<script>
+  import { DATA_ATTRS as DATA, switchToPath } from '@/utils/sidebar';
+
+  function onItemClick(event: Event) {
+    event.preventDefault();
+    const target = event.target as HTMLElement;
+    const button = target.closest(`[${DATA.TARGET_PATH}]`);
+
+    if (!button) {
+      return;
+    }
+
+    const path = button.getAttribute(DATA.TARGET_PATH)!;
+    switchToPath(path);
+  }
+
+  function initSidebar() {
+    document.querySelectorAll(`[${DATA.TARGET_PATH}]`).forEach((button) => {
+      button.addEventListener('click', onItemClick);
+    });
+  }
+
+  initSidebar();
+  document.addEventListener('astro:page-load', initSidebar);
+</script>
+
+<style>
+  .sidebar {
+    height: 100%;
+    width: 250px;
+    padding: 1rem 2rem;
+
+    color: var(--text-color);
+    background-color: var(--control-background-color);
+
+    display: flex;
+    flex-direction: column;
+
+    border-right: 1px solid var(--border-color);
+    overflow: hidden;
+  }
+
+  .sidebarContainer {
+    position: relative;
+    flex-grow: 1;
+    overflow: hidden;
+  }
+
+  @keyframes slideInFromLeft {
+    0% {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideInFromRight {
+    0% {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+
+    100% {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+
+  @media (width < 1024px) {
+    .sidebar {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: -100%;
+
+      z-index: var(--control-z);
+
+      transition: left 0.2s ease-out;
+    }
+
+    .sidebar[data-active='true'] {
+      left: 0;
+    }
+  }
+</style>

@@ -1,0 +1,34 @@
+---
+import type { GetStaticPaths } from "astro";
+import Main from "@/components/layouts/Main.astro";
+import Card from "@/components/Card.astro";
+import { layerCollection, layerContents } from "@/utils/layers";
+import { join } from "@/utils/paths";
+
+const layers = await layerCollection();
+const layer = layers.find((layer) => !layer.slug)!;
+const contents = await layerContents(layer.id);
+
+const sections = (layer.data.sections || []).map((section) => {
+  const items = section.items
+    .map((item) => {
+      const itemId = join(layer.id, item);
+
+      return contents[itemId];
+    })
+    .filter((item) => !!item);
+  return { ...section, items };
+});
+---
+
+<Main title={layer.data.title}>
+  <h1>{layer.data.title}</h1>
+  {
+    sections.map((section) => (
+      <section>
+        <h2 class="section-title">{section.title}</h2>
+        <Card items={section.items} />
+      </section>
+    ))
+  }
+</Main>

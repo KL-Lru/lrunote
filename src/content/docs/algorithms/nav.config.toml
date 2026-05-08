@@ -1,7 +1,0 @@
-[[navigation]]
-label = "ソート"
-link = "/algorithms/sort"
-
-[[navigation]]
-label = "探索"
-link = "/algorithms/search"

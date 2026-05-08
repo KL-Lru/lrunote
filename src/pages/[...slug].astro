@@ -1,0 +1,26 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
+import Main from '@/components/layouts/Main.astro';
+import { articleCollection } from '@/utils/articles';
+import { parent } from '@/utils/paths';
+
+export const getStaticPaths = (async () => {
+  const collection = await articleCollection();
+
+  return collection.map((article) => {
+    return {
+      params: { slug: article.slug },
+      props: { entry: article },
+    };
+  });
+}) satisfies GetStaticPaths;
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const categoryPath = parent(entry.id);
+---
+
+<Main title={entry.data.title} currentTag={categoryPath}>
+  <Content />
+</Main>

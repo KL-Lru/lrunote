@@ -1,0 +1,33 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  tag: string;
+  articles: CollectionEntry<'articles'>[];
+}
+
+const { tag, articles } = Astro.props;
+---
+
+<article>
+  <header>
+    <h1>Tag: {tag}</h1>
+    <p>
+      {articles.length} article{articles.length !== 1 ? 's' : ''}
+    </p>
+  </header>
+
+  {
+    articles.length === 0 ? (
+      <p>No articles found with this tag.</p>
+    ) : (
+      <ul>
+        {articles.map((article) => (
+          <li>
+            <a href={`/${article.data.permalink}`}>{article.data.title}</a>
+          </li>
+        ))}
+      </ul>
+    )
+  }
+</article>

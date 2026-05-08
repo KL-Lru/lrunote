@@ -1,0 +1,60 @@
+---
+import { Icon } from 'astro-icon/components';
+---
+
+<button id="sidebar-toggle" class={'toggleButton'}>
+  <div class={'buttonIcon'}>
+    <Icon name="mdi:menu" />
+  </div>
+</button>
+
+<script>
+  import { activate, deactivate } from '@/utils/activate';
+
+  const toggleElement = document.getElementById('sidebar-toggle');
+  const overlayElement = document.getElementById('overlay');
+
+  if (toggleElement && overlayElement) {
+    const open = () => {
+      activate('overlay');
+      activate('sidebar');
+    };
+    const close = () => {
+      deactivate('sidebar');
+      deactivate('overlay');
+    };
+
+    toggleElement.addEventListener('click', open);
+    overlayElement.addEventListener('click', close);
+  }
+</script>
+
+<style>
+  .toggleButton {
+    cursor: pointer;
+    font-size: 1.5rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: var(--text-color);
+    background-color: var(--control-background-color);
+
+    border: none;
+    border-radius: 5px;
+    padding: 0.3rem 0.5rem;
+  }
+
+  .buttonIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  @media (width >= 1024px) {
+    .toggleButton {
+      display: none;
+    }
+  }
+</style>
