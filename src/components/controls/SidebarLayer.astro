@@ -1,39 +1,29 @@
 ---
 import SidebarItem from './SidebarItem.astro';
 import type { WrappedLayer } from '@/utils/layers';
-import { parentLayer, layerContents } from '@/utils/layers';
-import { clean, join, currentLayer } from '@/utils/paths';
-
-const currentPath = clean(Astro.url.pathname);
-const currentLayerPath = await currentLayer(currentPath);
+import { parentLayer, findLayer, resolveLayer } from '@/utils/layers';
+import { clean } from '@/utils/paths';
 
 type Props = {
   layer: WrappedLayer;
 };
 
-const { layer } = Astro.props;
-const parent = await parentLayer(layer.id);
-const contents = await layerContents(layer.id);
+const currentPath = clean(Astro.url.pathname);
+const currentLayerPath = await findLayer(currentPath);
 
-const sections = (layer.data.sections || []).map((section) => {
-  const items = section.items
-    .map((item) => {
-      const itemId = join(layer.id, item);
-
-      return contents[itemId];
-    })
-    .filter((item) => !!item);
-  return { ...section, items };
-});
+const layer_id = Astro.props.layer.id
+const parent = await parentLayer(layer_id);
+const layer = await resolveLayer(Astro.props.layer);
+const sections = layer.sections;
 ---
 
 <div
   class={'sidebarLayer'}
-  data-path={layer.id}
-  data-active={currentLayerPath === layer.id}
+  data-path={layer_id}
+  data-active={currentLayerPath === layer_id}
 >
   <h2 class={'sidebarTitle'}>
-    <a href={layer.id}>{layer.data.title}</a>
+    <a href={layer_id}>{layer.title}</a>
   </h2>
 
   <div class={'divider'}></div>

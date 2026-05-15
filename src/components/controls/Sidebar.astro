@@ -1,10 +1,10 @@
 ---
-import { clean, currentLayer } from '@/utils/paths';
-import { layerCollection } from '@/utils/layers';
+import { clean } from '@/utils/paths';
+import { layerCollection, findLayer } from '@/utils/layers';
 import SidebarLayer from './SidebarLayer.astro';
 
 const currentPath = clean(Astro.url.pathname);
-const currentLayerPath = await currentLayer(currentPath);
+const currentLayerPath = await findLayer(currentPath);
 
 const layers = await layerCollection();
 ---

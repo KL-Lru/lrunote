@@ -1,5 +1,4 @@
 import path from 'path';
-import { articleExists } from './articles';
 
 /**
  * 親ディレクトリパスを取得
@@ -55,11 +54,4 @@ export function clean(path: string) {
   }
 
   return path.replace(/\/+$/g, '');
-}
-
-export async function currentLayer(path: string) {
-  if (await articleExists(path)) {
-    return parent(path);
-  }
-  return path;
 }

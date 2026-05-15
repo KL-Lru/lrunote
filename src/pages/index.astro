@@ -1,27 +1,16 @@
 ---
 import Main from "@/components/layouts/Main.astro";
 import Card from "@/components/Card.astro";
-import { layerCollection, layerContents } from "@/utils/layers";
-import { join } from "@/utils/paths";
+import { resolveLayer } from "@/utils/layers";
+import { getEntry } from "astro:content";
 
-const layers = await layerCollection();
-const layer = layers.find((layer) => !layer.slug)!;
-const contents = await layerContents(layer.id);
-
-const sections = (layer.data.sections || []).map((section) => {
-  const items = section.items
-    .map((item) => {
-      const itemId = join(layer.id, item);
-
-      return contents[itemId];
-    })
-    .filter((item) => !!item);
-  return { ...section, items };
-});
+const rootLayer = await getEntry('layers', '/')!;
+const layer = await resolveLayer(rootLayer);
+const sections = layer.sections;
 ---
 
-<Main title={layer.data.title}>
-  <h1>{layer.data.title}</h1>
+<Main title={layer.title}>
+  <h1>{layer.title}</h1>
   {
     sections.map((section) => (
       <section>

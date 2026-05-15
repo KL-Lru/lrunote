@@ -2,8 +2,7 @@
 import type { GetStaticPaths } from "astro";
 import Main from "@/components/layouts/Main.astro";
 import Card from "@/components/Card.astro";
-import { layerCollection, layerContents } from "@/utils/layers";
-import { join } from "@/utils/paths";
+import { layerCollection, resolveLayer } from "@/utils/layers";
 
 export const getStaticPaths = (async () => {
   const layers = await layerCollection();
@@ -16,23 +15,12 @@ export const getStaticPaths = (async () => {
     }));
 }) satisfies GetStaticPaths;
 
-const { layer } = Astro.props;
-const contents = await layerContents(layer.id);
-
-const sections = (layer.data.sections || []).map((section) => {
-  const items = section.items
-    .map((item) => {
-      const itemId = join(layer.id, item);
-
-      return contents[itemId];
-    })
-    .filter((item) => !!item);
-  return { ...section, items };
-});
+const layer = await resolveLayer(Astro.props.layer);
+const sections = layer.sections;
 ---
 
-<Main title={layer.data.title}>
-  <h1>{layer.data.title}</h1>
+<Main title={layer.title}>
+  <h1>{layer.title}</h1>
   {
     sections.map((section) => (
       <section>

@@ -1,8 +1,11 @@
 import { getCollection, getEntry, type CollectionEntry } from 'astro:content';
-import { absolute, parent, relative } from './paths';
-import { articlesInFolder, type WrappedArticle } from './articles';
+import { absolute, join, parent, relative } from './paths';
+import { articleCollection, articleExists, type WrappedArticle } from './articles';
 
 type Layer = CollectionEntry<'layers'>;
+type Section = { title: string; items: Array<string> };
+type SectionContent = { title: string; items: Array<Content> };
+type LayerContent = { title: string; sections: Array<SectionContent> };
 export type Content = WrappedLayer | WrappedArticle;
 export type WrappedLayer = Layer & {
   slug: string;
@@ -16,6 +19,10 @@ function extend(layer: Layer): WrappedLayer {
   };
 }
 
+async function hasLayer(path: string): Promise<boolean> {
+  return !!await getEntry('layers', path);
+}
+
 /**
  * レイヤーコレクションをすべて取得
  */
@@ -24,17 +31,7 @@ export async function layerCollection() {
 }
 
 /**
- * 特定ディレクトリのレイヤーを取得
- * @param {string} folder - ディレクトリパス
- */
-export async function layersInFolder(folder: string) {
-  return (await layerCollection()).filter((layer) => {
-    return parent(absolute(layer.id)) === absolute(folder);
-  });
-}
-
-/**
- * 親階層のレイヤーを取得
+ * 親のレイヤーを取得
  * @param layerId
  */
 export async function parentLayer(layerId: Layer['id']) {
@@ -43,38 +40,66 @@ export async function parentLayer(layerId: Layer['id']) {
     return null;
   }
 
-  const layer = (await getEntry('layers', parentPath));
-  if (!layer) {
+  const layerPath = (await findLayer(parentPath));
+  if (!layerPath) {
     return null;
   }
+
+  const layer = await getEntry('layers', layerPath)!;
 
   return extend(layer);
 }
 
 /**
- * 子階層のレイヤーを取得
- * @param layerId
+ * ID でコンテンツを 1 件取得
  */
-export async function childLayers(layerId: Layer['id']) {
-  const layerPath = absolute(layerId);
+export async function resolveContent(id: string): Promise<Content | null> {
+  const absId = absolute(id);
 
-  return (await layerCollection()).filter((layer) => {
-    return parent(absolute(layer.id)) === layerPath;
-  });
+  // 記事とディレクトリが同一 ID で存在する場合は記事を優先する
+  const article = (await articleCollection()).find((a) => absolute(a.id) === absId);
+  if (article) return article;
+
+  // それ以外はレイヤと見て取得する
+  const layer = (await layerCollection()).find((l) => absolute(l.id) === absId);
+  if (layer) return layer;
+
+  return null;
 }
 
 /**
- * 管轄レイヤー内に含まれる全てのコンテンツを取得
- * @param layerId
- * @returns
+ * セクションに指定されたコンテンツを解決する
  */
-export async function layerContents(layerId: Layer['id']) {
-  const children: Array<Content> = await childLayers(layerId);
-  const articles: Array<Content> = await articlesInFolder(layerId);
+async function resolveSection(layer_id: string, section: Section): Promise<SectionContent> {
+  const contents = await Promise.all(section.items.map(async (item) => await resolveContent(join(layer_id, item))));
 
-  return [...children, ...articles].reduce((acc, cur) => {
-    acc[cur.id] = cur;
+  return {
+    ...section,
+    items: contents.filter((content) => !!content),
+  };
+}
 
-    return acc;
-  }, {} as Record<string, Content>);
+/**
+ * レイヤ指定を解決する
+ */
+export async function resolveLayer(layer: Layer): Promise<LayerContent> {
+  const sections = await Promise.all((layer.data.sections || []).map(async (section) => await resolveSection(layer.id, section)));
+
+  return { title: layer.data.title, sections };
+}
+
+/**
+ * 現在表示すべきレイヤーを返す。記事パスの場合は親ディレクトリから上へ再帰的に探索し、
+ * .layer.toml が存在する最初のディレクトリを返す
+ */
+export async function findLayer(path: string): Promise<string | null> {
+  // パスに記事が指定されている場合はその親ディレクトリを参照する
+  let current = (await articleExists(path)) ? parent(path) : path;
+
+  while (current !== null) {
+    if (await hasLayer(current)) return current;
+    current = parent(current);
+  }
+
+  return null;
 }
