@@ -5,5 +5,10 @@ import type { ViteUserConfig } from 'astro';
 export default getViteConfig({
   test: {
     globals: true,
+    exclude: [
+      '**/node_modules/**',
+      '**/dist/**',
+      '**/.direnv/**',
+    ],
   },
 } as ViteUserConfig);
