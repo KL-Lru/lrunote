@@ -1,0 +1,226 @@
+---
+import { Icon } from 'astro-icon/components';
+import ArticleCard from './ArticleCard.astro';
+import type { LayerNode } from '@/utils/tree';
+
+interface Props {
+  node: LayerNode;
+  depth: number;
+  root?: boolean;
+  defaultOpen: boolean;
+}
+
+const { node, depth, defaultOpen, root = true } = Astro.props;
+
+const articles = node.children.filter((child) => child.type === 'article');
+const subFolders = node.children.filter((child) => child.type === 'layer');
+
+// 最上位セクションのみアンカー対象（セクションナビからのジャンプ用）
+const sectionId = depth === 0 ? 'sec-' + node.id.replace(/\//g, '-') : undefined;
+---
+
+<section
+  class:list={['folder-block', root && 'folder-root']}
+  id={sectionId}
+  data-open={String(defaultOpen)}
+>
+  <div class={'folder-bar'}>
+    <button type="button" class="folder-toggle" data-folder-toggle aria-expanded={defaultOpen}>
+      <span class="folder-caret">
+        <Icon name="mdi:chevron-right" size={12} />
+      </span>
+
+      <span class="folder-icon">
+        <Icon name="mdi:folder-outline" class="icon-closed" size={15} />
+        <Icon name="mdi:folder-open-outline" class="icon-open" size={15} />
+      </span>
+
+        <span class="folder-title">{node.title}</span>
+        {node.description && <span class="folder-description">{node.description}</span>}
+    </button>
+    <a class="folder-all" href={node.id}>
+      すべて見る
+      <Icon name="mdi:chevron-right" size={11} />
+    </a>
+  </div>
+
+  <div class="folder-items-wrap">
+    <div class="folder-items">
+      {
+        articles.length > 0 && (articles.map((article) => (
+            <ArticleCard node={article} />
+          ))
+        )
+      }
+      {
+        subFolders.map((folder) => <Astro.self node={folder} root={false} depth={depth + 1} defaultOpen={false} />)
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .folder-block {
+    scroll-margin-top: 2.4rem;
+  }
+
+  .folder-items {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    margin-top: 0.625rem;
+  }
+
+  .folder-bar {
+    display: grid;
+
+    grid-template-columns: 1fr max-content;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+
+    font-size: 0.90rem;
+    text-align: left;
+    cursor: pointer;
+
+    padding: 0.5rem;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+
+    transition: background-color 0.1s ease;
+  }
+
+  .folder-root > .folder-bar {
+      font-size: 1.0rem;
+
+      border: none;
+      border-bottom: 1px solid var(--border-color);
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+  }
+
+  .folder-bar:hover {
+    background-color: var(--control-background-color);
+  }
+
+  .folder-toggle {
+    display: grid;
+    align-items: center;
+
+    gap: 0.625rem;
+    grid-template-columns: repeat(2, max-content) 1fr;
+
+    font: inherit;
+    text-align: left;
+    color: var(--text-color);
+    background: transparent;
+    border: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  .folder-caret {
+    width: 12px;
+    height: 12px;
+
+    grid-column: 1;
+    grid-row: 1;
+
+    display: grid;
+    place-items: center;
+    color: var(--text-muted);
+
+    transition: transform 0.1s ease;
+  }
+
+  .folder-icon {
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+
+    grid-column: 2;
+    grid-row: 1;
+
+    display: grid;
+    place-items: center;
+
+    color: var(--accent-color);
+    background-color: var(--accent-soft);
+  }
+
+  .folder-icon .icon-open {
+    display: none;
+  }
+
+  .folder-block[data-open='true'] > .folder-bar .folder-icon .icon-open {
+    display: block;
+  }
+
+  .folder-block[data-open='true'] > .folder-bar .folder-icon .icon-closed {
+    display: none;
+  }
+
+  .folder-title {
+    font-weight: 700;
+
+    grid-column: 3;
+    grid-row: 1;
+  }
+
+  .folder-description {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+
+        grid-column: 3;
+        grid-row: 2;
+    }
+
+  .folder-all {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.125rem;
+
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    white-space: nowrap;
+    flex: none;
+    text-decoration: none;
+  }
+
+  .folder-all:hover {
+    color: var(--accent-color);
+    text-decoration: none;
+  }
+
+  /* 開閉アニメーション */
+  .folder-items-wrap {
+    display: grid;
+    grid-template-rows: 0fr;
+    overflow: hidden;
+    transition: grid-template-rows 0.2s ease;
+  }
+
+  .folder-block[data-open='true'] > .folder-items-wrap {
+    grid-template-rows: 1fr;
+  }
+
+  .folder-items {
+    min-height: 0;
+  }
+
+  .folder-block:not(.folder-root) > .folder-items-wrap {
+    margin-left: 0.75rem;
+  }
+
+  .folder-block:not(.folder-root) > .folder-items-wrap > .folder-items {
+    padding-left: 0.75rem;
+    border-left: 1px solid var(--border-color);
+  }
+
+  .folder-block[data-open='true'] > .folder-bar .folder-caret {
+    transform: rotate(90deg);
+  }
+</style>

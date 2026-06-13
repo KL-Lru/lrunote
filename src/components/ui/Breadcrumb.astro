@@ -1,0 +1,63 @@
+---
+import { Icon } from 'astro-icon/components';
+import { pathTo } from '@/utils/tree';
+
+interface Props {
+  id: string;
+}
+
+const crumbs = await pathTo(Astro.props.id);
+---
+
+{
+  crumbs.length > 0 && (
+    <nav class="crumbs" aria-label="breadcrumb">
+      {crumbs.map((crumb, index) => (
+        <Fragment>
+          {index > 0 && (
+            <span class="separator">
+              <Icon name="mdi:chevron-right" size={11} />
+            </span>
+          )}
+          {index === crumbs.length - 1 ? (
+            <span class="current">{crumb.title}</span>
+          ) : (
+            <a href={crumb.id}>{crumb.title}</a>
+          )}
+        </Fragment>
+      ))}
+    </nav>
+  )
+}
+
+<style>
+  .crumbs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+
+  .crumbs a {
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+
+  .crumbs a:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .crumbs .separator {
+    display: grid;
+    place-items: center;
+    opacity: 0.5;
+  }
+
+  .crumbs .current {
+    color: var(--text-color);
+  }
+</style>

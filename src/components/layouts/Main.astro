@@ -2,7 +2,6 @@
 import TopBar from '@/components/controls/TopBar.astro';
 import Sidebar from '@/components/controls/Sidebar.astro';
 import SearchModal from '@/components/controls/SearchModal.astro';
-import Content from '@/components/layouts/Content.astro';
 
 import initialize from '@/assets/scripts/init?inline-bundle';
 import initializeAfterDOM from '@/assets/scripts/initAfterDOM?inline-bundle';
@@ -28,9 +27,7 @@ const { title } = props;
         <Sidebar />
       </div>
       <div class="mainContent" data-pagefind-body>
-        <Content>
-          <slot />
-        </Content>
+        <slot />
       </div>
       <SearchModal />
       <div id="overlay"></div>
@@ -59,10 +56,12 @@ const { title } = props;
 
   .sideBarContainer {
     grid-area: sidebar;
+    overflow: hidden;
   }
 
   .mainContent {
     grid-area: main;
+    overflow-y: auto;
   }
 
   #overlay {

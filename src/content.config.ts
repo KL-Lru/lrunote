@@ -10,6 +10,7 @@ const articlesCollection = defineCollection({
   }),
   schema: z.object({
     title: z.string().min(1, 'Title is required'),
+    description: z.string().optional(),
     permalink: z.string().min(1, 'Permalink is required')
   }),
 });
@@ -22,10 +23,10 @@ const layersCollection = defineCollection({
   }),
   schema: z.object({
     title: z.string().min(1, 'Title is required'),
-    sections: z.array(z.object({
-      title: z.string().min(1, 'Section title is required'),
-      items: z.array(z.string().min(1, 'Item cannot be empty string')),
-    })).optional(),
+    // 階層の簡易的な説明（レイヤー画面の説明文に使用）
+    description: z.string().optional(),
+    // 直下の子（.layer.toml を持つディレクトリ名 / 記事ファイル名）の表示順
+    order: z.array(z.string().min(1, 'Order entry cannot be empty string')).optional(),
   }),
 });
 

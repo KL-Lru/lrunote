@@ -1,3 +1,5 @@
+import { initSidebar } from '@/utils/sidebar';
+
 function initializeCodeBlock() {
   document
     .querySelectorAll<HTMLButtonElement>('.code-block-copy')
@@ -17,3 +19,4 @@ function initializeCodeBlock() {
 }
 
 initializeCodeBlock();
+initSidebar();

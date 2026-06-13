@@ -1,32 +1,25 @@
 ---
-import type { GetStaticPaths } from "astro";
-import Main from "@/components/layouts/Main.astro";
-import Card from "@/components/Card.astro";
-import { layerCollection, resolveLayer } from "@/utils/layers";
+import type { GetStaticPaths } from 'astro';
+import Layer from '@/components/layouts/Layer.astro';
+import { layerCollection } from '@/utils/layers';
+import { layerTree } from '@/utils/tree';
 
 export const getStaticPaths = (async () => {
   const layers = await layerCollection();
 
+  // ルートレイヤー（slug 空）は index.astro が担当するため除外する
   return layers
     .filter((layer) => !!layer.slug)
     .map((layer) => ({
       params: { layer: layer.slug },
-      props: { layer },
+      props: { layerId: layer.id },
     }));
 }) satisfies GetStaticPaths;
 
-const layer = await resolveLayer(Astro.props.layer);
-const sections = layer.sections;
+const node = await layerTree(Astro.props.layerId);
+if (!node) {
+  throw new Error(`Layer not found: ${Astro.props.layerId}`);
+}
 ---
 
-<Main title={layer.title}>
-  <h1>{layer.title}</h1>
-  {
-    sections.map((section) => (
-      <section>
-        <h2 class="section-title">{section.title}</h2>
-        <Card items={section.items} />
-      </section>
-    ))
-  }
-</Main>
+<Layer node={node} />

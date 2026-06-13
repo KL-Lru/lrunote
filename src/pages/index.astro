@@ -1,22 +1,8 @@
 ---
-import Main from "@/components/layouts/Main.astro";
-import Card from "@/components/Card.astro";
-import { resolveLayer } from "@/utils/layers";
-import { getEntry } from "astro:content";
+import Layer from '@/components/layouts/Layer.astro';
+import { layerTree } from '@/utils/tree';
 
-const rootLayer = await getEntry('layers', '/')!;
-const layer = await resolveLayer(rootLayer);
-const sections = layer.sections;
+const node = (await layerTree('/'))!;
 ---
 
-<Main title={layer.title}>
-  <h1>{layer.title}</h1>
-  {
-    sections.map((section) => (
-      <section>
-        <h2 class="section-title">{section.title}</h2>
-        <Card items={section.items} />
-      </section>
-    ))
-  }
-</Main>
+<Layer node={node} />

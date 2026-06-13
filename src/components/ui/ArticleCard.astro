@@ -1,0 +1,75 @@
+---
+import { Icon } from 'astro-icon/components';
+import type { ArticleNode } from '@/utils/tree';
+
+interface Props {
+  node: ArticleNode;
+}
+
+const { node } = Astro.props;
+---
+
+<a class="article-item" href={node.id}>
+  <span class="article-item-icon">
+    <Icon name="mdi:file-document-outline" size={15} />
+  </span>
+  <h3>{node.title}</h3>
+  {node.description && <p class="article-item-desc">{node.description}</p>}
+</a>
+
+<style>
+  .article-item {
+    display: grid;
+
+    grid-template-columns: max-content 1fr;
+
+    gap: 0.625rem;
+    align-items: center;
+
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 1rem;
+
+    color: var(--text-color);
+    text-decoration: none;
+
+    transition: border-color 0.12s ease;
+  }
+
+  .article-item:hover {
+    border-color: var(--accent-color);
+  }
+
+  .article-item-icon {
+    grid-column: 1;
+    grid-row: 1;
+
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+
+    display: grid;
+    place-items: center;
+
+    color: var(--accent-color);
+    background-color: var(--accent-soft);
+  }
+
+  .article-item h3 {
+    grid-column: 2;
+    grid-row: 1;
+
+    font-size: 0.90rem;
+    font-weight: 700;
+    margin: 0;
+  }
+
+  .article-item-desc {
+    grid-column: 2;
+    grid-row: 2;
+
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    margin: 0;
+  }
+</style>

@@ -4,6 +4,7 @@
 @import '@fontsource/inconsolata/400.css';
 @import '@fontsource/inconsolata/700.css';
 
+@import "./article.css";
 @import "./codeblock.css";
 
 :where(html) {
@@ -12,36 +13,50 @@
 
   --overlay-z: 1000;
   --control-z: 1500;
+
+  --radius: 7px;
+  --content-width: 1000px;
+  --sidebar-width: 320px;
 }
 
 html.light {
   --text-color: var(--ctp-latte-text);
   --invert-text-color: var(--ctp-latte-mantle);
+  --text-muted: var(--ctp-latte-subtext0);
+
   --background-color: var(--ctp-latte-base);
   --invert-background-color: var(--ctp-latte-text);
   --control-background-color: var(--ctp-latte-mantle);
-  --border-color: var(--ctp-latte-overlay0);
+
   --accent-color: var(--ctp-latte-sky);
+  --accent-soft: color-mix(in srgb, var(--accent-color) 20%, var(--background-color));
+
+  --border-color: var(--ctp-latte-overlay0);
   --link-color: var(--ctp-latte-sapphire);
 }
 
 html.dark {
   --text-color: var(--ctp-mocha-text);
   --invert-text-color: var(--ctp-mocha-mantle);
+  --text-muted: var(--ctp-mocha-subtext0);
+
   --background-color: var(--ctp-mocha-base);
   --invert-background-color: var(--ctp-mocha-text);
   --control-background-color: var(--ctp-mocha-mantle);
-  --border-color: var(--ctp-mocha-overlay0);
+
   --accent-color: var(--ctp-mocha-sky);
+  --accent-soft: color-mix(in srgb, var(--accent-color) 20%, var(--background-color));
+
+  --border-color: var(--ctp-mocha-overlay0);
   --link-color: var(--ctp-mocha-sapphire);
 }
 
 html.switch * {
-  /* theme transition */
+  /* force theme transition */
   transition:
     color 0.2s ease-in-out,
     background-color 0.2s ease-in-out,
-    border-color 0.2s ease-in-out;
+    border-color 0.2s ease-in-out !important;
 }
 
 body {
@@ -58,60 +73,8 @@ body {
   font-weight: 400;
 }
 
+*,
 *::before,
 *::after {
   box-sizing: border-box;
-}
-
-
-table {
-  border-collapse: collapse;
-
-  th,
-  td {
-    border: 1px solid var(--border-color);
-    padding: 0.5em 1em;
-  }
-}
-
-a {
-  text-decoration: none;
-  color: var(--link-color);
-}
-
-
-.astro-code,
-code {
-  color: var(--text-color);
-  background-color: var(--control-background-color);
-  border-radius: 4px;
-}
-
-code {
-  padding: 0.2rem 0.4rem;
-}
-
-.astro-code {
-  padding: 0.8rem;
-}
-
-.astro-code>code {
-  padding: 0;
-}
-
-html.dark .astro-code span {
-  /* eslint-disable css/no-important -- library override */
-  color: var(--shiki-dark) !important; 
-}
-
-html.light .astro-code span {
-  /* eslint-disable css/no-important -- library override */
-  color: var(--shiki-light) !important; 
-}
-
-blockquote {
-  border-left: 4px solid var(--accent-color);
-  margin: 0;
-  padding-left: 1em;
-  color: var(--text-color);
 }

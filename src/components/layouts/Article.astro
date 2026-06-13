@@ -1,0 +1,42 @@
+---
+import Main from '@/components/layouts/Main.astro';
+import Content from '@/components/layouts/Content.astro';
+import Breadcrumb from '@/components/ui/Breadcrumb.astro';
+import Toc from '@/components/ui/Toc.astro';
+import type { TocItem } from '@/utils/toc';
+
+interface Props {
+  /** <title> 用のページタイトル */
+  pageTitle: string;
+  /** パンくず生成用の記事 id */
+  breadcrumbId: string;
+  /** 本文上部に表示する見出し */
+  title: string;
+  /** 右側の目次アイテム */
+  tocItems: TocItem[];
+}
+
+const { pageTitle, breadcrumbId, title, tocItems } = Astro.props;
+---
+
+<Main title={pageTitle}>
+  <Content>
+    <Fragment slot="header">
+      <Breadcrumb id={breadcrumbId} />
+      <h1 class="article-title">{title}</h1>
+    </Fragment>
+
+    <div class="md" slot="body">
+      <slot />
+    </div>
+
+    <Toc slot="toc" title="目次" items={tocItems} />
+  </Content>
+</Main>
+
+<style>
+  .article-title {
+    font-size: 1.95em;
+    font-weight: 700;
+  }
+</style>

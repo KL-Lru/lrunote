@@ -1,24 +1,34 @@
 ---
 import type { GetStaticPaths } from 'astro';
-import Main from '@/components/layouts/Main.astro';
+import Article from '@/components/layouts/Article.astro';
 import { articleCollection } from '@/utils/articles';
+import type { TocItem } from '@/utils/toc';
 import { render } from 'astro:content';
 
 export const getStaticPaths = (async () => {
   const collection = await articleCollection();
 
-  return collection.map((article) => {
-    return {
-      params: { slug: article.slug },
-      props: { entry: article },
-    };
-  });
+  return collection.map((article) => ({
+    params: { slug: article.slug },
+    props: { entry: article },
+  }));
 }) satisfies GetStaticPaths;
 
 const { entry } = Astro.props;
-const { Content } = await render(entry);
+const { Content: Body, headings } = await render(entry);
+
+const bodyTitle = headings.find((heading) => heading.depth === 1)?.text;
+const title = bodyTitle ?? entry.data.title;
+
+const tocItems: TocItem[] = headings
+  .filter((heading) => heading.depth >= 2 && heading.depth <= 4)
+  .map((heading) => ({
+    label: heading.text,
+    targetId: heading.slug,
+    depth: heading.depth - 1,
+  }));
 ---
 
-<Main title={entry.data.title}>
-  <Content />
-</Main>
+<Article pageTitle={entry.data.title} breadcrumbId={entry.id} title={title} tocItems={tocItems}>
+  <Body />
+</Article>

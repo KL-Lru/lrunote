@@ -1,90 +1,47 @@
 ---
 import { clean } from '@/utils/paths';
-import { layerCollection, findLayer } from '@/utils/layers';
-import SidebarLayer from './SidebarLayer.astro';
+import { siteTree } from '@/utils/tree';
+import SidebarNode from './SidebarNode.astro';
 
 const currentPath = clean(Astro.url.pathname);
-const currentLayerPath = await findLayer(currentPath);
-
-const layers = await layerCollection();
+const tree = await siteTree();
 ---
 
-<aside id={'sidebar'} class={'sidebar'} data-current-path={currentLayerPath}>
-  <div class={'sidebarContainer'}>
-    {layers.map((layer) => <SidebarLayer layer={layer} />)}
-  </div>
+<aside id="sidebar" class="sidebar" data-current={currentPath}>
+  <div class="sidebar-title">Lru Note</div>
+  <nav class="tree">
+    {tree.children.map((node) => <SidebarNode node={node} currentPath={currentPath} />)}
+  </nav>
 </aside>
 
-<script>
-  import { DATA_ATTRS as DATA, switchToPath } from '@/utils/sidebar';
-
-  function onItemClick(event: Event) {
-    event.preventDefault();
-    const target = event.target as HTMLElement;
-    const button = target.closest(`[${DATA.TARGET_PATH}]`);
-
-    if (!button) {
-      return;
-    }
-
-    const path = button.getAttribute(DATA.TARGET_PATH)!;
-    switchToPath(path);
-  }
-
-  function initSidebar() {
-    document.querySelectorAll(`[${DATA.TARGET_PATH}]`).forEach((button) => {
-      button.addEventListener('click', onItemClick);
-    });
-  }
-
-  initSidebar();
-  document.addEventListener('astro:page-load', initSidebar);
-</script>
 
 <style>
   .sidebar {
     height: 100%;
-    width: 250px;
-    padding: 1rem 2rem;
+    width: var(--sidebar-width);
 
     color: var(--text-color);
     background-color: var(--control-background-color);
+    border-right: 1px solid var(--border-color);
 
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 1rem 0.625rem 2.5rem;
+  }
+
+  .sidebar-title {
+    font-size: 0.66rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 0.25rem 0.625rem 0.625rem;
+  }
+
+  .tree {
     display: flex;
     flex-direction: column;
-
-    border-right: 1px solid var(--border-color);
-    overflow: hidden;
-  }
-
-  .sidebarContainer {
-    position: relative;
-    flex-grow: 1;
-    overflow: hidden;
-  }
-
-  @keyframes slideInFromLeft {
-    0% {
-      transform: translateX(-100%);
-      opacity: 0;
-    }
-
-    100% {
-      transform: translateX(0);
-      opacity: 1;
-    }
-  }
-
-  @keyframes slideInFromRight {
-    0% {
-      transform: translateX(100%);
-      opacity: 0;
-    }
-
-    100% {
-      transform: translateX(0);
-      opacity: 1;
-    }
+    gap: 1px;
   }
 
   @media (width < 1024px) {
@@ -93,7 +50,7 @@ const layers = await layerCollection();
       top: 0;
       bottom: 0;
       left: -100%;
-
+      height: 100%;
       z-index: var(--control-z);
 
       transition: left 0.2s ease-out;

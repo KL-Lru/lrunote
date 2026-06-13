@@ -1,9 +1,39 @@
 <div class="content">
-  <slot />
+    <div class="content-body">
+        <slot name="header" />
+        <slot name="body" />
+    </div>
+
+    <div class="content-nav">
+        <slot name="toc" />
+    </div>
 </div>
 
 <style>
   .content {
-    padding: 1rem 3rem;
+      display: flex;
+      position: relative;
+
+      width: 100%;
+      max-width: calc(var(--content-width) + var(--sidebar-width) + 10rem);
+      gap: 3rem;
+      padding: 3rem;
+      margin: 0 auto;
+  }
+
+  .content-body {
+    flex: 1;
+    min-width: 0;
+    max-width: var(--content-width);
+  }
+
+  .content-nav {
+      max-width: var(--sidebar-width);
+  }
+
+  @media (width < 1640px) {
+      .content-nav {
+          display: none;
+      }
   }
 </style>

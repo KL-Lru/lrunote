@@ -1,93 +1,74 @@
 export const SIDEBAR_ID = 'sidebar';
-
-export const DATA_ATTRS = {
-  PATH: 'data-path',
-  CURRENT_PATH: 'data-current-path',
-  TARGET_PATH: 'data-target-path',
-  ACTIVE: 'data-active',
-  SLIDE_DIRECTION: 'data-slide-direction',
-};
+const STORAGE_KEY = 'sidebar-open';
 
 /**
- * Sidebar 要素を取得する
+ * localStorage に保存された開いているレイヤー id の集合を読み込む
  */
-function sidebarElement() {
-  return document.getElementById(SIDEBAR_ID);
-}
+function loadOpenState(): Set<string> {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return new Set();
+    const parsed = JSON.parse(raw);
 
-/**
- * Sidebar レイヤー要素を取得する
- */
-function sidebarLayers() {
-  const sidebar = sidebarElement();
-
-  return sidebar ? Array.from(sidebar.querySelectorAll(`[${DATA_ATTRS.PATH}]`)) : [];
-}
-
-/**
- * 現在アクティブなレイヤーのパスを取得する
- * @returns
- */
-function currentPath() {
-  return sidebarElement()?.getAttribute(DATA_ATTRS.CURRENT_PATH) || '';
-}
-
-/**
- * レイヤーをアクティブにする
- * @param layer
- * @param direction
- */
-function activateLayer(layer: Element, direction: 'left' | 'right') {
-  layer.setAttribute(DATA_ATTRS.ACTIVE, 'true');
-  layer.setAttribute(DATA_ATTRS.SLIDE_DIRECTION, direction);
-
-  const resetAnimation = () => {
-    layer.removeAttribute(DATA_ATTRS.SLIDE_DIRECTION);
-    layer.removeEventListener('animationend', resetAnimation);
-  };
-
-  layer.addEventListener('animationend', resetAnimation);
-  sidebarElement()?.setAttribute(DATA_ATTRS.CURRENT_PATH, layer.getAttribute(DATA_ATTRS.PATH) || '');
-}
-
-/**
- * レイヤーを非アクティブにする
- * @param layer
- */
-function deactivateLayer(layer: Element) {
-  layer.setAttribute(DATA_ATTRS.ACTIVE, 'false');
-}
-
-/**
- * 移動方向を計算する
- * @param currentPath
- * @param targetPath
- * @returns
- */
-function movementDirection(currentPath: string, targetPath: string): 'left' | 'right' {
-  if (currentPath.includes(targetPath)) {
-    // 親カテゴリへ移動
-    return 'right';
-  } else {
-    // 子カテゴリへ移動
-    return 'left';
+    return new Set(Array.isArray(parsed) ? parsed : []);
+  } catch {
+    return new Set();
   }
 }
 
 /**
- * 指定されたパスに切り替える
- * @param targetPath
+ * 開いているレイヤー id の集合を localStorage に保存する
  */
-export function switchToPath(targetPath: string) {
-  const current = currentPath();
-  const direction = movementDirection(current, targetPath);
+function saveOpenState(state: Set<string>) {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify([...state]));
+  } catch {
+    // 保存失敗は無視する
+  }
+}
 
-  sidebarLayers().forEach((layer) => {
-    const layerPath = layer.getAttribute(DATA_ATTRS.PATH);
-    if (layerPath === targetPath) {
-      activateLayer(layer, direction);
-    } else {
-      deactivateLayer(layer);
+/**
+ * サイドバーツリーの開閉を初期化する。
+ * サーバー側で現在地の祖先は data-open="true" 済み。これに保存済みの開閉状態をマージし、
+ * 開閉トグルにイベントを登録する
+ */
+export function initSidebar() {
+  const sidebar = document.getElementById(SIDEBAR_ID);
+  if (!sidebar) return;
+
+  const stored = loadOpenState();
+
+  sidebar.querySelectorAll<HTMLElement>('.folder-node[data-layer-id]').forEach((node) => {
+    const id = node.dataset.layerId;
+    // 保存済みで開いていたものを復元する（現在地の祖先はサーバー側で既に開いている）
+    if (id && stored.has(id)) {
+      node.dataset.open = 'true';
     }
   });
+
+  sidebar.querySelectorAll<HTMLButtonElement>('[data-toggle]').forEach((button) => {
+    button.addEventListener('click', onToggle);
+  });
+}
+
+function onToggle(event: Event) {
+  event.preventDefault();
+
+  const button = event.currentTarget as HTMLElement;
+  const node = button.closest<HTMLElement>('.folder-node');
+  if (!node) return;
+
+  const willOpen = node.dataset.open !== 'true';
+  node.dataset.open = String(willOpen);
+
+  const id = node.dataset.layerId;
+  if (!id) return;
+
+  const stored = loadOpenState();
+  if (willOpen) {
+    stored.add(id);
+  } else {
+    stored.delete(id);
+  }
+  saveOpenState(stored);
 }
