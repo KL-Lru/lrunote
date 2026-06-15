@@ -1,15 +1,11 @@
 @import "@catppuccin/palette/css/catppuccin.css";
-@import '@fontsource/biz-udpgothic/400.css';
-@import '@fontsource/biz-udpgothic/700.css';
-@import '@fontsource/inconsolata/400.css';
-@import '@fontsource/inconsolata/700.css';
 
 @import "./article.css";
 @import "./codeblock.css";
 
 :where(html) {
-  --font-sans: 'BIZ UDPGothic', sans-serif;
-  --font-mono: 'Inconsolata', monospace;
+  --font-sans: var(--font-udp), sans-serif;
+  --font-mono: var(--font-console), monospace;
 
   --overlay-z: 1000;
   --control-z: 1500;

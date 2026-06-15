@@ -1,4 +1,6 @@
 ---
+import { Font } from "astro:assets";
+
 import TopBar from '@/components/controls/TopBar.astro';
 import Sidebar from '@/components/controls/Sidebar.astro';
 import SearchModal from '@/components/controls/SearchModal.astro';
@@ -15,6 +17,10 @@ const { title } = props;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/favicon.svg" sizes="any" type="image/svg+xml" />
+    <Font cssVariable="--font-udp" preload />
+    <Font cssVariable="--font-console" preload />
+
     <title>{title}</title>
     <script is:inline set:html={initialize} />
   </head>

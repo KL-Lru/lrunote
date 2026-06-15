@@ -2,7 +2,7 @@
 import { type Plugin } from 'vite';
 import { buildSync } from 'esbuild';
 
-import { defineConfig } from 'astro/config';
+import { defineConfig, fontProviders } from 'astro/config';
 import icon from 'astro-icon';
 import mdx from '@astrojs/mdx';
 import pagefind from 'astro-pagefind';
@@ -61,4 +61,20 @@ export default defineConfig({
       ],
     ],
   },
+  fonts: [
+    {
+      provider: fontProviders.fontsource(),
+      name: 'BIZ UDPGothic',
+      weights: ['400', '700'],
+      cssVariable: '--font-udp',
+      fallbacks: [],
+    },
+    {
+      provider: fontProviders.fontsource(),
+      name: 'Inconsolata',
+      weights: ['400', '700'],
+      cssVariable: '--font-console',
+      fallbacks: [],
+    },
+  ],
 });

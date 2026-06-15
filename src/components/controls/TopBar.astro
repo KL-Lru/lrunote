@@ -2,6 +2,8 @@
 import SidebarToggle from './SidebarToggle.astro';
 import SearchToggle from './SearchToggle.astro';
 import ThemeToggle from './ThemeToggle.astro';
+
+import Logomark from '@/assets/images/logo.svg';
 ---
 
 <header class="header">
@@ -9,7 +11,7 @@ import ThemeToggle from './ThemeToggle.astro';
 
   <div>
     <a href="/" class="logo">
-      <span>Lru Note</span>
+        <Logomark height="32px" width="110px" />
     </a>
   </div>
 
@@ -37,11 +39,10 @@ import ThemeToggle from './ThemeToggle.astro';
   }
 
   .logo {
-    font-weight: bold;
-    font-size: 1.3rem;
-
-    color: var(--text-color);
-    text-decoration: none;
+      display: flex;
+      align-items: center;
+        color: var(--text-color);
+        text-decoration: none;
   }
 
   .controls {

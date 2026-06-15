@@ -8,7 +8,7 @@ const tree = await siteTree();
 ---
 
 <aside id="sidebar" class="sidebar" data-current={currentPath}>
-  <div class="sidebar-title">Lru Note</div>
+  <div class="sidebar-title">Index</div>
   <nav class="tree">
     {tree.children.map((node) => <SidebarNode node={node} currentPath={currentPath} />)}
   </nav>

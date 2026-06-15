@@ -936,20 +936,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fontsource/biz-udpgothic@npm:^5.2.9":
-  version: 5.2.9
-  resolution: "@fontsource/biz-udpgothic@npm:5.2.9"
-  checksum: 10c0/75dcc7d7e8325c6117cd76bd3fe7fec23405dcca5359524ec72833c3250385b06f3807d34be56ab967ed498c1d8261cd273ef74d31c43ca0321abf3e57e6faee
-  languageName: node
-  linkType: hard
-
-"@fontsource/inconsolata@npm:^5.2.8":
-  version: 5.2.8
-  resolution: "@fontsource/inconsolata@npm:5.2.8"
-  checksum: 10c0/2d5788a41bc60d7d00e5ba75689241a5146a4f60a3ec79d14dd2a0a5aa1ec2e697aa6aed3d1c0564208d32916aea588535f16a57f7a775b554d7f9adb03ad64a
-  languageName: node
-  linkType: hard
-
 "@fortawesome/fontawesome-free@npm:^6.0.0":
   version: 6.7.2
   resolution: "@fortawesome/fontawesome-free@npm:6.7.2"
@@ -7992,8 +7978,6 @@ __metadata:
     "@eslint/css": "npm:^1.2.0"
     "@eslint/js": "npm:^10.0.1"
     "@eslint/markdown": "npm:^8.0.1"
-    "@fontsource/biz-udpgothic": "npm:^5.2.9"
-    "@fontsource/inconsolata": "npm:^5.2.8"
     "@iconify-json/mdi": "npm:^1.2.3"
     "@stylistic/eslint-plugin": "npm:^5.10.0"
     "@textlint-ja/textlint-rule-no-synonyms": "npm:^1.3.0"
