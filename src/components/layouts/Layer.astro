@@ -1,12 +1,12 @@
 ---
-import Main from '@/components/layouts/Main.astro';
-import Content from '@/components/layouts/Content.astro';
-import Breadcrumb from '@/components/ui/Breadcrumb.astro';
-import ArticleCard from '@/components/ui/ArticleCard.astro';
-import FolderBlock from '@/components/ui/FolderBlock.astro';
-import Toc from '@/components/ui/Toc.astro';
-import type { LayerNode } from '@/utils/tree';
-import type { TocItem } from '@/utils/toc';
+import Main from "@/components/layouts/Main.astro";
+import Content from "@/components/layouts/Content.astro";
+import Breadcrumb from "@/components/ui/Breadcrumb.astro";
+import ArticleCard from "@/components/ui/ArticleCard.astro";
+import FolderBlock from "@/components/ui/FolderBlock.astro";
+import Toc from "@/components/ui/Toc.astro";
+import type { LayerNode } from "@/utils/tree";
+import type { TocItem } from "@/utils/toc";
 
 interface Props {
   node: LayerNode;
@@ -14,13 +14,15 @@ interface Props {
 
 const { node } = Astro.props;
 
-const directArticles = node.children.filter((child) => child.type === 'article');
-const subFolders = node.children.filter((child) => child.type === 'layer');
+const directArticles = node.children.filter(
+  (child) => child.type === "article",
+);
+const subFolders = node.children.filter((child) => child.type === "layer");
 
 // 最上位セクション（FolderBlock depth 0）を目次アイテムに整形する
 const sectionItems: TocItem[] = subFolders.map((folder) => ({
   label: folder.title,
-  targetId: 'sec-' + folder.id.replace(/\//g, '-'),
+  targetId: "sec-" + folder.id.replace(/\//g, "-"),
   depth: 1,
 }));
 ---
@@ -33,18 +35,22 @@ const sectionItems: TocItem[] = subFolders.map((folder) => ({
     </Fragment>
 
     <Fragment slot="body">
-        <div class="layer-items">
+      <div class="layer-items">
         {
-            directArticles.length > 0 && (
-              <div class="layer-articles">
-                {directArticles.map((article) => (
-                  <ArticleCard node={article} />
-                ))}
-              </div>
-            )
+          directArticles.length > 0 && (
+            <div class="layer-articles">
+              {directArticles.map((article) => (
+                <ArticleCard node={article} />
+              ))}
+            </div>
+          )
         }
-        {subFolders.map((folder) => <FolderBlock node={folder} depth={0} defaultOpen={true} />)}
-        </div>
+        {
+          subFolders.map((folder) => (
+            <FolderBlock node={folder} depth={0} defaultOpen={true} />
+          ))
+        }
+      </div>
     </Fragment>
 
     <Toc slot="toc" title="セクション" items={sectionItems} />
@@ -52,27 +58,27 @@ const sectionItems: TocItem[] = subFolders.map((folder) => ({
 </Main>
 
 <script>
-  import { initCategory } from '@/utils/category';
+  import { initCategory } from "@/utils/category";
 
   initCategory();
-  document.addEventListener('astro:page-load', initCategory);
+  document.addEventListener("astro:page-load", initCategory);
 </script>
 
 <style>
-    .layer-title {
-        font-size: 1.95em;
-        font-weight: 700;
-    }
+  .layer-title {
+    font-size: 1.95em;
+    font-weight: 700;
+  }
 
-    .layer-items {
-        display: flex;
-        flex-direction: column;
-        gap: 3rem;
-    }
+  .layer-items {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
 
-    .layer-articles {
-        display: flex;
-        flex-direction: column;
-        gap: 0.625rem;
-    }
+  .layer-articles {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
 </style>

@@ -1,8 +1,8 @@
 ---
-import Layer from '@/components/layouts/Layer.astro';
-import { layerTree } from '@/utils/tree';
+import Layer from "@/components/layouts/Layer.astro";
+import { layerTree } from "@/utils/tree";
 
-const node = (await layerTree('/'))!;
+const node = (await layerTree("/"))!;
 ---
 
 <Layer node={node} />

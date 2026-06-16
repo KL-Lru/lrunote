@@ -1,6 +1,6 @@
 ---
-import type { GetStaticPaths } from 'astro';
-import { articleCollection } from '@/utils/articles';
+import type { GetStaticPaths } from "astro";
+import { articleCollection } from "@/utils/articles";
 
 export const getStaticPaths = (async () => {
   const collection = await articleCollection();

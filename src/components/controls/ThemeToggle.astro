@@ -1,43 +1,43 @@
 ---
-import { Icon } from 'astro-icon/components';
+import { Icon } from "astro-icon/components";
 ---
 
-<button id="theme-toggle" class={'toggleButton'}>
-  <div class={'iconLight'}>
+<button id="theme-toggle" class={"toggleButton"}>
+  <div class={"iconLight"}>
     <Icon name="mdi:weather-sunny" />
   </div>
-  <div class={'iconDark'}>
+  <div class={"iconDark"}>
     <Icon name="mdi:moon-and-stars" />
   </div>
 </button>
 
 <script>
-  import { getTheme, setTheme } from '@/utils/theme';
+  import { getTheme, setTheme } from "@/utils/theme";
 
-  const toggleElement = document.querySelector('#theme-toggle');
+  const toggleElement = document.querySelector("#theme-toggle");
 
   if (toggleElement) {
-    toggleElement.addEventListener('click', () => {
+    toggleElement.addEventListener("click", () => {
       const html = document.documentElement;
 
-      if (html.classList.contains('switch')) {
+      if (html.classList.contains("switch")) {
         return;
       }
 
-      html.classList.add('switch');
+      html.classList.add("switch");
 
-      if (getTheme() === 'dark') {
-        setTheme('light');
+      if (getTheme() === "dark") {
+        setTheme("light");
       } else {
-        setTheme('dark');
+        setTheme("dark");
       }
 
       const handleTransitionEnd = () => {
-        html.classList.remove('switch');
-        html.removeEventListener('transitionend', handleTransitionEnd);
+        html.classList.remove("switch");
+        html.removeEventListener("transitionend", handleTransitionEnd);
       };
 
-      html.addEventListener('transitionend', handleTransitionEnd);
+      html.addEventListener("transitionend", handleTransitionEnd);
     });
   }
 </script>

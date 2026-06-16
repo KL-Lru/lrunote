@@ -49,6 +49,7 @@ html.dark {
 
 html.switch * {
   /* force theme transition */
+  /* eslint-disable css/no-important -- enforcement for theme transition */
   transition:
     color 0.2s ease-in-out,
     background-color 0.2s ease-in-out,

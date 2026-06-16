@@ -1,13 +1,13 @@
 ---
 import { Font } from "astro:assets";
 
-import TopBar from '@/components/controls/TopBar.astro';
-import Sidebar from '@/components/controls/Sidebar.astro';
-import SearchModal from '@/components/controls/SearchModal.astro';
+import TopBar from "@/components/controls/TopBar.astro";
+import Sidebar from "@/components/controls/Sidebar.astro";
+import SearchModal from "@/components/controls/SearchModal.astro";
 
-import initialize from '@/assets/scripts/init?inline-bundle';
-import initializeAfterDOM from '@/assets/scripts/initAfterDOM?inline-bundle';
-import '@/assets/styles/globals.css';
+import initialize from "@/assets/scripts/init?inline-bundle";
+import initializeAfterDOM from "@/assets/scripts/initAfterDOM?inline-bundle";
+import "@/assets/styles/globals.css";
 
 const props = Astro.props.frontmatter || Astro.props;
 const { title } = props;
@@ -50,8 +50,8 @@ const { title } = props;
     width: 100vw;
 
     grid-template-areas:
-      'topbar topbar'
-      'sidebar main';
+      "topbar topbar"
+      "sidebar main";
     grid-template-columns: min-content 1fr;
     grid-template-rows: min-content 1fr;
   }
@@ -85,7 +85,7 @@ const { title } = props;
       opacity 0.2s ease-out,
       visibility 0.2s ease-out;
   }
-  #overlay[data-active='true'] {
+  #overlay[data-active="true"] {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
@@ -94,8 +94,8 @@ const { title } = props;
   @media (width < 1024px) {
     .container {
       grid-template-areas:
-        'topbar'
-        'main';
+        "topbar"
+        "main";
       grid-template-columns: 1fr;
       grid-template-rows: min-content 1fr;
     }

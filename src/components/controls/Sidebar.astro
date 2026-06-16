@@ -1,7 +1,7 @@
 ---
-import { clean } from '@/utils/paths';
-import { siteTree } from '@/utils/tree';
-import SidebarNode from './SidebarNode.astro';
+import { clean } from "@/utils/paths";
+import { siteTree } from "@/utils/tree";
+import SidebarNode from "./SidebarNode.astro";
 
 const currentPath = clean(Astro.url.pathname);
 const tree = await siteTree();
@@ -10,10 +10,13 @@ const tree = await siteTree();
 <aside id="sidebar" class="sidebar" data-current={currentPath}>
   <div class="sidebar-title">Index</div>
   <nav class="tree">
-    {tree.children.map((node) => <SidebarNode node={node} currentPath={currentPath} />)}
+    {
+      tree.children.map((node) => (
+        <SidebarNode node={node} currentPath={currentPath} />
+      ))
+    }
   </nav>
 </aside>
-
 
 <style>
   .sidebar {
@@ -56,7 +59,7 @@ const tree = await siteTree();
       transition: left 0.2s ease-out;
     }
 
-    .sidebar[data-active='true'] {
+    .sidebar[data-active="true"] {
       left: 0;
     }
   }

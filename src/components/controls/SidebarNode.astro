@@ -1,6 +1,6 @@
 ---
-import { Icon } from 'astro-icon/components';
-import type { TreeNode } from '@/utils/tree';
+import { Icon } from "astro-icon/components";
+import type { TreeNode } from "@/utils/tree";
 
 interface Props {
   node: TreeNode;
@@ -13,13 +13,13 @@ const ICON_SIZE = 15;
 const isActive = currentPath === node.id;
 // 現在地を含むレイヤーは初期状態で開く
 const isOpen =
-  node.type === 'layer' &&
-  (currentPath === node.id || currentPath.startsWith(node.id + '/'));
+  node.type === "layer" &&
+  (currentPath === node.id || currentPath.startsWith(node.id + "/"));
 ---
 
 {
-  node.type === 'article' ? (
-    <a class:list={['tree-node', { active: isActive }]} href={node.id}>
+  node.type === "article" ? (
+    <a class:list={["tree-node", { active: isActive }]} href={node.id}>
       <span class="node-caret" aria-hidden="true" />
       <span class="node-icon">
         <Icon name="mdi:file-document-outline" size={ICON_SIZE} />
@@ -28,9 +28,14 @@ const isOpen =
     </a>
   ) : (
     <div class="folder-node" data-layer-id={node.id} data-open={String(isOpen)}>
-      <div class:list={['tree-node', { active: isActive }]}>
+      <div class:list={["tree-node", { active: isActive }]}>
         {node.children.length > 0 ? (
-          <button type="button" class="node-caret" data-toggle aria-label="開閉">
+          <button
+            type="button"
+            class="node-caret"
+            data-toggle
+            aria-label="開閉"
+          >
             <Icon name="mdi:chevron-right" size={12} />
           </button>
         ) : (
@@ -38,8 +43,16 @@ const isOpen =
         )}
         <a class="node-link" href={node.id}>
           <span class="node-icon">
-            <Icon name="mdi:folder-outline" class="ico-closed" size={ICON_SIZE} />
-            <Icon name="mdi:folder-open-outline" class="ico-open" size={ICON_SIZE} />
+            <Icon
+              name="mdi:folder-outline"
+              class="ico-closed"
+              size={ICON_SIZE}
+            />
+            <Icon
+              name="mdi:folder-open-outline"
+              class="ico-open"
+              size={ICON_SIZE}
+            />
           </span>
           <span class="node-label">{node.title}</span>
         </a>
@@ -101,7 +114,7 @@ const isOpen =
     transition: transform 0.15s ease;
   }
 
-  .folder-node[data-open='true'] > .tree-node .node-caret {
+  .folder-node[data-open="true"] > .tree-node .node-caret {
     transform: rotate(90deg);
   }
 
@@ -134,11 +147,11 @@ const isOpen =
     display: none;
   }
 
-  .folder-node[data-open='true'] > .tree-node .node-icon .ico-open {
+  .folder-node[data-open="true"] > .tree-node .node-icon .ico-open {
     display: block;
   }
 
-  .folder-node[data-open='true'] > .tree-node .node-icon .ico-closed {
+  .folder-node[data-open="true"] > .tree-node .node-icon .ico-closed {
     display: none;
   }
 
@@ -155,7 +168,7 @@ const isOpen =
     transition: grid-template-rows 0.2s ease;
   }
 
-  .folder-node[data-open='true'] > .subtree-wrap {
+  .folder-node[data-open="true"] > .subtree-wrap {
     grid-template-rows: 1fr;
   }
 

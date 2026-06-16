@@ -1,7 +1,7 @@
 ---
-import { Icon } from 'astro-icon/components';
-import ArticleCard from './ArticleCard.astro';
-import type { LayerNode } from '@/utils/tree';
+import { Icon } from "astro-icon/components";
+import ArticleCard from "./ArticleCard.astro";
+import type { LayerNode } from "@/utils/tree";
 
 interface Props {
   node: LayerNode;
@@ -12,20 +12,26 @@ interface Props {
 
 const { node, depth, defaultOpen, root = true } = Astro.props;
 
-const articles = node.children.filter((child) => child.type === 'article');
-const subFolders = node.children.filter((child) => child.type === 'layer');
+const articles = node.children.filter((child) => child.type === "article");
+const subFolders = node.children.filter((child) => child.type === "layer");
 
 // 最上位セクションのみアンカー対象（セクションナビからのジャンプ用）
-const sectionId = depth === 0 ? 'sec-' + node.id.replace(/\//g, '-') : undefined;
+const sectionId =
+  depth === 0 ? "sec-" + node.id.replace(/\//g, "-") : undefined;
 ---
 
 <section
-  class:list={['folder-block', root && 'folder-root']}
+  class:list={["folder-block", root && "folder-root"]}
   id={sectionId}
   data-open={String(defaultOpen)}
 >
-  <div class={'folder-bar'}>
-    <button type="button" class="folder-toggle" data-folder-toggle aria-expanded={defaultOpen}>
+  <div class={"folder-bar"}>
+    <button
+      type="button"
+      class="folder-toggle"
+      data-folder-toggle
+      aria-expanded={defaultOpen}
+    >
       <span class="folder-caret">
         <Icon name="mdi:chevron-right" size={12} />
       </span>
@@ -35,8 +41,12 @@ const sectionId = depth === 0 ? 'sec-' + node.id.replace(/\//g, '-') : undefined
         <Icon name="mdi:folder-open-outline" class="icon-open" size={15} />
       </span>
 
-        <span class="folder-title">{node.title}</span>
-        {node.description && <span class="folder-description">{node.description}</span>}
+      <span class="folder-title">{node.title}</span>
+      {
+        node.description && (
+          <span class="folder-description">{node.description}</span>
+        )
+      }
     </button>
     <a class="folder-all" href={node.id}>
       すべて見る
@@ -47,13 +57,18 @@ const sectionId = depth === 0 ? 'sec-' + node.id.replace(/\//g, '-') : undefined
   <div class="folder-items-wrap">
     <div class="folder-items">
       {
-        articles.length > 0 && (articles.map((article) => (
-            <ArticleCard node={article} />
-          ))
-        )
+        articles.length > 0 &&
+          articles.map((article) => <ArticleCard node={article} />)
       }
       {
-        subFolders.map((folder) => <Astro.self node={folder} root={false} depth={depth + 1} defaultOpen={false} />)
+        subFolders.map((folder) => (
+          <Astro.self
+            node={folder}
+            root={false}
+            depth={depth + 1}
+            defaultOpen={false}
+          />
+        ))
       }
     </div>
   </div>
@@ -79,7 +94,7 @@ const sectionId = depth === 0 ? 'sec-' + node.id.replace(/\//g, '-') : undefined
     gap: 1rem;
     width: 100%;
 
-    font-size: 0.90rem;
+    font-size: 0.9rem;
     text-align: left;
     cursor: pointer;
 
@@ -91,12 +106,12 @@ const sectionId = depth === 0 ? 'sec-' + node.id.replace(/\//g, '-') : undefined
   }
 
   .folder-root > .folder-bar {
-      font-size: 1.0rem;
+    font-size: 1rem;
 
-      border: none;
-      border-bottom: 1px solid var(--border-color);
-      border-bottom-left-radius: 0;
-      border-bottom-right-radius: 0;
+    border: none;
+    border-bottom: 1px solid var(--border-color);
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
   }
 
   .folder-bar:hover {
@@ -152,11 +167,11 @@ const sectionId = depth === 0 ? 'sec-' + node.id.replace(/\//g, '-') : undefined
     display: none;
   }
 
-  .folder-block[data-open='true'] > .folder-bar .folder-icon .icon-open {
+  .folder-block[data-open="true"] > .folder-bar .folder-icon .icon-open {
     display: block;
   }
 
-  .folder-block[data-open='true'] > .folder-bar .folder-icon .icon-closed {
+  .folder-block[data-open="true"] > .folder-bar .folder-icon .icon-closed {
     display: none;
   }
 
@@ -168,15 +183,15 @@ const sectionId = depth === 0 ? 'sec-' + node.id.replace(/\//g, '-') : undefined
   }
 
   .folder-description {
-        font-size: 0.8rem;
-        color: var(--text-muted);
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 
-        grid-column: 3;
-        grid-row: 2;
-    }
+    grid-column: 3;
+    grid-row: 2;
+  }
 
   .folder-all {
     display: inline-flex;
@@ -203,7 +218,7 @@ const sectionId = depth === 0 ? 'sec-' + node.id.replace(/\//g, '-') : undefined
     transition: grid-template-rows 0.2s ease;
   }
 
-  .folder-block[data-open='true'] > .folder-items-wrap {
+  .folder-block[data-open="true"] > .folder-items-wrap {
     grid-template-rows: 1fr;
   }
 
@@ -220,7 +235,7 @@ const sectionId = depth === 0 ? 'sec-' + node.id.replace(/\//g, '-') : undefined
     border-left: 1px solid var(--border-color);
   }
 
-  .folder-block[data-open='true'] > .folder-bar .folder-caret {
+  .folder-block[data-open="true"] > .folder-bar .folder-caret {
     transform: rotate(90deg);
   }
 </style>

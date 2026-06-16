@@ -1,9 +1,9 @@
 ---
-import type { GetStaticPaths } from 'astro';
-import Article from '@/components/layouts/Article.astro';
-import { articleCollection } from '@/utils/articles';
-import type { TocItem } from '@/utils/toc';
-import { render } from 'astro:content';
+import type { GetStaticPaths } from "astro";
+import Article from "@/components/layouts/Article.astro";
+import { articleCollection } from "@/utils/articles";
+import type { TocItem } from "@/utils/toc";
+import { render } from "astro:content";
 
 export const getStaticPaths = (async () => {
   const collection = await articleCollection();
@@ -29,6 +29,11 @@ const tocItems: TocItem[] = headings
   }));
 ---
 
-<Article pageTitle={entry.data.title} breadcrumbId={entry.id} title={title} tocItems={tocItems}>
+<Article
+  pageTitle={entry.data.title}
+  breadcrumbId={entry.id}
+  title={title}
+  tocItems={tocItems}
+>
   <Body />
 </Article>

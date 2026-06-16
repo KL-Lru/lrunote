@@ -1,5 +1,5 @@
 ---
-import type { TocItem } from '@/utils/toc';
+import type { TocItem } from "@/utils/toc";
 
 interface Props {
   title: string;
@@ -14,7 +14,11 @@ const { title, items } = Astro.props;
     <nav class="toc" aria-label={title}>
       <div class="toc-title">{title}</div>
       {items.map((item) => (
-        <a href={`#${item.targetId}`} data-toc-link={item.targetId} style={`--toc-depth:${item.depth - 1}`}>
+        <a
+          href={`#${item.targetId}`}
+          data-toc-link={item.targetId}
+          style={`--toc-depth:${item.depth - 1}`}
+        >
           {item.label}
         </a>
       ))}
@@ -23,32 +27,34 @@ const { title, items } = Astro.props;
 }
 
 <script>
-import { initToc, currentTocLinks } from '@/utils/toc';
+  import { initToc, currentTocLinks } from "@/utils/toc";
 
-initToc();
+  initToc();
 
-function scrollToContent(tocLink: string | undefined) {
-  if (!tocLink) return;
+  function scrollToContent(tocLink: string | undefined) {
+    if (!tocLink) return;
 
-  const target = document.getElementById(tocLink);
-  if (!target) return;
+    const target = document.getElementById(tocLink);
+    if (!target) return;
 
-  // 折りたたみ可能なターゲット（レイヤーのセクション）は開いてからスクロールする
-  if (target.hasAttribute('data-open')) {
-    target.dataset.open = 'true';
-    target.querySelector('[data-folder-toggle]')?.setAttribute('aria-expanded', 'true');
+    // 折りたたみ可能なターゲット（レイヤーのセクション）は開いてからスクロールする
+    if (target.hasAttribute("data-open")) {
+      target.dataset.open = "true";
+      target
+        .querySelector("[data-folder-toggle]")
+        ?.setAttribute("aria-expanded", "true");
+    }
+
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-  target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-const links = currentTocLinks();
-links.forEach((link) => {
-  link.addEventListener('click', (event) => {
-    event.preventDefault();
-    scrollToContent(link.dataset.tocLink);
+  const links = currentTocLinks();
+  links.forEach((link) => {
+    link.addEventListener("click", (event) => {
+      event.preventDefault();
+      scrollToContent(link.dataset.tocLink);
+    });
   });
-});
 </script>
 
 <style>

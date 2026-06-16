@@ -1,31 +1,31 @@
 ---
-import { Icon } from 'astro-icon/components';
+import { Icon } from "astro-icon/components";
 ---
 
-<button id="sidebar-toggle" class={'toggleButton'}>
-  <div class={'buttonIcon'}>
+<button id="sidebar-toggle" class={"toggleButton"}>
+  <div class={"buttonIcon"}>
     <Icon name="mdi:menu" />
   </div>
 </button>
 
 <script>
-  import { activate, deactivate } from '@/utils/activate';
+  import { activate, deactivate } from "@/utils/activate";
 
-  const toggleElement = document.getElementById('sidebar-toggle');
-  const overlayElement = document.getElementById('overlay');
+  const toggleElement = document.getElementById("sidebar-toggle");
+  const overlayElement = document.getElementById("overlay");
 
   if (toggleElement && overlayElement) {
     const open = () => {
-      activate('overlay');
-      activate('sidebar');
+      activate("overlay");
+      activate("sidebar");
     };
     const close = () => {
-      deactivate('sidebar');
-      deactivate('overlay');
+      deactivate("sidebar");
+      deactivate("overlay");
     };
 
-    toggleElement.addEventListener('click', open);
-    overlayElement.addEventListener('click', close);
+    toggleElement.addEventListener("click", open);
+    overlayElement.addEventListener("click", close);
   }
 </script>
 

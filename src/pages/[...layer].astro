@@ -1,8 +1,8 @@
 ---
-import type { GetStaticPaths } from 'astro';
-import Layer from '@/components/layouts/Layer.astro';
-import { layerCollection } from '@/utils/layers';
-import { layerTree } from '@/utils/tree';
+import type { GetStaticPaths } from "astro";
+import Layer from "@/components/layouts/Layer.astro";
+import { layerCollection } from "@/utils/layers";
+import { layerTree } from "@/utils/tree";
 
 export const getStaticPaths = (async () => {
   const layers = await layerCollection();
