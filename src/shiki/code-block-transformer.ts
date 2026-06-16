@@ -1,5 +1,6 @@
 import type { ShikiTransformer } from 'shiki';
 import { h } from 'hastscript';
+import { fromHtml } from 'hast-util-from-html';
 import { icons } from '@iconify-json/mdi';
 
 const mdiIcons = icons.icons;
@@ -9,10 +10,11 @@ function mdiIcon(name: string, cls: string) {
   return h('svg',
     {
       class: cls,
-      width: '1em',
-      height: '1em',
+      width: '16px',
+      height: '16px',
+      viewBox: '0 0 24 24',
       fill: 'currentColor',
-    }, body);
+    }, fromHtml(body, { fragment: true }));
 }
 
 export function codeBlockTransformer(): ShikiTransformer {
@@ -27,7 +29,7 @@ export function codeBlockTransformer(): ShikiTransformer {
       const header = h('div', { class: 'code-block-header' }, [
         h('span', { class: 'code-block-lang' }, label),
         h('button', { class: 'code-block-copy', type: 'button' }, [
-          mdiIcon('copy', 'icon-copy'),
+          mdiIcon('content-copy', 'icon-copy'),
           mdiIcon('check', 'icon-check'),
         ]),
       ]);
