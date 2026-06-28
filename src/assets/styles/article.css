@@ -73,3 +73,8 @@
   text-decoration: underline;
   text-underline-offset: 4px;
 }
+
+.md .svg-inline {
+  color: var(--text-color);
+  width: 100%;
+}
