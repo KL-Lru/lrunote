@@ -1,0 +1,4 @@
+title = "Linux"
+description = "最も普及した一般的 OS の世界"
+
+order = ["partition"]

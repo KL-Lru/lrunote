@@ -1,0 +1,4 @@
+title = "Partition"
+description = "ディスクパーティション方式の特性と切り方"
+
+order = ["about", "master_boot_record"]
