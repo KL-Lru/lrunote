@@ -78,3 +78,17 @@
   color: var(--text-color);
   width: 100%;
 }
+
+.md .svg-inline>svg {
+  max-width: 100%;
+  height: auto;
+}
+
+.md .footnotes {
+  margin-top: 30px;
+  padding-top: 30px;
+  border-top: 1px solid var(--border-color);
+
+  font-size: 12px;
+  line-height: 1;
+}

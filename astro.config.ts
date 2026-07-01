@@ -33,6 +33,10 @@ export default defineConfig({
     remarkPlugins: [
       remarkInlineSvg,
     ],
+    remarkRehype: {
+      footnoteLabel: "参考文献",
+      footnoteLabelTagName: "span",
+    },
     rehypePlugins: [
       [
         rehypeMermaid,
