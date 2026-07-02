@@ -16,25 +16,25 @@ import Search from "astro-pagefind/components/Search";
 </div>
 
 <script>
-  import { deactivate } from "@/utils/activate";
+  import { deactivate } from '@/utils/activate';
 
-  const modalElement = document.getElementById("search-modal");
-  const overlayElement = document.getElementById("overlay");
+  const modalElement = document.getElementById('search-modal');
+  const overlayElement = document.getElementById('overlay');
 
   function closeModal() {
-    if (modalElement?.dataset.active !== "true") {
+    if (modalElement?.dataset.active !== 'true') {
       return;
     }
-    deactivate("search-modal");
-    deactivate("overlay");
+    deactivate('search-modal');
+    deactivate('overlay');
   }
 
   if (overlayElement) {
-    overlayElement.addEventListener("click", closeModal);
+    overlayElement.addEventListener('click', closeModal);
   }
 
-  document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") {
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
       closeModal();
     }
   });

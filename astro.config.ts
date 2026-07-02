@@ -34,8 +34,8 @@ export default defineConfig({
       remarkInlineSvg,
     ],
     remarkRehype: {
-      footnoteLabel: "参考文献",
-      footnoteLabelTagName: "span",
+      footnoteLabel: '参考文献',
+      footnoteLabelTagName: 'span',
     },
     rehypePlugins: [
       [

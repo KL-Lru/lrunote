@@ -9,14 +9,14 @@ import { Icon } from "astro-icon/components";
 </button>
 
 <script>
-  import { activate } from "@/utils/activate";
+  import { activate } from '@/utils/activate';
 
-  const toggleElement = document.getElementById("search-toggle");
+  const toggleElement = document.getElementById('search-toggle');
 
   if (toggleElement) {
-    toggleElement.addEventListener("click", () => {
-      activate("overlay");
-      activate("search-modal");
+    toggleElement.addEventListener('click', () => {
+      activate('overlay');
+      activate('search-modal');
     });
   }
 </script>

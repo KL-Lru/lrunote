@@ -1,14 +1,14 @@
-import { readFileSync } from 'fs'
-import { resolve, dirname } from 'path'
-import { visit } from 'unist-util-visit'
-import type { Root, Image, Parent } from 'mdast'
-import type { VFile } from 'vfile'
+import { readFileSync } from 'fs';
+import { resolve, dirname } from 'path';
+import { visit } from 'unist-util-visit';
+import type { Root, Image, Parent } from 'mdast';
+import type { VFile } from 'vfile';
 
 function replaceColors(svg: string) {
   return svg.replaceAll(
     /(stroke|fill)="#([0-9a-f]{6})"/gi,
     `$1="currentColor"`
-  )
+  );
 }
 
 export function remarkInlineSvg() {
@@ -30,6 +30,6 @@ export function remarkInlineSvg() {
       } catch {
         // 読めなければ img のまま
       }
-    })
-  }
+    });
+  };
 }

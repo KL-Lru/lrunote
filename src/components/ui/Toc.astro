@@ -27,7 +27,7 @@ const { title, items } = Astro.props;
 }
 
 <script>
-  import { initToc, currentTocLinks } from "@/utils/toc";
+  import { initToc, currentTocLinks } from '@/utils/toc';
 
   initToc();
 
@@ -38,19 +38,19 @@ const { title, items } = Astro.props;
     if (!target) return;
 
     // 折りたたみ可能なターゲット（レイヤーのセクション）は開いてからスクロールする
-    if (target.hasAttribute("data-open")) {
-      target.dataset.open = "true";
+    if (target.hasAttribute('data-open')) {
+      target.dataset.open = 'true';
       target
-        .querySelector("[data-folder-toggle]")
-        ?.setAttribute("aria-expanded", "true");
+        .querySelector('[data-folder-toggle]')
+        ?.setAttribute('aria-expanded', 'true');
     }
 
-    target.scrollIntoView({ behavior: "smooth", block: "start" });
+    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   const links = currentTocLinks();
   links.forEach((link) => {
-    link.addEventListener("click", (event) => {
+    link.addEventListener('click', (event) => {
       event.preventDefault();
       scrollToContent(link.dataset.tocLink);
     });
