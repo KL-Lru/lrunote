@@ -1,0 +1,4 @@
+title = "Shell Script"
+description = "どこでも動くスクリプト"
+
+order = ["variables", "test", "extended_test"]
