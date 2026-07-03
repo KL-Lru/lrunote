@@ -1,6 +1,5 @@
 ---
 title: "条件記述 (Bourne Shell)"
-description: "サンプル記述"
 permalink: "shell_test_command"
 ---
 
