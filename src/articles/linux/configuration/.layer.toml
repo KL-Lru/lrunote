@@ -1,4 +1,4 @@
 title = "Configuration"
 description = "Linux で大体共通の設定群"
 
-order = ["hosts"]
+order = ["hosts", "nsswitch"]
