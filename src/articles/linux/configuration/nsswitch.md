@@ -6,13 +6,13 @@ permalink: "etc_nsswitch_conf"
 Name Server Switch を設定するファイルです.
 名前解決の優先順序, ユーザ名の解決方法の優先順序などを設定します.
 
-### 書式
+## 書式
 
 ```text
 <対象の区分>: [利用する方法] [...]
 ```
 
-#### 例
+### 例
 
 ```text title="/etc/nsswitch.conf"
 hosts:     mymachines files myhostname dns mdns
@@ -29,14 +29,14 @@ protocols: files
 rpc:       files
 ```
 
-### 設定値
+## 設定値
 
 主要な値として取りうる `files` や `systemd`, `dns` などは大抵のシステムで共通ですが, 仕様として設定可能な値が策定されているわけではありません.  
 `libnss_myhostname.so.2` など, システムにインストールされている NSS ライブラリによってプラガブルに追加 / 設定できます.
 
 このため, 以下に列記している内容についても, 利用できる場合/できない場合があります.
 
-#### 名前解決
+### 名前解決
 
 `hosts` 指定はドメインの名前解決に利用する方法の優先度を指定します.
 
@@ -50,7 +50,7 @@ rpc:       files
 | mdns       | mDNS を利用した LAN 内の名前解決を行う                         |
 
 
-#### ユーザ管理
+### ユーザ管理
 
 `passwd`, `group`, `shadow`, `sudoers` はいづれもユーザ管理系の設定です.
 ユーザ管理を `/etc/shadow` や `/etc/passwd` などを用いて行っている場合は `files`, LDAP や SSSD を利用している場合はそのプロトコル名の記載が一般的です.
@@ -62,7 +62,7 @@ rpc:       files
 | ldap    | LDAP を用いて対応する情報を取得する   |
 | systemd | systemd の DynamicUser などを解決する |
 
-#### その他の設定群
+### その他の設定群
 
 以下の設定値については現代において設定を変更する機会はほぼありません.
 常時 `files` になることでしょう.
