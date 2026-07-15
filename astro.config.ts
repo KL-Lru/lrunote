@@ -4,11 +4,11 @@ import { defineConfig, fontProviders } from 'astro/config';
 import icon from 'astro-icon';
 import mdx from '@astrojs/mdx';
 import pagefind from 'astro-pagefind';
-import rehypeMermaid from 'rehype-mermaid';
 
 import { codeBlockTransformer } from './src/shiki/code-block-transformer';
 import { inlineTsPlugin } from './src/plugins/inline-ts';
 import { remarkInlineSvg } from './src/plugins/inline-svg';
+import { remarkD2 } from './src/plugins/d2';
 
 // https://astro.build/config
 export default defineConfig({
@@ -32,21 +32,12 @@ export default defineConfig({
     },
     remarkPlugins: [
       remarkInlineSvg,
+      remarkD2,
     ],
     remarkRehype: {
       footnoteLabel: '参考文献',
       footnoteLabelTagName: 'span',
     },
-    rehypePlugins: [
-      [
-        rehypeMermaid,
-        {
-          strategy: 'img-svg',
-          colorScheme: 'forest',
-          dark: true,
-        },
-      ],
-    ],
   },
   fonts: [
     {

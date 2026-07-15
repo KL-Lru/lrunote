@@ -22,8 +22,6 @@ jobs:
 
       - name: Install dependencies
         run: yarn install
-        env:
-          SKIP_CHROMIUM: "true"
 
       - name: Run ESLint
         run: yarn lint

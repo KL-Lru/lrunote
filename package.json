@@ -13,18 +13,16 @@
     "astro": "astro",
     "lint": "eslint .",
     "textlint": "textlint .",
-    "test": "vitest",
-    "postinstall": "[ -z \"$SKIP_CHROMIUM\" ] && playwright install chromium || true"
+    "test": "vitest"
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.4",
     "@catppuccin/palette": "^1.8.0",
     "@iconify-json/mdi": "^1.2.3",
+    "@terrastruct/d2": "^0.1.33",
     "astro": "^6.3.1",
     "astro-icon": "^1.1.5",
-    "astro-pagefind": "^1.8.6",
-    "playwright": "^1.59.1",
-    "rehype-mermaid": "^3.0.0"
+    "astro-pagefind": "^1.8.6"
   },
   "devDependencies": {
     "@eslint/css": "^1.2.0",
