@@ -1,0 +1,11 @@
+allowBuilds:
+  esbuild: true
+  sharp: true
+  workerd: true
+packages:
+  - "packages/*"
+publicHoistPattern:
+  - "globals"
+  - "*eslint*"
+  - "*textlint*"
+
