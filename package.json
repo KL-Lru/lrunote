@@ -26,25 +26,7 @@
     "rehype-mermaid": "^3.0.0"
   },
   "devDependencies": {
-    "@eslint/css": "^1.2.0",
-    "@eslint/js": "^10.0.1",
-    "@eslint/markdown": "^8.0.1",
-    "@stylistic/eslint-plugin": "^5.10.0",
-    "@textlint-ja/textlint-rule-no-synonyms": "^1.3.0",
-    "eslint": "^10.3.0",
-    "eslint-plugin-astro": "^1.7.0",
-    "globals": "^17.6.0",
-    "jiti": "^2.7.0",
-    "sudachi-synonyms-dictionary": "^18.0.0",
-    "textlint": "^15.6.0",
-    "textlint-filter-rule-comments": "^1.3.0",
-    "textlint-plugin-mdx": "^1.1.0",
-    "textlint-rule-period-in-list-item": "^1.0.1",
-    "textlint-rule-preset-ja-spacing": "^2.4.3",
-    "textlint-rule-preset-ja-technical-writing": "^12.0.2",
-    "textlint-rule-prh": "^6.1.0",
     "typescript": "^5.8.3",
-    "typescript-eslint": "^8.59.2",
     "vitest": "^4.1.5",
     "wrangler": "^4.90.0"
   }
