@@ -1,13 +1,13 @@
 import js from '@eslint/js';
-import ts from 'typescript-eslint';
-import stylistic from '@stylistic/eslint-plugin';
-import astro from 'eslint-plugin-astro';
-import markdown from '@eslint/markdown';
 import css from '@eslint/css';
+import markdown from '@eslint/markdown';
+
+import stylistic from '@stylistic/eslint-plugin';
+import ts from 'typescript-eslint';
+import astro from 'eslint-plugin-astro';
 
 import globals from 'globals';
-import { defineConfig } from 'eslint/config';
-import type { Config } from 'eslint/config';
+import { defineConfig, type Config } from 'eslint/config';
 
 const scriptFiles = ['**/*.{js,ts,jsx,tsx}'];
 const generalIgnores = ['.astro/**', '**/node_modules/**', '**/dist/**'];
@@ -76,21 +76,16 @@ const cssConfig = [
 ];
 
 const astroConfig = [
-  ...(astro.configs.recommended).map((config) => {
-    // fix missing file patterns
-    if (config.name === 'astro/recommended') {
-      config.files = ['**/*.astro'];
-    }
-
-    return config;
-  }),
+  ...astro.configs.recommended
 ];
 
-export default defineConfig([
+const configs: Array<Config> = [
   ...commonConfigs,
   ...jsConfig,
   ...tsConfig,
   ...markConfig,
   ...cssConfig,
   ...astroConfig,
-]);
+];
+
+export default defineConfig(configs);

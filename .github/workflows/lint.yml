@@ -18,12 +18,10 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: lts/*
-          cache: yarn
+          cache: pnpm
 
       - name: Install dependencies
-        run: yarn install
-        env:
-          SKIP_CHROMIUM: "true"
+        run: pnpm install
 
       - name: Run ESLint
-        run: yarn lint
+        run: pnpm run lint

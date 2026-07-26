@@ -1,0 +1,20 @@
+{
+  "name": "remark-d2",
+  "type": "module",
+  "version": "1.0.0",
+  "license": "UNLICENSED",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@terrastruct/d2": "^0.1.33",
+    "unist-util-visit": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/mdast": "^4.0.4",
+    "vitest": "^4.1.10"
+  }
+}

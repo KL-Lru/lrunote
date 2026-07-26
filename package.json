@@ -10,10 +10,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "lint": "eslint .",
-    "textlint": "textlint .",
     "test": "vitest",
-    "postinstall": "[ -z \"$SKIP_CHROMIUM\" ] && playwright install chromium || true"
+    "lint": "eslint .",
+    "textlint": "textlint ."
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.4",
@@ -21,13 +20,15 @@
     "@iconify-json/mdi": "^1.2.3",
     "astro": "^6.3.1",
     "astro-icon": "^1.1.5",
-    "astro-pagefind": "^1.8.6",
-    "playwright": "^1.59.1",
-    "rehype-mermaid": "^3.0.0"
+    "astro-pagefind": "^1.8.6"
   },
   "devDependencies": {
     "typescript": "^5.8.3",
     "vitest": "^4.1.5",
-    "wrangler": "^4.90.0"
+    "wrangler": "^4.90.0",
+    "remark-d2": "workspace:*",
+    "remark-inline-svg": "workspace:*",
+    "shiki-custom-block": "workspace:*",
+    "vite-plugin-its": "workspace:*"
   }
 }
