@@ -1,6 +1,8 @@
 ---
 import type { GetStaticPaths } from "astro";
 import { articleCollection } from "@/utils/articles";
+import initialize from "@/assets/scripts/init?inline-bundle";
+import "@/assets/styles/globals.css";
 
 export const getStaticPaths = (async () => {
   const collection = await articleCollection();
@@ -12,6 +14,17 @@ export const getStaticPaths = (async () => {
 }) satisfies GetStaticPaths;
 
 const { entry } = Astro.props;
-
-return Astro.redirect(entry.id);
+const content = `0;url=${entry.id}`;
 ---
+
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="refresh" content={content} />
+    <meta name="robots" content="noindex" />
+
+    <script is:inline set:html={initialize} />
+  </head>
+
+  <body> </body>
+</html>
