@@ -10,6 +10,7 @@ const COMPILE_OPTIONS = {
 const COMPILE_THEME = `
 vars: {
   d2-config: {
+    pad: 10
     theme-id: 0
     theme-overrides: {
       N1: "#000000"   # text color
