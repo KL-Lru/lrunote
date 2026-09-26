@@ -4,7 +4,7 @@ import { buildSync } from 'esbuild';
 export function inlineTsPlugin(): Plugin {
   return {
     name: 'inline-bundle',
-    transform(_, id) {
+    load(id) {
       if (id.endsWith('?inline-bundle')) {
         const filePath = id.replace('?inline-bundle', '');
 
