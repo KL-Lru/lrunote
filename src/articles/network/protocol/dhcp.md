@@ -18,28 +18,95 @@ DHCP はサーバがクライアントに対して IP アドレスを払い出�
 6. IP アドレスの利用開始
 
 ```d2
-dhcp: DHCP Server 
+message: "DHCP の流れ" {
+    near: top-center
+    style: {
+        fill: transparent
+        stroke: transparent
+        font-size: 12
+    }
+}
+
+grid-columns: 3
+grid-rows: 2
+
+p1: "" {
+    width: 10
+    height: 10
+    style: {
+        fill: "#000000"
+    }
+}
 pc1: PC1
+
+p2: "" {
+    width: 10
+    height: 10
+    style: {
+        fill: "#000000"
+    }
+}
 pc2: PC2
-pc3: PC3
 
-dhcp -- pc1
-dhcp -- pc2
-dhcp -- pc3
+d1: "" {
+    width: 10
+    height: 10
+    style: {
+        fill: "#000000"
+    }
+}
+dhcp: DHCP Server 
 
-steps: {
+p1 -- p2 -- d1
+
+p1 -- pc1 
+p2 -- pc2
+d1 -- dhcp
+
+scenarios: {
     1: {
-        pc2 -> dhcp: DHCPDISCOVER (bloadcast)
+        message.label: "① DHCP サーバを探索"
+        (p1 -- pc1 )[0]: null 
+        (p2 -- pc2)[0]: null 
+        (d1 -- dhcp)[0]: null 
+        p1 <- pc1: DHCPDISCOVERY
+        p2 -> pc2
+        d1 -> dhcp
     }
     2: {
-        pc2 <- dhcp: DHCPOFFER
+        message.label: "② DHCP サーバが応答 + IP アドレス提示"
+        (p1 -- pc1 )[0]: null 
+        (d1 -- dhcp)[0]: null 
+        d1 <- dhcp: DHCPOFFER
+        p1 -> pc1
     }
     3: {
-        pc2 -> dhcp: DHCPREQUEST (bloadcast)
+        message.label: "③ 受け取りたい IP アドレスをリクエスト"
+        (p1 -- pc1 )[0]: null 
+        (p2 -- pc2)[0]: null 
+        (d1 -- dhcp)[0]: null 
+        p1 <- pc1: DHCPREQUEST
+        p2 -> pc2
+        d1 -> dhcp
     }
     4: {
-        pc2 <- dhcp: DHCPACK
+        message.label: "④ IP アドレス割当を応答"
+        (p1 -- pc1 )[0]: null 
+        (d1 -- dhcp)[0]: null 
+        d1 <- dhcp: DHCPACK
+        p1 -> pc1
+    }
+    5: {
+        message.label: "⑤ 重複がないか GARP で確認"
+        (p1 -- pc1 )[0]: null 
+        (p2 -- pc2)[0]: null 
+        (d1 -- dhcp)[0]: null 
+        p1 <- pc1: GARP
+        p2 -> pc2
+        d1 -> dhcp
+    }
+    6: {
+        message.label: "IP 利用開始"
     }
 }
 ```
-
