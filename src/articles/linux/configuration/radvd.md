@@ -9,7 +9,7 @@ IPv6 では RS/RA が必須の構成要素であり, radvd は RA の発信を�
 
 ## 書式
 
-```
+```text
 interface [NIC 名]
 {
     [option 指定]
