@@ -1,11 +1,15 @@
 import { visit } from 'unist-util-visit';
-import { D2 } from '@terrastruct/d2';
+import { D2, type CompileOptions, type RenderOptions } from '@terrastruct/d2';
 import type { Root, Parent } from 'mdast';
 
-const COMPILE_OPTIONS = {
+const RENDER_OPTIONS: RenderOptions = {
   pad: 20,
   sketch: false,
   noXMLTag: true,
+  animateInterval: 2000,
+};
+const COMPILE_OPTIONS: CompileOptions = {
+  ...RENDER_OPTIONS,
 };
 const COMPILE_THEME = `
 vars: {
@@ -59,7 +63,11 @@ export function replaceColors(svg: string): string {
 async function d2ToSvg(source: string): Promise<string> {
   const d2 = new D2();
   const result = await d2.compile(COMPILE_THEME + source, { options: COMPILE_OPTIONS });
-  return await d2.render(result.diagram, result.renderOptions);
+  return await d2.render(result.diagram, {
+    ...result.renderOptions,
+    ...RENDER_OPTIONS,
+    target: '*',
+  });
 }
 
 export function remarkD2() {
