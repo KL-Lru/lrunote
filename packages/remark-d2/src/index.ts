@@ -72,13 +72,12 @@ async function d2ToSvg(source: string): Promise<string> {
 
 export function remarkD2() {
   return async (tree: Root) => {
-    const targets: { parent: Parent; index: number; value: string }[] = [];
+    const targets: { parent: Parent; index: number; value: string, meta?: string | null }[] = [];
 
     visit(tree, 'code', (node, index, parent) => {
       if (node.lang !== 'd2') return;
       if (index === undefined || parent === undefined) return;
-
-      targets.push({ parent, index, value: node.value });
+      targets.push({ parent, index, value: node.value, meta: node.meta });
     });
     if (targets.length === 0) return;
 
@@ -95,11 +94,10 @@ export function remarkD2() {
     for (let i = targets.length - 1; i >= 0; i--) {
       const svg = svgContents[i];
       if (svg == null) continue;
-
-      const { parent, index } = targets[i];
+      const { parent, index, meta } = targets[i];
       parent.children[index] = {
         type: 'html',
-        value: `<div class="svg-inline">${replaceColors(svg)}</div>`
+        value: `<div class="svg-inline" ${meta}>${replaceColors(svg)}</div>`
       };
     }
   };
