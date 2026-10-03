@@ -87,7 +87,7 @@ const sectionId =
     display: grid;
 
     grid-template-columns: 1fr max-content;
-    align-items: center;
+    align-items: stretch;
     gap: 1rem;
     width: 100%;
 
@@ -95,7 +95,6 @@ const sectionId =
     text-align: left;
     cursor: pointer;
 
-    padding: 1rem;
     border-radius: 8px;
     border: 1px solid var(--border-color);
 
@@ -118,7 +117,7 @@ const sectionId =
     color: var(--text-color);
     background: transparent;
     border: 0;
-    padding: 0;
+    padding: 1rem;
     cursor: pointer;
   }
 
@@ -177,6 +176,7 @@ const sectionId =
     white-space: nowrap;
     flex: none;
     text-decoration: none;
+    padding: 1rem;
   }
 
   .folder-all:hover {
